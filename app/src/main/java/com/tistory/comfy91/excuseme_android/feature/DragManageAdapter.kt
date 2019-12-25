@@ -1,11 +1,15 @@
-package com.tistory.comfy91.excuseme_android
+package com.tistory.comfy91.excuseme_android.feature
 
 import android.content.Context
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 
-class DragManageAdapter (adapter: CardAdapter, context: Context, dragDirs: Int, swipeDirs: Int)
+/**
+ * Using in HelperSortActivity
+ * For Drag & Drop
+ */
+class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDirs: Int, swipeDirs: Int)
     : ItemTouchHelper.Callback(){
 
     var cardAdapter = adapter

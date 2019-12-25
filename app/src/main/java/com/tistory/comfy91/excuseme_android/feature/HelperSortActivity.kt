@@ -1,25 +1,25 @@
-package com.tistory.comfy91.excuseme_android
+package com.tistory.comfy91.excuseme_android.feature
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
+import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 import kotlinx.android.synthetic.main.activity_helper_sort.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class HelperSortActivity : AppCompatActivity() {
     val onBtnAllClicked: () -> Unit = {
         btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
 
     }
-    private val rvHelperSortCardAdapter = CardAdapter(this, onBtnAllClicked)
+    private val rvHelperSortCardAdapter =
+        RvHelperSortAdapter(this, onBtnAllClicked)
     private val rvLayoutManager = GridLayoutManager(this@HelperSortActivity, 2)
 
     // dummy
-    private lateinit var dummyData: ArrayList<DataCard>
+    private lateinit var dummyData: ArrayList<DataHelperSortCard>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +39,12 @@ class HelperSortActivity : AppCompatActivity() {
         rvHelperSortCardAdapter.notifyDataSetChanged()
 
         // ItemTouchHelper 설정 - 사용자의 터치에 따라 호출되는 콜백메소드를 담고 있음
-        val callback = DragManageAdapter(rvHelperSortCardAdapter,
-                                        this,
-                                        ItemTouchHelper.UP.or(ItemTouchHelper.DOWN),
-                                        ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT))
+        val callback = DragManageAdapter(
+            rvHelperSortCardAdapter,
+            this,
+            ItemTouchHelper.UP.or(ItemTouchHelper.DOWN),
+            ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT)
+        )
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(rvHelperSortCard)
 
@@ -64,23 +66,23 @@ class HelperSortActivity : AppCompatActivity() {
 
     private fun makeDummyData(){
         dummyData = arrayListOf(
-            DataCard(
+            DataHelperSortCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "first card",
                 false
             ),
-            DataCard(
+            DataHelperSortCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "second card",
                 false
 
             ),
-            DataCard(
+            DataHelperSortCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "third card",
                 false
             ),
-            DataCard(
+            DataHelperSortCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "fourth card",
                 false
@@ -110,7 +112,7 @@ class HelperSortActivity : AppCompatActivity() {
 
     private fun delteSelectedCard() {
 
-        val it: MutableIterator<DataCard> = dummyData.iterator()
+        val it: MutableIterator<DataHelperSortCard> = dummyData.iterator()
         while(it.hasNext()){
             if(it.next().visibility){
                 it.remove()
