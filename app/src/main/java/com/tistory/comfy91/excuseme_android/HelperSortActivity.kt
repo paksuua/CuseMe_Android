@@ -2,6 +2,8 @@ package com.tistory.comfy91.excuseme_android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -9,13 +11,22 @@ import kotlinx.android.synthetic.main.activity_helper_sort.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class HelperSortActivity : AppCompatActivity() {
-    private val rvHelperSortCardAdapter = CardAdapter(this)
+    val onBtnAllClicked: () -> Unit = {
+        btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
 
+    }
+    private val rvHelperSortCardAdapter = CardAdapter(this, onBtnAllClicked)
     private val rvLayoutManager = GridLayoutManager(this@HelperSortActivity, 2)
+
+    // dummy
+    private lateinit var dummyData: ArrayList<DataCard>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_helper_sort)
+
+        // dummy data 생성
+        makeDummyData()
 
         uiInit()
     } // end onCreate()
@@ -24,34 +35,92 @@ class HelperSortActivity : AppCompatActivity() {
         // 리사이클러뷰 어댑터 생성 및 설정
         rvHelperSortCard.adapter = rvHelperSortCardAdapter
         rvHelperSortCard.layoutManager = rvLayoutManager
+        rvHelperSortCardAdapter.data = dummyData
+        rvHelperSortCardAdapter.notifyDataSetChanged()
 
-//        // ItemTouchHelper 설정
-////        val callback = DragManageAdapter(rvLayoutManager,
-//                                        this,
-//                                        ItemTouchHelper.UP.or(ItemTouchHelper.DOWN),
-//                                        ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT))
-//        val touchHelper = ItemTouchHelper(callback)
-//        touchHelper.attachToRecyclerView(rvHelperSortCard)
+        // ItemTouchHelper 설정 - 사용자의 터치에 따라 호출되는 콜백메소드를 담고 있음
+        val callback = DragManageAdapter(rvHelperSortCardAdapter,
+                                        this,
+                                        ItemTouchHelper.UP.or(ItemTouchHelper.DOWN),
+                                        ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT))
+        val touchHelper = ItemTouchHelper(callback)
+        touchHelper.attachToRecyclerView(rvHelperSortCard)
 
-        rvHelperSortCardAdapter.data = listOf(
-            DataCard(
-                "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNxNH_-s3mAhWoyosBHQPCDVYQjRx6BAgBEAQ&url=https%3A%2F%2Fkr.pixtastock.com%2Ftags%2F%25EC%2598%2588%25EC%258B%259C%3Fsearch_type%3D2&psig=AOvVaw2GlyncjzgRA1lCskw4YSnC&ust=1577265753079881",
-                "first card"
-            ),
-            DataCard(
-                "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNxNH_-s3mAhWoyosBHQPCDVYQjRx6BAgBEAQ&url=https%3A%2F%2Fkr.pixtastock.com%2Ftags%2F%25EC%2598%2588%25EC%258B%259C%3Fsearch_type%3D2&psig=AOvVaw2GlyncjzgRA1lCskw4YSnC&ust=1577265753079881",
-                "second card"
-            ),
-            DataCard(
-                "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjNxNH_-s3mAhWoyosBHQPCDVYQjRx6BAgBEAQ&url=https%3A%2F%2Fkr.pixtastock.com%2Ftags%2F%25EC%2598%2588%25EC%258B%259C%3Fsearch_type%3D2&psig=AOvVaw2GlyncjzgRA1lCskw4YSnC&ust=1577265753079881",
-                "third card"
-            )
-        )
 
+        // 전체 선택 버튼 설정
         btnHelperSortSelectAll.setOnClickListener {
+            setAllCardisChecked()
+            rvHelperSortCardAdapter.notifyDataSetChanged()
+        }
 
+        // 선택한 카드 삭제 버튼 설정
+        btnHelperSortDeleteCard.setOnClickListener{
+            delteSelectedCard()
         }
 
 
     }
+
+
+    private fun makeDummyData(){
+        dummyData = arrayListOf(
+            DataCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "first card",
+                false
+            ),
+            DataCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "second card",
+                false
+
+            ),
+            DataCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "third card",
+                false
+            ),
+            DataCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "fourth card",
+                false
+            )
+        )
+    }
+    private fun setAllCardisChecked(){
+        // until : 끝값은 사용하지 않는다.
+        for(x in 0 until dummyData.size ){
+            dummyData[x].visibility = true
+        }
+        onBtnAllClicked()
+    }
+
+    private fun checkAnyCardChecked(): Boolean{
+        var result = false
+
+        for(x in 0 until dummyData.size){
+            if(dummyData[x].visibility){
+                result = true
+                break
+            }
+        }
+        return result
+    }
+
+
+    private fun delteSelectedCard() {
+
+        val it: MutableIterator<DataCard> = dummyData.iterator()
+        while(it.hasNext()){
+            if(it.next().visibility){
+                it.remove()
+            }
+        }
+
+        rvHelperSortCardAdapter.notifyDataSetChanged()
+    }
+
+
+
+
 } // end class

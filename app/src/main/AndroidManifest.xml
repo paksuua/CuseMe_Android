@@ -3,7 +3,8 @@
     package="com.tistory.comfy91.excuseme_android">
     <!-- 인터넷 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 로컬 이미지 로드 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 로컬 이미지 로드 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
