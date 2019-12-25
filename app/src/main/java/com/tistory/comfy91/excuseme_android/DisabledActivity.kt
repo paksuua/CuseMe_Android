@@ -1,16 +1,26 @@
 package com.tistory.comfy91.excuseme_android
 
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_disabled.*
 
 
 class DisabledActivity : AppCompatActivity() {
 
-    private val rvDisabledaAapter = CardAdapter(this)
 
-    private val rvLayoutManager = GridLayoutManager(this@DisabledActivity, 2)
+    //lateinit var CardList : ArrayList<Int>
+    lateinit var gridManager1 : GridLayoutManager
+    lateinit var gridManager2 : GridLayoutManager
+    lateinit var mCurrentLayoutManager : RecyclerView.LayoutManager
+    lateinit var rvDisabledaAapter : CardAdapter
+    var position = 0
+    //private val rvLayoutManager = GridLayoutManager(this@DisabledActivity, 2)
+
 
 
     override fun  onCreate(savedInstanceState: Bundle?) {
@@ -18,16 +28,6 @@ class DisabledActivity : AppCompatActivity() {
         setContentView(R.layout.activity_disabled)
 
         //recycleView 초기화
-
-        layoutInit()
-    }
-
-    private fun layoutInit(){
-
-        rvDisabledCard.adapter = rvDisabledaAapter
-        rvDisabledCard.layoutManager = rvLayoutManager
-
-
 
         rvDisabledaAapter.data = listOf(
             ItemCard(
@@ -43,7 +43,64 @@ class DisabledActivity : AppCompatActivity() {
                 "card3"
             )
         )
+        val mScaleGestureDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener(){
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                Log.v("Excuse", "여기는 줌2")
+
+                if (detector.currentSpan > 200 && detector.timeDelta > 200) {
+                    if (detector.currentSpan - detector.previousSpan < -1) {
+                        if (mCurrentLayoutManager == gridManager1) {
+                            mCurrentLayoutManager = gridManager2
+                            rvDisabledCard.layoutManager = mCurrentLayoutManager
+                            rvDisabledCard.scrollToPosition(position)
+                            return true
+                        }
+                    } else if(detector.currentSpan - detector.previousSpan > 1) {
+                        if (mCurrentLayoutManager == gridManager2) {
+                            mCurrentLayoutManager = gridManager1
+                            rvDisabledCard.layoutManager = mCurrentLayoutManager
+                            rvDisabledCard.scrollToPosition(position)
+                            return true
+                        }
+                    }
+                }
+                return false
+            }
+        })
+
+        gridManager1 = GridLayoutManager(this, 1)
+        gridManager2 = GridLayoutManager(this, 2)
+
+        rvDisabledCard.adapter = CardAdapter(rvDisabledaAapter.data)
+
+
+
+        mCurrentLayoutManager = gridManager2
+        rvDisabledCard.layoutManager = gridManager2
+        rvDisabledCard.adapter = rvDisabledaAapter
+
+        rvDisabledCard.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener{
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+            }
+
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                val child = rv.findChildViewUnder(e.x, e.y)
+                position = rv.getChildAdapterPosition(child!!)
+                mScaleGestureDetector.onTouchEvent(e)
+
+                Log.v("ExcuseP", position.toString())
+
+                return false
+            }
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+
+            }
+
+        })
+
+
 
     }
+
 
 }
