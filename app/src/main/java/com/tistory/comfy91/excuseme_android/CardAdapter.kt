@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 
-class CardAdapter(private val context: Context): RecyclerView.Adapter<CardViewHolder>(){
+class CardAdapter(private val arrData: ArrayList<ItemCard>): RecyclerView.Adapter<CardViewHolder>(){
 
-        var data = listOf<ItemCard>()
+        var data = arrData
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-            val view = LayoutInflater.from(context).inflate(R.layout.item_card, parent, false)
+            val view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_card, parent, false)
             return CardViewHolder(view);
         }
 
