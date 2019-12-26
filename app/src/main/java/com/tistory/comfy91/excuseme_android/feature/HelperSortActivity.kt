@@ -66,23 +66,27 @@ class HelperSortActivity : AppCompatActivity() {
             DataHelperSortCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "first card",
-                false
+                false,
+                0
             ),
             DataHelperSortCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "second card",
-                false
+                false,
+                0
 
             ),
             DataHelperSortCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "third card",
-                false
+                false,
+                0
             ),
             DataHelperSortCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "fourth card",
-                false
+                false,
+                0
             )
         )
     }
