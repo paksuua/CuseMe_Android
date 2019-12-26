@@ -10,8 +10,6 @@ import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 class RvHelperSortAdapter(private val context: Context, private val onBtnAllClicked: ()-> Unit): RecyclerView.Adapter<HelperSortCardViewHolder>(){
     var data = arrayListOf<DataHelperSortCard>()
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperSortCardViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_card, parent, false)
 
@@ -35,12 +33,12 @@ class RvHelperSortAdapter(private val context: Context, private val onBtnAllClic
     // 리사이클러뷰의 아이템의 위치를 사용자가 지정한 곳으로 바꿈
     fun swapItems(fromPosition: Int, toPosition: Int){
         if (fromPosition < toPosition) {
-            for (i in fromPosition..toPosition - 1) {
-                data.set(i, data.set(i+1, data.get(i)))
+            for (i in fromPosition until toPosition) {
+                data[i] = data.set(i+1, data[i])
             }
         } else {
             for (i in fromPosition..toPosition + 1) {
-                data.set(i, data.set(i-1, data.get(i)))
+                data[i] = data.set(i-1, data[i])
             }
         }
 

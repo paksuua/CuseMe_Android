@@ -59,10 +59,7 @@ class HelperSortActivity : AppCompatActivity() {
         btnHelperSortDeleteCard.setOnClickListener{
             delteSelectedCard()
         }
-
-
     }
-
 
     private fun makeDummyData(){
         dummyData = arrayListOf(

@@ -2,17 +2,15 @@ package com.tistory.comfy91.excuseme_android
 
 import android.Manifest
 import android.app.Activity
-import android.content.DialogInterface
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,14 +20,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_add_card.*
-import java.io.File
 import java.io.IOException
+
 
 class AddCardActivity : AppCompatActivity() {
     private val TAG = javaClass.name
     private lateinit var dialogBuilder: AlertDialog.Builder
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
+    private lateinit var audioTimer: AudioTimer
 
     private lateinit var recordFileName: String
     private var recordFlag = true
@@ -42,52 +41,46 @@ class AddCardActivity : AppCompatActivity() {
 
         checkPermission()
 
-        dataInit()
-        uiInit()
-
+        initData()
+        initUI()
     } // end onCrate()
 
-
-    private fun dataInit(){
+    private fun initData(){
         // Record to the external cache directory for visibility
         recordFileName = "${externalCacheDir?.absolutePath}/audiorecordtest.3gp"
         bottomSheetBehavior = BottomSheetBehavior.from(lyAddCardRecord)
+        audioTimer = AudioTimer(this) {
+            tvAddcardRecordCount.text = "${audioTimer.count}초"
+        }
     }
 
-
-    private fun uiInit() {
-
+    private fun initUI() {
         dialogBuilder = AlertDialog.Builder(this)
-        tvAddcardRecordCount.text = "10초"
 
         // 이미지 가져오기 리스너 설정
         imgAddcardCardImg.setOnClickListener {
             getImageFromAlbum()
         }
 
-
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         // 녹음 버튼 리스너 설정
         btnAddcardRecord.setOnClickListener {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+            it.requestFocus()
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             btnAddcardRecord.isVisible = false
         }
         // 녹음 버튼
-        btnAddcardTogRecord.setOnClickListener {
-            record()
-        }
+        btnAddcardTogRecord.setOnClickListener { record() }
 
         // 실행(count) 버튼 리스너 설정
-        tvAddcardRecordCount.setOnClickListener{
-            play()
-        }
+        tvAddcardRecordCount.setOnClickListener{ play() }
 
         btnAddcardCancelRecord.setOnClickListener {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             btnAddcardRecord.isVisible = true
-
         }
     }
+
 
     private fun play(){
         onPlay(playFlag)
@@ -100,11 +93,7 @@ class AddCardActivity : AppCompatActivity() {
         playFlag = !playFlag
     }
 
-    private fun onPlay(start: Boolean) = if (start) {
-        startPlaying()
-    } else {
-        stopPlaying()
-    }
+    private fun onPlay(start: Boolean) = if (start) startPlaying() else stopPlaying()
 
     private fun startPlaying() {
         player = MediaPlayer().apply {
@@ -113,6 +102,7 @@ class AddCardActivity : AppCompatActivity() {
                 prepare()
                 start()
             } catch (e: IOException) {
+                "prepare() failed".logDebug(this@AddCardActivity)
                 Log.e(TAG, "prepare() failed")
             }
         }
@@ -133,11 +123,7 @@ class AddCardActivity : AppCompatActivity() {
         recordFlag = !recordFlag
     }
 
-    private fun onRecord(start: Boolean) = if (start) {
-        startRecording()
-    } else {
-        stopRecording()
-    }
+    private fun onRecord(start: Boolean) = if (start) startRecording() else stopRecording()
 
     private fun startRecording() {
         recorder = MediaRecorder().apply {
@@ -153,18 +139,19 @@ class AddCardActivity : AppCompatActivity() {
             }
 
             start()
+            audioTimer.start()
         }
     }
 
     private fun stopRecording() {
+        audioTimer.cancel()
         recorder?.apply {
             stop()
             release()
         }
         recorder = null
+
     }
-
-
 
     private fun getImageFromAlbum() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -172,22 +159,22 @@ class AddCardActivity : AppCompatActivity() {
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
+    fun Context.isPermissionNotGranted(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED
+    }
+
+    fun Context.startSettingActivity() {
+        startActivity(Intent().apply {
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        })
+    }
+
     private fun checkPermission() {
-        // 권한 동의 체크
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.RECORD_AUDIO
-            ) != PackageManager.PERMISSION_GRANTED
-            || ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-            || ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
+        if (isPermissionNotGranted(Manifest.permission.RECORD_AUDIO)
+            || isPermissionNotGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
+            || isPermissionNotGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         ) {
-            // 권한 동의 안된 경우
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
                     Manifest.permission.RECORD_AUDIO
@@ -201,25 +188,13 @@ class AddCardActivity : AppCompatActivity() {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
             ) {
-
-                // 사용자 권한 동의 팝업 띄움
-                dialogBuilder.setMessage("권한이 거부 되었습니다. 직접 권한을 허용하세요.")
-                    .setPositiveButton("상세", DialogInterface.OnClickListener { dialogInterface, i ->
-                        intent = Intent()
-                            .apply {
-                                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                                data = Uri.fromParts("package", packageName, null)
-                                startActivity((intent))
-
-                            }
-
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
-                        finish()
-                    })
-
+                dialogBuilder
+                    .setMessage("권한이 거부 되었습니다. 직접 권한을 허용하세요.")
+                    .setPositiveButton("상세") { _, _ -> startSettingActivity() }
+                    .setNegativeButton("취소") { _, _ -> finish() }
+                    .setCancelable(false)
+                    .show()
             } else {
-                // 사용자 권한 동의 팝업 표시
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(
@@ -241,46 +216,44 @@ class AddCardActivity : AppCompatActivity() {
 
         when (requestCode) {
             PERMISSION_CODE -> {
-                for (i in 0 until grantResults.size) {
-                    if (grantResults[i] < 0) {
-                        Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
-                            .show()
-                        break
-                    }
+                grantResults.filter { it < 0 }.forEach {
+                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG).show()
+                    checkPermission()
+                    return
                 }
-
             } // end 1111
         }
-    } // end onRequestPermissionREsult()
+    } // end onRequestPermissionResult()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d(TAG, "(requestCode : $requestCode) (resulrCode: $resultCode)")
+        Log.d(TAG, "(requestCode : $requestCode) (resultCode: $resultCode)")
 
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            // 정상적으로 이미지를 가져온 경우
-            Log.d(TAG, "Success Get Image from Gallery")
-            imgAddcardCardImg.setImageURI(data?.data)
+        when (requestCode) {
+            IMAGE_PICK_CODE -> {
+                when(resultCode) {
+                    Activity.RESULT_OK -> {
+                        // 정상적으로 이미지를 가져온 경우
+                        Log.d(TAG, "Success Get Image from Gallery")
+                        imgAddcardCardImg.setImageURI(data?.data)
+                    }
+                    else -> {
+
+                    }
+                }
+            }
         }
     } // end onActivityResult()
-    // 오디오 녹음
-
 
     override fun onStop() {
         super.onStop()
         recorder?.release()
         recorder = null
-        player?.release()
-        player = null
+        stopPlaying()
     }
-
 
     companion object {
-        // image pick code
         private const val IMAGE_PICK_CODE = 1000
-        // permission code
         private const val PERMISSION_CODE = 1111
-
     }
-
 }
