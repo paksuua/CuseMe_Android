@@ -5,18 +5,22 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_add_card.*
 import java.io.File
 import java.io.IOException
@@ -25,9 +29,12 @@ class AddCardActivity : AppCompatActivity() {
     private val TAG = javaClass.name
     private lateinit var dialogBuilder: AlertDialog.Builder
     private var recorder: MediaRecorder? = null
+    private var player: MediaPlayer? = null
 
-    private var startRecordFlag: Boolean = false
-
+    private lateinit var recordFileName: String
+    private var recordFlag = true
+    private var playFlag = true
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +42,17 @@ class AddCardActivity : AppCompatActivity() {
 
         checkPermission()
 
+        dataInit()
         uiInit()
 
     } // end onCrate()
 
 
+    private fun dataInit(){
+        // Record to the external cache directory for visibility
+        recordFileName = "${externalCacheDir?.absolutePath}/audiorecordtest.3gp"
+        bottomSheetBehavior = BottomSheetBehavior.from(lyAddCardRecord)
+    }
 
 
     private fun uiInit() {
@@ -52,17 +65,106 @@ class AddCardActivity : AppCompatActivity() {
             getImageFromAlbum()
         }
 
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN)
         // 녹음 버튼 리스너 설정
         btnAddcardRecord.setOnClickListener {
-            lyAddcardRecord.isVisible = true
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+            btnAddcardRecord.isVisible = false
         }
         // 녹음 버튼
         btnAddcardTogRecord.setOnClickListener {
-
+            record()
         }
 
+        // 실행(count) 버튼 리스너 설정
+        tvAddcardRecordCount.setOnClickListener{
+            play()
+        }
 
+        btnAddcardCancelRecord.setOnClickListener {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN)
+            btnAddcardRecord.isVisible = true
+
+        }
     }
+
+    private fun play(){
+        onPlay(playFlag)
+        tvAddCardRecordNotice.text = when (playFlag) {
+            true -> "Stop playing"
+            false -> "Start playing"
+        }
+        tvAddcardRecordCount.isVisible = true
+
+        playFlag = !playFlag
+    }
+
+    private fun onPlay(start: Boolean) = if (start) {
+        startPlaying()
+    } else {
+        stopPlaying()
+    }
+
+    private fun startPlaying() {
+        player = MediaPlayer().apply {
+            try {
+                setDataSource(recordFileName)
+                prepare()
+                start()
+            } catch (e: IOException) {
+                Log.e(TAG, "prepare() failed")
+            }
+        }
+    }
+
+    private fun stopPlaying() {
+        player?.release()
+        player = null
+    }
+
+    private fun record(){
+        onRecord(recordFlag)
+        btnAddcardTogRecord.text = when (recordFlag) {
+            true -> "Stop recording"
+            false -> "Start recording"
+        }
+
+        recordFlag = !recordFlag
+    }
+
+    private fun onRecord(start: Boolean) = if (start) {
+        startRecording()
+    } else {
+        stopRecording()
+    }
+
+    private fun startRecording() {
+        recorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            setOutputFile(recordFileName)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+
+            try {
+                prepare()
+            } catch (e: IOException) {
+                Log.e(TAG, "prepare() failed")
+            }
+
+            start()
+        }
+    }
+
+    private fun stopRecording() {
+        recorder?.apply {
+            stop()
+            release()
+        }
+        recorder = null
+    }
+
+
 
     private fun getImageFromAlbum() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -120,7 +222,7 @@ class AddCardActivity : AppCompatActivity() {
                 // 사용자 권한 동의 팝업 표시
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf<String>(
+                    arrayOf(
                         (Manifest.permission.READ_EXTERNAL_STORAGE),
                         (Manifest.permission.RECORD_AUDIO)
                     ),
@@ -164,6 +266,13 @@ class AddCardActivity : AppCompatActivity() {
     // 오디오 녹음
 
 
+    override fun onStop() {
+        super.onStop()
+        recorder?.release()
+        recorder = null
+        player?.release()
+        player = null
+    }
 
 
     companion object {
