@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ExcuseMe_Android</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="record_notice">다른 사람에게 들려질 목소리입니다.</string>
+    <string name="tv_down_title">카드 다운 받기</string>
+    <string name="btn_down_newcard">다운로드</string>
+    <string name="btn_down_go_addcard">직접 만들기</string>
 </resources>
