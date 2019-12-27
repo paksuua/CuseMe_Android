@@ -1,4 +1,4 @@
-package com.tistory.comfy91.excuseme_android
+package com.tistory.comfy91.excuseme_android.feature.add_card
 
 import android.Manifest
 import android.app.Activity
@@ -19,8 +19,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.logDebug
 import kotlinx.android.synthetic.main.activity_add_card.*
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class AddCardActivity : AppCompatActivity() {
@@ -47,11 +51,10 @@ class AddCardActivity : AppCompatActivity() {
 
     private fun initData(){
         // Record to the external cache directory for visibility
-        recordFileName = "${externalCacheDir?.absolutePath}/audiorecordtest.3gp"
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.3gp"
         bottomSheetBehavior = BottomSheetBehavior.from(lyAddCardRecord)
-        audioTimer = AudioTimer(this) {
-            tvAddcardRecordCount.text = "${audioTimer.count}초"
-        }
+
     }
 
     private fun initUI() {
@@ -73,12 +76,14 @@ class AddCardActivity : AppCompatActivity() {
         btnAddcardTogRecord.setOnClickListener { record() }
 
         // 실행(count) 버튼 리스너 설정
-        tvAddcardRecordCount.setOnClickListener{ play() }
+        tvAddcardRecordPlay.setOnClickListener{ play() }
 
         btnAddcardCancelRecord.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             btnAddcardRecord.isVisible = true
         }
+
+        btnAddcardSaveRecord.isEnabled = false
     }
 
 
@@ -88,8 +93,6 @@ class AddCardActivity : AppCompatActivity() {
             true -> "Stop playing"
             false -> "Start playing"
         }
-        tvAddcardRecordCount.isVisible = true
-
         playFlag = !playFlag
     }
 
@@ -101,6 +104,7 @@ class AddCardActivity : AppCompatActivity() {
                 setDataSource(recordFileName)
                 prepare()
                 start()
+                tvAddcardRecordPlay.isChecked = false
             } catch (e: IOException) {
                 "prepare() failed".logDebug(this@AddCardActivity)
                 Log.e(TAG, "prepare() failed")
@@ -119,7 +123,6 @@ class AddCardActivity : AppCompatActivity() {
             true -> "Stop recording"
             false -> "Start recording"
         }
-
         recordFlag = !recordFlag
     }
 
@@ -139,24 +142,39 @@ class AddCardActivity : AppCompatActivity() {
             }
 
             start()
+
+            audioTimer =
+                AudioTimer(this@AddCardActivity) {
+                    tvAddCardRecordNotice.text = "${audioTimer.count}초"
+                }
             audioTimer.start()
+
+            tvAddcardRecordPlay.isVisible = false
         }
     }
 
     private fun stopRecording() {
-        audioTimer.cancel()
         recorder?.apply {
             stop()
             release()
         }
         recorder = null
 
+        audioTimer.cancel()
+        btnAddcardSaveRecord.isEnabled = true
+        tvAddCardRecordNotice.text = getString(R.string.record_notice)
+        tvAddcardRecordPlay.apply{
+            isVisible = true
+            isEnabled = true
+        }
     }
 
     private fun getImageFromAlbum() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        startActivityForResult(intent,
+            IMAGE_PICK_CODE
+        )
     }
 
     fun Context.isPermissionNotGranted(permission: String): Boolean {

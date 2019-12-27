@@ -1,4 +1,4 @@
-package com.tistory.comfy91.excuseme_android.feature
+package com.tistory.comfy91.excuseme_android.feature.helper_sort
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,7 +15,11 @@ class HelperSortActivity : AppCompatActivity() {
 
     }
     private val rvHelperSortCardAdapter =
-        RvHelperSortAdapter(this, onBtnAllClicked)
+        RvHelperSortAdapter(
+            this,
+            onBtnAllClicked,
+            HelperSortCardViewHolder.HELPER_SORT_ACTIVITY
+        )
     private val rvLayoutManager = GridLayoutManager(this@HelperSortActivity, 2)
 
     // dummy

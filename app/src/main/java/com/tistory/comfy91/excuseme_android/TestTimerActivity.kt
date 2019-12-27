@@ -14,6 +14,5 @@ class TestTimerActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.layout, fragment)
         transaction.commit()
-
     }
 }

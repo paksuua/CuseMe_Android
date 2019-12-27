@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddCardActivity">
+    tools:context=".feature.add_card.AddCardActivity">
 
     <Button
         android:id="@+id/btnAddcardBack"
@@ -79,9 +79,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-
-        >
+        android:fitsSystemWindows="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lyAddCardRecord"
@@ -95,7 +93,6 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="#ffffff"
@@ -114,27 +111,29 @@
                     android:id="@+id/tvAddCardRecordNotice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="버튼을 눌러 녹음을 시작하세요."
+                    android:text="@string/record_notice"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/btnAddcardCancelRecord"
                     app:layout_constraintTop_toTopOf="@id/btnAddcardCancelRecord" />
 
-                <TextView
-                    android:id="@+id/tvAddcardRecordCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="start button"
+                <CheckedTextView
+                    android:id="@+id/tvAddcardRecordPlay"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btnAddcardCancelRecord" />
+                    app:layout_constraintTop_toBottomOf="@id/btnAddcardCancelRecord"
+                    android:background="@drawable/test_icon_checked"
+                    android:enabled="false"
+                    />
 
                 <Button
                     android:id="@+id/btnAddcardTogRecord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="default start record"
-                    app:layout_constraintStart_toEndOf="@id/tvAddcardRecordCount"
-                    app:layout_constraintTop_toTopOf="@id/tvAddcardRecordCount" />
+                    app:layout_constraintStart_toEndOf="@id/tvAddcardRecordPlay"
+                    app:layout_constraintTop_toTopOf="@id/tvAddcardRecordPlay" />
 
                 <Button
                     android:id="@+id/btnAddcardSaveRecord"

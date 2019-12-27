@@ -9,7 +9,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
-import com.tistory.comfy91.excuseme_android.feature.RvHelperSortAdapter
+import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortCardViewHolder
+import com.tistory.comfy91.excuseme_android.feature.helper_sort.RvHelperSortAdapter
 import kotlinx.android.synthetic.main.fragment_select_sort.*
 
 
@@ -68,7 +69,11 @@ class SelectSortFragment : Fragment() {
 
     private fun initRecyclerView() {
         if (activity?.baseContext != null) {
-            selectSortAdapter = RvHelperSortAdapter(activity!!.baseContext) {}
+            selectSortAdapter = RvHelperSortAdapter(
+                activity!!.baseContext,
+                {},
+                HelperSortCardViewHolder.SELECT_SORT_FRAGMENT
+            )
                 .apply {
                     if (dummyData != null) {
                         tvSelectSortAlert.isVisible = false
@@ -111,6 +116,4 @@ class SelectSortFragment : Fragment() {
         const val SORT_BY_COUNT = 2
         const val SORT_BY_TITLE = 3
     }
-
-
 }

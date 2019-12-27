@@ -1,4 +1,4 @@
-package com.tistory.comfy91.excuseme_android
+package com.tistory.comfy91.excuseme_android.feature.add_card
 
 import android.app.Activity
 import java.util.*

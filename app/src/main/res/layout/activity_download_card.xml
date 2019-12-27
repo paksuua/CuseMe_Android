@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.download_card.DownloadCardActivity">
+
+
+    <Button
+        android:id="@+id/btnDownBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <TextView
+        android:id="@+id/tvDownTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_down_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="100dp"
+        />
+
+    <EditText
+        android:id="@+id/edtDownInputCardNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintTop_toBottomOf="@id/tvDownTitle"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <Button
+        android:id="@+id/btnDownNewCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_down_newcard"
+        app:layout_constraintTop_toBottomOf="@id/edtDownInputCardNum"
+        app:layout_constraintStart_toStartOf="@id/edtDownInputCardNum"/>
+
+    <TextView
+        android:id="@+id/btnDownGoAddcard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_down_go_addcard"
+        app:layout_constraintTop_toBottomOf="@id/btnDownNewCard"
+        app:layout_constraintStart_toStartOf="@id/btnDownNewCard"
+        app:layout_constraintEnd_toEndOf="@id/btnDownNewCard"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

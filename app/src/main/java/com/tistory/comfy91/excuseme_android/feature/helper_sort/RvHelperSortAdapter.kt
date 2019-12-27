@@ -1,4 +1,4 @@
-package com.tistory.comfy91.excuseme_android.feature
+package com.tistory.comfy91.excuseme_android.feature.helper_sort
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 
-class RvHelperSortAdapter(private val context: Context, private val onBtnAllClicked: ()-> Unit): RecyclerView.Adapter<HelperSortCardViewHolder>(){
+class RvHelperSortAdapter(private val context: Context, private val onBtnAllClicked: ()-> Unit, private val bind: Int): RecyclerView.Adapter<HelperSortCardViewHolder>(){
     var data = arrayListOf<DataHelperSortCard>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperSortCardViewHolder {
@@ -24,7 +24,7 @@ class RvHelperSortAdapter(private val context: Context, private val onBtnAllClic
     }
 
     override fun onBindViewHolder(holder: HelperSortCardViewHolder, position: Int) {
-        holder.bind(data.get(position), position)
+        holder.bind(data[position], position, bind)
         holder.dataVisibilityChange = {
             data[position].visibility = !(data[position].visibility)
         }
