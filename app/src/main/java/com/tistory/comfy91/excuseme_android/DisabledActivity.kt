@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import android.widget.Toast
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +17,8 @@ class DisabledActivity : AppCompatActivity() {
 
     lateinit var gridManager1: GridLayoutManager
     lateinit var gridManager2: GridLayoutManager
+    lateinit var gridManager3: GridLayoutManager
+
     lateinit var mCurrentLayoutManager: RecyclerView.LayoutManager
     lateinit var rvDisabledaAapter: CardAdapter
     lateinit var cardData: ArrayList<ItemCard>
@@ -35,9 +37,6 @@ class DisabledActivity : AppCompatActivity() {
         //tv2.setText(""+count)
         //}
 
-        Toast.makeText(this, "safas", Toast.LENGTH_LONG).show()
-        toast("safas")
-        "safas".toast(this)
 
         btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
 
@@ -45,16 +44,13 @@ class DisabledActivity : AppCompatActivity() {
 
             override fun onClick(v: View) {
 
-
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000)
-                    Log.v("Excuse", "연속 터치")
-                return
-
-                mLastClickTime = SystemClock.elapsedRealtime()
-
-                Log.v("Excuse", "터치")
-                count++
-                tv2.setText("" + count)
+                if (SystemClock.elapsedRealtime() - mLastClickTime > 3000) {
+                    Log.v("Excuse", "터치")
+                    mLastClickTime = SystemClock.elapsedRealtime()
+                    count++
+                    tv2.setText("" + count)
+                } else return
+                Log.v("Excuse", "연속 터치")
 
             }
         })
@@ -63,6 +59,7 @@ class DisabledActivity : AppCompatActivity() {
         //data
         inputData()
 
+
         val mScaleGestureDetector = ScaleGestureDetector(
             this,
             object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
@@ -70,13 +67,34 @@ class DisabledActivity : AppCompatActivity() {
                     Log.v("Excuse", "줌2")
 
                     if (detector.currentSpan > 200 && detector.timeDelta > 200) {
+
+                        // 2에서 3됐을 때
                         if (detector.currentSpan - detector.previousSpan < -1) {
-                            if (mCurrentLayoutManager == gridManager1) {
-                                mCurrentLayoutManager = gridManager2
+                            if (mCurrentLayoutManager == gridManager2) {
+                                mCurrentLayoutManager = gridManager3
                                 rvDisabledCard.layoutManager = mCurrentLayoutManager
                                 rvDisabledCard.scrollToPosition(position)
                                 return true
+
+                                //1에서 2됐을 때
+                            } else if (detector.currentSpan - detector.previousSpan < -1) {
+                                if (mCurrentLayoutManager == gridManager1) {
+                                    mCurrentLayoutManager = gridManager2
+                                    rvDisabledCard.layoutManager = mCurrentLayoutManager
+                                    rvDisabledCard.scrollToPosition(position)
+                                    return true
+                                }
                             }
+                        }
+                        //3에서 2됐을 떄
+                    } else if (detector.currentSpan - detector.previousSpan > 1) {
+                        if (mCurrentLayoutManager == gridManager3) {
+                            mCurrentLayoutManager = gridManager2
+                            rvDisabledCard.layoutManager = mCurrentLayoutManager
+                            rvDisabledCard.scrollToPosition(position)
+                            return true
+
+                            //2에서 1됐을 때
                         } else if (detector.currentSpan - detector.previousSpan > 1) {
                             if (mCurrentLayoutManager == gridManager2) {
                                 mCurrentLayoutManager = gridManager1
@@ -86,20 +104,49 @@ class DisabledActivity : AppCompatActivity() {
                             }
                         }
                     }
+
                     return false
                 }
             })
 
+
+
+
+
         gridManager1 = GridLayoutManager(this, 1)
         gridManager2 = GridLayoutManager(this, 2)
+        gridManager3 = GridLayoutManager(this, 3)
+
 
         //adapter 초기화
-        rvDisabledaAapter = CardAdapter(cardData)
+        rvDisabledaAapter = CardAdapter(cardData, object : CardAdapter.ItemClickListener {
+            override fun onItemClicked(itemCard: ItemCard) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
         rvDisabledCard.adapter = rvDisabledaAapter
 
         mCurrentLayoutManager = gridManager2
         rvDisabledCard.layoutManager = gridManager2
         rvDisabledCard.adapter = rvDisabledaAapter
+
+        svSortSearch!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d("zzzz", "listener 1 ")
+                rvDisabledaAapter!!.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                Log.d("zzzz", "listener 2 ")
+                rvDisabledaAapter!!.filter.filter(query)
+                return false
+            }
+        })
+
+
+
 
         rvDisabledCard.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
             override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
@@ -137,85 +184,88 @@ class DisabledActivity : AppCompatActivity() {
 
     }
 
-
     private fun inputData() {
         cardData = arrayListOf(
             ItemCard(
-                "http://cfile1.uf.tistory.com/image/0138F14A517F77713A43A6",
-                "card1"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "집"
             ),
             ItemCard(
-                "http://cfile1.uf.tistory.com/image/0138F14A517F77713A43A6",
-                "card2"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "아파요"
             ),
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card3"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "병원"
             ),
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card4"
-            ),
-
-            ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card5"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "학교"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card6"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "병원 가고싶어요"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card7"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "목 말라요"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card8"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "화장실2"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card9"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "화장실"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card10"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "mdlsf"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card11"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "abcdef"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card12"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "Frozen"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card13"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "아이언맨"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card14"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "어밴져스"
             ),
 
             ItemCard(
-                "https://i.ytimg.com/vi/5-mWvUR7_P0/maxresdefault.jpg",
-                "card15d"
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "겨울왕국2"
+            ),
+
+            ItemCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "겨울왕국"
             )
 
 
         )
 
     }
+
+    //override fun onItemClicked(photocard: ItemCard) {
+    //tvDisabledShowCardText.setText(.title)
+    //}
 
 
 }
