@@ -7,8 +7,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.tistory.comfy91.excuseme_android.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
+import com.tistory.comfy91.excuseme_android.newStartActivity
+import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
 
 class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit) :
     RecyclerView.ViewHolder(itemView) {
@@ -17,33 +20,27 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
     private val ctvCheck: CheckedTextView = itemView.findViewById(R.id.ctvCheck)
     lateinit var dataVisibilityChange: () -> Unit
 
-    private val clickListener = View.OnClickListener {
-        clicked()
-    }
+
 
     fun bind(data: DataHelperSortCard, position: Int, listenerFlag: Int) {
         Glide.with(itemView).load(data.imageUrl).into(imgCard)
         tvCard.text = data.title
         ctvCheck.isChecked = data.visibility
 
-        // 체크 박스 토글
+
         when(listenerFlag){
-            HELPER_SORT_ACTIVITY -> itemView.setOnClickListener(clickListener)
-            SELECT_SORT_FRAGMENT -> ctvCheck.setOnClickListener(clickListener)
+            HELPER_SORT_ACTIVITY -> itemView.setOnSingleClickListener{clicked()}
+            SELECT_SORT_FRAGMENT -> {
+                ctvCheck.setOnSingleClickListener{clicked()}
+                itemView.setOnSingleClickListener{itemView.context.newStartActivity(DetailCardActivity::class.java)}
+            }
         }
 
     }
 
     private fun clicked(){
         ctvCheck.toggle()
-        if (ctvCheck.isChecked) {
-            // 삭제대상으로 선택되었을 때
-            Toast.makeText(itemView.context, "삭제", Toast.LENGTH_SHORT).show()
-        } else {
-            // 삭제대상으로 해제되었을 때
-            Toast.makeText(itemView.context, "해제", Toast.LENGTH_SHORT).show()
-        }
-        dataVisibilityChange()
+        dataVisibilityChange() // 데이터 변경
         onClicked()
     }
 

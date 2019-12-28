@@ -22,7 +22,7 @@ class DownloadCardActivity : AppCompatActivity() {
             finish()
         }
 
-        btnDownGoAddcard.setOnClickListener{
+        btnUnlockGoModCard.setOnClickListener{
             this.newStartActivity(AddCardActivity::class.java)
         }
     }

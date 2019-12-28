@@ -9,6 +9,7 @@ import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 
 class RvHelperSortAdapter(private val context: Context, private val onBtnAllClicked: ()-> Unit, private val bind: Int): RecyclerView.Adapter<HelperSortCardViewHolder>(){
     var data = arrayListOf<DataHelperSortCard>()
+    var isChanged = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperSortCardViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_card, parent, false)
@@ -41,11 +42,7 @@ class RvHelperSortAdapter(private val context: Context, private val onBtnAllClic
                 data[i] = data.set(i-1, data[i])
             }
         }
-
         notifyItemMoved(fromPosition, toPosition)
+        isChanged = true
     }
-
-
-
-
 }
