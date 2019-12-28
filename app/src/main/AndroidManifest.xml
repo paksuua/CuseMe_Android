@@ -15,10 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".DetailCardActivity"></activity>
         <activity
             android:name=".UnlockActivity"
             android:exported="true" />
+
         <activity
             android:name=".feature.download_card.DownloadCardActivity"
             android:exported="true" />
@@ -28,6 +30,9 @@
         <activity
             android:name=".feature.add_card.AddCardActivity"
             android:exported="true">
+
+        <activity android:name=".TestActivity"/>
+        <activity android:name=".DisabledActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,3 +46,5 @@
     </application>
 
 </manifest>
+
+
