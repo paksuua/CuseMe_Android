@@ -16,7 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".UnlockActivity"></activity>
+        <activity android:name=".DetailCardActivity"></activity>
+        <activity
+            android:name=".UnlockActivity"
+            android:exported="true" />
+
         <activity
             android:name=".feature.download_card.DownloadCardActivity"
             android:exported="true" />
@@ -29,7 +33,6 @@
 
         <activity android:name=".TestActivity"/>
         <activity android:name=".DisabledActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

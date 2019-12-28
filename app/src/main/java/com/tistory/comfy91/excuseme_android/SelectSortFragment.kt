@@ -14,7 +14,8 @@ import com.tistory.comfy91.excuseme_android.feature.helper_sort.RvHelperSortAdap
 import kotlinx.android.synthetic.main.fragment_select_sort.*
 
 
-class SelectSortFragment : Fragment() {
+class
+SelectSortFragment : Fragment() {
     private lateinit var selectSortAdapter: RvHelperSortAdapter
     private lateinit var dummyData: ArrayList<DataHelperSortCard>
 

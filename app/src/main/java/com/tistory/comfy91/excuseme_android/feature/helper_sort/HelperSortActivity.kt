@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_helper_sort.*
 class HelperSortActivity : AppCompatActivity() {
     val onBtnAllClicked: () -> Unit = {
         btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
-
     }
     private val rvHelperSortCardAdapter =
         RvHelperSortAdapter(
@@ -61,8 +60,16 @@ class HelperSortActivity : AppCompatActivity() {
 
         // 선택한 카드 삭제 버튼 설정
         btnHelperSortDeleteCard.setOnClickListener{
-            delteSelectedCard()
+            deleteSelectedCard()
         }
+
+        btnHelperSortBack.setOnClickListener {
+            if(rvHelperSortCardAdapter.isChanged){
+                //todo
+            }
+        }
+
+
     }
 
     private fun makeDummyData(){
@@ -114,9 +121,7 @@ class HelperSortActivity : AppCompatActivity() {
         return result
     }
 
-
-    private fun delteSelectedCard() {
-
+    private fun deleteSelectedCard() {
         val it: MutableIterator<DataHelperSortCard> = dummyData.iterator()
         while(it.hasNext()){
             if(it.next().visibility){
@@ -126,8 +131,4 @@ class HelperSortActivity : AppCompatActivity() {
 
         rvHelperSortCardAdapter.notifyDataSetChanged()
     }
-
-
-
-
 } // end class
