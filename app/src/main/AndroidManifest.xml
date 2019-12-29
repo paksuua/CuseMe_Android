@@ -37,8 +37,6 @@
             android:name=".feature.addcard.AddCardActivity"
             android:exported="true"/>
 
-        <activity android:name=".TestActivity"/>
-
         <activity android:name=".feature.disabled.DisabledActivity">
 
         </activity>

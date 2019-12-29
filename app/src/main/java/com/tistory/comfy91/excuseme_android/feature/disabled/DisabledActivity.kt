@@ -14,6 +14,10 @@ import com.tistory.comfy91.excuseme_android.CardAdapter
 import com.tistory.comfy91.excuseme_android.ItemCard
 import com.tistory.comfy91.excuseme_android.R
 import kotlinx.android.synthetic.main.activity_disabled.*
+import android.view.WindowManager
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
 
 class DisabledActivity : AppCompatActivity() {
@@ -30,7 +34,7 @@ class DisabledActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_disabled)
+        setContentView(com.tistory.comfy91.excuseme_android.R.layout.activity_disabled)
 
         //그냥 터치 할 때
         //btnDisabledUnlock.setOnClickListener{
@@ -39,6 +43,9 @@ class DisabledActivity : AppCompatActivity() {
         //count++
         //tv2.setText(""+count)
         //}
+
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
 
         btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
