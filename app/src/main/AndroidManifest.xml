@@ -38,10 +38,10 @@
             android:exported="true"/>
 
         <activity android:name=".TestActivity"/>
-        <!--
+
         <activity android:name=".feature.disabled.DisabledActivity">
 
-        </activity> -->
+        </activity>
         <activity
             android:name=".feature.helper_sort.HelperSortActivity"
             android:exported="true" />
