@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.add_card.AddCardActivity">
+    tools:context=".feature.addcard.AddCardActivity">
 
     <Button
         android:id="@+id/btnDetailBack"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="카드 추가"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnDetailEdit"
         app:layout_constraintStart_toStartOf="@+id/btnDetailBack"
         app:layout_constraintTop_toTopOf="@id/btnDetailBack" />
 
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="수정"
-        app:layout_constraintStart_toStartOf="tvDetailTitle"
+        app:layout_constraintStart_toStartOf="@id/tvDetailTitle"
         app:layout_constraintEnd_toStartOf="@id/btnDetailDelete"
         app:layout_constraintTop_toTopOf="@id/btnDetailBack" />
 

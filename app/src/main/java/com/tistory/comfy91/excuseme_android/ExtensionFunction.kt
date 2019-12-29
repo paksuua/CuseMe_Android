@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 
 
 /**
@@ -36,4 +37,12 @@ fun View.setOnSingleClickListener(debounceTime: Long = 600L, action: ()->Unit){
             }
         }
     })
+}
+
+fun Context.toast(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+}
+
+fun String.toast(context: Context) {
+    Toast.makeText(context, this, Toast.LENGTH_LONG).show()
 }

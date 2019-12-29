@@ -16,9 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".DetailCardActivity"></activity>
+        <activity android:name=".DetailCardActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
-            android:name=".UnlockActivity"
+            android:name=".feature.unlock.UnlockActivity"
             android:exported="true" />
 
         <activity
@@ -28,25 +34,20 @@
             android:name=".TestTimerActivity"
             android:exported="true" />
         <activity
-            android:name=".feature.add_card.AddCardActivity"
-            android:exported="true">
+            android:name=".feature.addcard.AddCardActivity"
+            android:exported="true"/>
 
         <activity android:name=".TestActivity"/>
-        <activity android:name=".DisabledActivity">
-        <activity
-            android:name=".HelperActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <!--
+        <activity android:name=".feature.disabled.DisabledActivity">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        </activity> -->
         <activity
             android:name=".feature.helper_sort.HelperSortActivity"
             android:exported="true" />
-    </application>
-</manifest>
 
+    </application>
+
+</manifest>
 
 
