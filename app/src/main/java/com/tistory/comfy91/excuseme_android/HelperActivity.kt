@@ -33,8 +33,6 @@ class HelperActivity : AppCompatActivity() {
         rotate_backward = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_backward)
         var isOpen = true
 
-
-
         btnHelperAddCard.setOnClickListener {
             if (isOpen) {
                 btnHelperDownCard.startAnimation(fab_open)
@@ -63,13 +61,56 @@ class HelperActivity : AppCompatActivity() {
                 .show()
         }
 
-
-        uiInit()
+        InitDummydata()
+        InitUI()
     }
 
-    private fun uiInit(){
+    private fun InitUI(){
         btnHelperGoDisabled.setOnClickListener {
             transction.add(R.id.frameHelper, HelperFragment.newInstance(fromServerData))
+            transction.commit()
         }
+    }
+
+    private fun InitDummydata(){
+        fromServerData = arrayListOf(
+            DataHelperCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "first card",
+                true,
+                "큐즈밀리"
+            ),
+            DataHelperCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "second card",
+                true,
+                "큐즈밀리"
+            ),
+            DataHelperCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "third card",
+                true,
+                "큐즈밀리"
+            ),
+            DataHelperCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "fourth card",
+                true,
+                "큐즈밀리"
+            ),
+            DataHelperCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "fifth card",
+                true,
+                "큐즈밀리"
+            ),
+            DataHelperCard(
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "sixth card",
+                true,
+                "큐즈밀리"
+            )
+        )
+        //endregion
     }
 }

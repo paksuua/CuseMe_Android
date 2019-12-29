@@ -37,13 +37,15 @@
             android:name=".feature.addcard.AddCardActivity"
             android:exported="true"/>
 
-        <activity android:name=".TestActivity"/>
-
         <activity android:name=".feature.disabled.DisabledActivity">
 
         </activity>
         <activity
             android:name=".feature.helper_sort.HelperSortActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".HelperActivity"
             android:exported="true" />
 
     </application>

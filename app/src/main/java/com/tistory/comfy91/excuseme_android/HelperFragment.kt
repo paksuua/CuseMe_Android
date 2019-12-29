@@ -6,8 +6,6 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
@@ -33,52 +31,51 @@ class HelperFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initUI()
+        InitUI()
     }
 
-    private fun initUI() {
+    private fun InitUI() {
 //        val rvSelectSort = view.findViewById<RecyclerView>(R.id.rvSelectSort)
         //region dummyData
         dummyData = arrayListOf(
             DataHelperCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "first card",
-                false,
+                true,
                 "큐즈밀리"
             ),
             DataHelperCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "second card",
-                false,
+                true,
                 "큐즈밀리"
             ),
             DataHelperCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "third card",
-                false,
+                true,
                 "큐즈밀리"
             ),
             DataHelperCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "fourth card",
-                false,
+                true,
                 "큐즈밀리"
             ),
             DataHelperCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "fifth card",
-                false,
+                true,
                 "큐즈밀리"
             ),
             DataHelperCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                 "sixth card",
-                false,
+                true,
                 "큐즈밀리"
             )
         )
         //endregion
-
 
         activity?.let{
             helperAdapter = RvHelperAdapter(it.baseContext, changeTv)
@@ -87,8 +84,6 @@ class HelperFragment : Fragment() {
         }
         helperAdapter.data = dummyData
         helperAdapter.notifyDataSetChanged()
-
-
     }
 
     companion object{
