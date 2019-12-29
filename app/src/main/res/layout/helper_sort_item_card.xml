@@ -6,28 +6,28 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imgCard"
+        android:id="@+id/imgHelperCard"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckedTextView
-        android:id="@+id/ctvCheck"
+        android:id="@+id/ctvHelperCheck"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/checked_text_check"
         android:text="default check"
-        app:layout_constraintStart_toStartOf="@id/imgCard"
-        app:layout_constraintTop_toTopOf="@id/imgCard" />
+        app:layout_constraintStart_toStartOf="@id/imgHelperCard"
+        app:layout_constraintTop_toTopOf="@id/imgHelperCard" />
 
     <TextView
-        android:id="@+id/tvCard"
+        android:id="@+id/tvHelperCard"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="Default Text"
-        app:layout_constraintStart_toStartOf="@id/imgCard"
-        app:layout_constraintTop_toBottomOf="@id/imgCard" />
+        app:layout_constraintStart_toStartOf="@id/imgHelperCard"
+        app:layout_constraintTop_toBottomOf="@id/imgHelperCard" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
