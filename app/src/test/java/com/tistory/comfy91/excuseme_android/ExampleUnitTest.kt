@@ -14,6 +14,9 @@ class ExampleUnitTest {
         val isMale: Boolean
     )
 
+
+
+
     @Test
     fun addition_isCorrect() {
         val list = listOf(
@@ -52,5 +55,12 @@ class ExampleUnitTest {
         println(
             list.take(4)
         )
+
+
+
     }
 }
+
+
+
+

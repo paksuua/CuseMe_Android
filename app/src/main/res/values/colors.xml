@@ -3,4 +3,9 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="white">#f4f4f4</color>
+    <color name="mainpink">#fb6d6a</color>
+    <color name="seafoam_blue">#81d6d4</color>
+    <color name="greyish_brown">#4a4a4a</color>
 </resources>

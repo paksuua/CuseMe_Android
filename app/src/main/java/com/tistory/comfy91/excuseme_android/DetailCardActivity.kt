@@ -18,8 +18,5 @@ class DetailCardActivity : AppCompatActivity() {
         btnDetailDelete.setOnSingleClickListener{
             //todo
         }
-
-
-
     }
 }

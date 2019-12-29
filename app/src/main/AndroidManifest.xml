@@ -21,6 +21,7 @@
             android:name=".UnlockActivity"
             android:exported="true" />
 
+
         <activity
             android:name=".feature.download_card.DownloadCardActivity"
             android:exported="true" />
