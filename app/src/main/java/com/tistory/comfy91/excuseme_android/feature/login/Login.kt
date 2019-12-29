@@ -1,7 +1,6 @@
-package com.tistory.comfy91.excuseme_android
+package com.tistory.comfy91.excuseme_android.feature.login
 
 import android.content.Context
-import android.text.TextUtils.isEmpty
 import java.util.*
 
 object Login {
@@ -45,7 +44,10 @@ object Login {
             when (it) {
                 "" -> {
                     getUUID().let { uuid ->
-                        saveUser(context, uuid)
+                        saveUser(
+                            context,
+                            uuid
+                        )
                         return uuid
                     }
                 }

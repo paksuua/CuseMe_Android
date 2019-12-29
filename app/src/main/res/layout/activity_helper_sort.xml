@@ -7,22 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".feature.helper_sort.HelperSortActivity">
 
-    <Button
+    <TextView
         android:id="@+id/btnHelperSortSelectAll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Default All"
+        android:layout_width="46dp"
+        android:layout_height="22dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/btn_edit_allcheck_selected"
+        android:layout_marginTop="56dp"
+        android:layout_marginStart="20dp"
         />
 
-    <Button
+    <TextView
         android:id="@+id/btnHelperSortBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Default Ex"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/btn_edit_cancel"
         app:layout_constraintStart_toStartOf="@id/btnHelperSortSelectAll"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnHelperSortSelectAll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         />
@@ -30,20 +32,30 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHelperSortCard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/btnHelperSortSelectAll"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnHelperSortSelectAll"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
     <Button
         android:id="@+id/btnHelperSortDeleteCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="선택 카드 삭제"
+        android:layout_width="288dp"
+        android:layout_height="56dp"
+        android:text="선택 카드 숨기기"
+        android:textSize="17sp"
+        android:lineSpacingExtra="6sp"
+        android:fontFamily="@font/notosans-medium"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="invisible"/>
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/bg_btn_helpersortdeletecard" />
 
 
 

@@ -8,4 +8,11 @@
     <color name="mainpink">#fb6d6a</color>
     <color name="seafoam_blue">#81d6d4</color>
     <color name="greyish_brown">#4a4a4a</color>
+    <color name="black_15">#26000000</color>
+    <color name="pinkish_grey_26">#42bebebe</color>
+    <color name="greyish_brown_two">#403f3f</color>
+    <color name="pinkish_grey">#bebebe</color>
+    <color name="pinkish_grey_50">#80bebebe</color>
+    <color name="white_two">#ededed</color>
+    <color name="greyish_brown_three">#4b4b4b</color>
 </resources>

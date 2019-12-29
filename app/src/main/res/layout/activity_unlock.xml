@@ -49,7 +49,7 @@
     <View
         android:layout_height="1.5dp"
         android:layout_width="0dp"
-        android:background="@drawable/bg_input_underbar"
+        android:background="@drawable/bg_input_underbar_not"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edtUnlockpw"
         android:layout_marginTop="10dp"
@@ -70,6 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="46dp"
         android:background="@drawable/bg_btn"
-        android:layout_marginEnd="46dp"/>
+        android:layout_marginEnd="46dp"
+        android:textColor="@color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

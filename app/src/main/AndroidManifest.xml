@@ -15,13 +15,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".DetailCardActivity"></activity>
+        <activity android:name=".feature.setting.SettingActivity"></activity>
+        <activity android:name=".feature.cg_password.ChangePasswordActivity" />
+        <activity android:name=".feature.cg_phonenum.ChangePhoneNumActivity" />
+        <activity android:name=".DetailCardActivity" />
         <activity
             android:name=".UnlockActivity"
             android:exported="true" />
-
-
         <activity
             android:name=".feature.download_card.DownloadCardActivity"
             android:exported="true" />
@@ -30,10 +30,7 @@
             android:exported="true" />
         <activity
             android:name=".feature.addcard.AddCardActivity"
-            android:exported="true">
-        </activity>
-
-
+            android:exported="true" />
         <activity android:name=".feature.disabled.DisabledActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,9 +41,6 @@
         <activity
             android:name=".feature.helper_sort.HelperSortActivity"
             android:exported="true" />
-
     </application>
 
 </manifest>
-
-

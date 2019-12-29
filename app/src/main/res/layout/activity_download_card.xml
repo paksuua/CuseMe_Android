@@ -9,21 +9,27 @@
 
     <Button
         android:id="@+id/btnDownBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BACK"
+        android:layout_width="13dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="54dp"
+        android:background="@drawable/btn_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/tvDownTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="@string/tv_down_title"
+        android:layout_marginTop="207dp"
+        android:text="@string/tv_unlock_title"
+        android:fontFamily="@font/notosans-black"
+        android:textSize="18sp"
+        android:lineSpacingExtra="6sp"
+        android:textColor="@color/greyish_brown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
         android:id="@+id/edtDownkInputCardNum"
@@ -41,14 +47,7 @@
         app:layout_constraintStart_toStartOf="@id/edtDownkInputCardNum"
         app:layout_constraintTop_toBottomOf="@id/edtDownkInputCardNum" />
 
-    <Button
-        android:id="@+id/btnUnlockGoModCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_down_go_addcard"
-        app:layout_constraintEnd_toEndOf="@id/btnDownNewCard"
-        app:layout_constraintStart_toStartOf="@id/btnDownNewCard"
-        app:layout_constraintTop_toBottomOf="@id/btnDownNewCard" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
