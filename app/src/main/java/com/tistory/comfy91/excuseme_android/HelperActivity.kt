@@ -1,5 +1,4 @@
 package com.tistory.comfy91.excuseme_android
-
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +8,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.tistory.comfy91.excuseme_android.R
 
-
-class TestActivity : AppCompatActivity() {
+class HelperActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
