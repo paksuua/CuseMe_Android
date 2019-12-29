@@ -79,7 +79,7 @@ class CardAdapter(
     }
 
     inner class CardViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.disabled_item_card, parent, false)
     ) {
         private val imgCard: ImageView = itemView.findViewById(R.id.imgCard)
         private val tvCardTitle: TextView = itemView.findViewById(R.id.tvCardTitle)
