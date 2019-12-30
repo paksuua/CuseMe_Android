@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HelperFragment">
+    tools:context=".feature.helper.HelperFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cstHelperTop"
@@ -25,7 +25,7 @@
             android:textSize="20dp"
             android:text="완료"/>
         <Button
-            android:id="@+id/btnHelperGoStart"
+            android:id="@+id/btnHelperGoSort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,5 +52,85 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cstHelperTop" />
+        app:layout_constraintTop_toBottomOf="@+id/cstHelperTop"
+        app:layout_constraintBottom_toTopOf="@+id/cstHelperSecond"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/imgHelperCard"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cstHelperTop"
+        app:layout_constraintBottom_toTopOf="@+id/cstHelperSecond">
+       <!-- <ImageView
+            android:layout_width="228dp"
+            android:layout_height="236dp"
+            />
+        <TextView
+            android:id="@+id/"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#b2b2b2"
+
+            android:lineSpacingExtra="6sp"
+            android:gravity="center_horizontal"
+            android:fontFamily="@font/notosans_light"
+            android:text="카드가 보여지게 하려면\n카드 관리 탭으로 이동하세요"            />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cstHelperSecond"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@color/mainpink"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/btnHelperDeleteCard"
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_star_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnHelperInvisCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btnHelperInvisCard"
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_star_half_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnHelperModCard"
+            app:layout_constraintStart_toEndOf="@id/btnHelperDeleteCard"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btnHelperModCard"
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_star_border_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnHelperCancleCard"
+            app:layout_constraintStart_toEndOf="@id/btnHelperInvisCard"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btnHelperCancleCard"
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_star_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnHelperModCard"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

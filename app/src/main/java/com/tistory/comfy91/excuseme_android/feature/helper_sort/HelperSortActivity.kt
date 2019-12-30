@@ -1,7 +1,10 @@
 package com.tistory.comfy91.excuseme_android.feature.helper_sort
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -41,7 +44,8 @@ class HelperSortActivity : AppCompatActivity() {
         rvHelperSortCardAdapter.data = dummyData
         rvHelperSortCardAdapter.notifyDataSetChanged()
 
-        // ItemTouchHelper 설정 - 사용자의 터치에 따라 호출되는 콜백메소드를 담고 있음
+        // ItemTouchHelper 설정 - 사용자의
+        // 터치에 따라 호출되는 콜백메소드를 담고 있음
         val callback = DragManageAdapter(
             rvHelperSortCardAdapter,
             this,
@@ -64,12 +68,10 @@ class HelperSortActivity : AppCompatActivity() {
         }
 
         btnHelperSortBack.setOnClickListener {
-            if(rvHelperSortCardAdapter.isChanged){
-                //todo
-            }
+            /*if(rvHelperSortCardAdapter.isChanged){
+                alertDialog(it)
+            }*/
         }
-
-
     }
 
     private fun makeDummyData(){
@@ -128,7 +130,6 @@ class HelperSortActivity : AppCompatActivity() {
                 it.remove()
             }
         }
-
         rvHelperSortCardAdapter.notifyDataSetChanged()
     }
 } // end class

@@ -70,6 +70,7 @@ SelectSortFragment : Fragment() {
 
     private fun initRecyclerView() {
         if (activity?.baseContext != null) {
+
             selectSortAdapter = RvHelperSortAdapter(
                 activity!!.baseContext,
                 {},

@@ -45,7 +45,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".HelperActivity"
+            android:name=".feature.helper.HelperActivity"
             android:exported="true" />
 
     </application>
