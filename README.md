@@ -1,5 +1,6 @@
-# CuseMe_Android
-큐즈미 프로젝트
+![71553942-423e6f80-2a5b-11ea-972f-364c5b896b60](https://user-images.githubusercontent.com/57262833/71586878-f96fdf00-2b5e-11ea-95f7-0add8389e15b.png)
+
+# CuseMe_Android :loudspeaker:
 
 ## 1. 프로젝트 사용 라이브러리
 Retrofit
