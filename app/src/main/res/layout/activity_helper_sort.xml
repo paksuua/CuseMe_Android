@@ -47,7 +47,7 @@
         android:text="선택 카드 숨기기"
         android:textSize="17sp"
         android:lineSpacingExtra="6sp"
-        android:fontFamily="@font/notosans-medium"
+        android:fontFamily="@font/notosans_medium"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

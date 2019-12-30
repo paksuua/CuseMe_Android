@@ -25,7 +25,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/notosans-regular"
+                android:fontFamily="@font/notosans_regular"
                 android:lineSpacingExtra="6sp"
                 android:text="완료"
                 android:textColor="#ffffff"
@@ -51,15 +51,17 @@
         android:id="@+id/svSelectSortSearch"
         android:layout_width="match_parent"
         android:layout_height="37dp"
+        android:layout_marginHorizontal="16dp"
         android:background="#ffffff"
         android:elevation="6dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintStart_toStartOf="@id/btnSelectSortConfirm"
-        app:layout_constraintTop_toBottomOf="@id/btnSelectSortConfirm"
-        android:layout_marginHorizontal="16dp">
+        app:layout_constraintTop_toBottomOf="@id/btnSelectSortConfirm">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <SearchView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -70,41 +72,92 @@
     </androidx.cardview.widget.CardView>
 
     <!-- region 보이는순-->
-        <View
-            android:id="@+id/vSelectSortSeeSort"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:background="@drawable/dot_selected"/>
-    <!-- endregion-->
+    <View
+        android:id="@+id/vSelectSortSeeSort"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/dot_selected"
+        app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortSeeSort"
+        app:layout_constraintStart_toStartOf="@id/ctvSelectSortSeeSort"
+        app:layout_constraintTop_toBottomOf="@id/svSelectSortSearch" />
 
     <CheckedTextView
         android:id="@+id/ctvSelectSortSeeSort"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/checked_text_seesort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:checked="true"
+        android:fontFamily="@font/notosans_bold"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/tv_select_cort_see_sort"
+        android:textColor="@color/mainpink"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/ctvSelectSortCountSort"
         app:layout_constraintStart_toStartOf="@id/svSelectSortSearch"
-        app:layout_constraintTop_toBottomOf="@id/svSelectSortSearch" />
+        app:layout_constraintTop_toBottomOf="@id/vSelectSortSeeSort" />
+    <!-- endregion-->
+
+
+    <!-- region 빈도순 -->
+    <View
+        android:id="@+id/vSelectSortCountSort"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:background="@drawable/dot_selected"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortCountSort"
+        app:layout_constraintStart_toStartOf="@id/ctvSelectSortCountSort"
+        app:layout_constraintTop_toTopOf="@id/vSelectSortSeeSort" />
 
     <CheckedTextView
         android:id="@+id/ctvSelectSortCountSort"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/checked_text_seesort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:checked="false"
+        android:fontFamily="@font/notosans_regular"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/tv_select_sort_count_sort"
+        android:textColor="@color/greyish_two"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/ctvSelectSortNameSort"
         app:layout_constraintStart_toEndOf="@id/ctvSelectSortSeeSort"
-        app:layout_constraintTop_toBottomOf="@id/svSelectSortSearch" />
+        app:layout_constraintTop_toBottomOf="@id/vSelectSortCountSort" />
+
+    <!-- endregion -->
+
+    <!-- region 이름 순 -->
+    <View
+        android:id="@+id/vSelectSortNameSort"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:background="@drawable/dot_selected"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortNameSort"
+        app:layout_constraintStart_toStartOf="@id/ctvSelectSortNameSort"
+        app:layout_constraintTop_toTopOf="@id/vSelectSortCountSort"/>
 
     <CheckedTextView
         android:id="@+id/ctvSelectSortNameSort"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/checked_text_seesort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/tv_select_sort_name_sort"
+        android:textColor="@color/greyish_two"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/svSelectSortSearch"
         app:layout_constraintStart_toEndOf="@id/ctvSelectSortCountSort"
-        app:layout_constraintTop_toBottomOf="@id/svSelectSortSearch" />
+        app:layout_constraintTop_toBottomOf="@id/vSelectSortNameSort"
+        android:layout_marginTop="3dp"/>
 
+    <!-- endregion -->
     <TextView
         android:id="@+id/tvSelectSortAlert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_regular"
         android:text="등록된 카드가 없습니다."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

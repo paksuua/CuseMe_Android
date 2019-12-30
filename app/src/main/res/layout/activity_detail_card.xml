@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:fontFamily="@font/notosans-regular"
+        android:fontFamily="@font/notosans_regular"
         android:maxLines="1"
         android:text="Default Title"
         app:layout_constraintStart_toStartOf="@+id/imgDetailCardImg"
@@ -102,7 +102,7 @@
         android:text="Default Desc"
         android:textColor="@color/greyish_brown_three"
         android:textSize="16sp"
-        android:fontFamily="@font/notosans-light"
+        android:fontFamily="@font/notosans_light"
         app:layout_constraintBottom_toTopOf="@id/lyDetailRecord"
         app:layout_constraintStart_toStartOf="@+id/tvDetailCardTitle"
         app:layout_constraintTop_toBottomOf="@id/tvDetailCardTitle"
@@ -145,7 +145,7 @@
                 android:text="보호자 알림"
                 android:textColor="@color/mainpink"
                 android:textSize="17sp"
-                android:fontFamily="@font/notosans-light"
+                android:fontFamily="@font/notosans_light"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

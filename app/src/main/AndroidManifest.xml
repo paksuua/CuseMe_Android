@@ -15,12 +15,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.setting.SettingActivity"></activity>
+        <activity android:name=".feature.splash.SplashActivity"></activity>
+        <activity
+            android:name=".test.LottieActivity"
+            android:exported="true" />
+        <activity android:name=".feature.setting.SettingActivity" />
         <activity android:name=".feature.cg_password.ChangePasswordActivity" />
         <activity android:name=".feature.cg_phonenum.ChangePhoneNumActivity" />
         <activity android:name=".DetailCardActivity" />
         <activity
-            android:name=".UnlockActivity"
+            android:name=".feature.unlock.UnlockActivity"
             android:exported="true" />
         <activity
             android:name=".feature.download_card.DownloadCardActivity"

@@ -57,7 +57,7 @@
                 card_view:layout_constraintStart_toStartOf="@id/cgPwParent"
                 card_view:layout_constraintTop_toTopOf="@id/cgPwParent"
                 card_view:layout_constraintBottom_toBottomOf="@id/cgPwParent"
-                android:fontFamily="@font/notosans-regular"
+                android:fontFamily="@font/notosans_regular"
                 android:layout_marginStart="57dp"
                 android:text="@string/btn_setting_change_pw"
                 />
@@ -108,7 +108,7 @@
                 card_view:layout_constraintStart_toStartOf="@id/cgPhoneParent"
                 card_view:layout_constraintTop_toTopOf="@id/cgPhoneParent"
                 card_view:layout_constraintBottom_toBottomOf="@id/cgPhoneParent"
-                android:fontFamily="@font/notosans-regular"
+                android:fontFamily="@font/notosans_regular"
                 android:layout_marginStart="57dp"
                 android:text="@string/btn_setting_change_phonenum"
                 />

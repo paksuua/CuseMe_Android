@@ -15,4 +15,8 @@
     <color name="pinkish_grey_50">#80bebebe</color>
     <color name="white_two">#ededed</color>
     <color name="greyish_brown_three">#4b4b4b</color>
+    <color name="greyish_two">#b4b4b4</color>
+    <color name="white_real">#ffffff</color>
+    <color name="pinkish_grey_two">#c3c3c3</color>
+    <color name="black">#343434</color>
 </resources>

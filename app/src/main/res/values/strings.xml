@@ -2,7 +2,7 @@
     <string name="app_name">ExcuseMe_Android</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="record_notice">다른 사람에게 들려질 목소리입니다.</string>
+    <string name="record_notice">의사 카드 음성 녹음</string>
     <string name="tv_down_title">카드 다운 받기</string>
     <string name="btn_down_newcard">다운로드</string>
     <string name="btn_down_go_addcard">직접 만들기</string>
@@ -44,5 +44,17 @@
     <string name="btn_setting_change_phonenum">보호자 연락처 변경</string>
 
     <!-- endregion -->
+
+    <!-- region SelectSort Fragment -->
+    <string name="tv_select_cort_see_sort">보이는 순</string>
+    <string name="tv_select_sort_count_sort">빈도 순</string>
+    <string name="tv_select_sort_name_sort">이름 순</string>
+
+    <!-- endregion -->
+
+    <!-- region AddCard Activity -->
+    <string name="tv_addcard_notice">앨범에서 사진 가져오기</string>
+    <!-- endregion -->
+
 
 </resources>

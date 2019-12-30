@@ -40,7 +40,7 @@
             android:textAlignment="center"
             android:textColor="@color/greyish_brown"
             android:textSize="16sp"
-            android:fontFamily="@font/notosans-light"
+            android:fontFamily="@font/notosans_light"
             android:lineSpacingExtra="6sp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

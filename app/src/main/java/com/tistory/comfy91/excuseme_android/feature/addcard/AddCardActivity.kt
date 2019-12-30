@@ -78,10 +78,7 @@ class AddCardActivity : AppCompatActivity() {
         // 실행(count) 버튼 리스너 설정
         tvAddcardRecordPlay.setOnClickListener{ play() }
 
-        btnAddcardCancelRecord.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            btnAddcardRecord.isVisible = true
-        }
+
 
         btnAddcardSaveRecord.isEnabled = false
     }
