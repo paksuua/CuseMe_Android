@@ -2,7 +2,7 @@
 큐즈미 프로젝트
 
 ## 1. 프로젝트 사용 라이브러리
-Retrofit
+>Retrofit
     
     ```       
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
