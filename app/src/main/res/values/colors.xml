@@ -1,1 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?><resources>    <color name="colorPrimary">#008577</color>    <color name="colorPrimaryDark">#00574B</color>    <color name="colorAccent">#D81B60</color></resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="white">#f4f4f4</color>
+    <color name="mainpink">#fb6d6a</color>
+    <color name="seafoam_blue">#81d6d4</color>
+    <color name="greyish_brown">#4a4a4a</color>
+    <color name="black_15">#26000000</color>
+    <color name="pinkish_grey_26">#42bebebe</color>
+    <color name="greyish_brown_two">#403f3f</color>
+    <color name="pinkish_grey">#bebebe</color>
+    <color name="pinkish_grey_50">#80bebebe</color>
+    <color name="white_two">#ededed</color>
+    <color name="greyish_brown_three">#4b4b4b</color>
+    <color name="greyish_two">#b4b4b4</color>
+    <color name="white_real">#ffffff</color>
+    <color name="pinkish_grey_two">#c3c3c3</color>
+    <color name="black">#343434</color>
+</resources>

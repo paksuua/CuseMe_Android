@@ -1,1 +1,129 @@
-<?xml version="1.0" encoding="utf-8"?><androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"    xmlns:tools="http://schemas.android.com/tools"    android:layout_width="match_parent"    android:layout_height="match_parent"    tools:context=".feature.download_card.DownloadCardActivity">    <androidx.core.widget.NestedScrollView        android:layout_width="match_parent"        android:layout_height="match_parent"        android:fillViewport="true">        <androidx.constraintlayout.widget.ConstraintLayout            android:layout_width="match_parent"            android:layout_height="wrap_content"            tools:context=".feature.download_card.DownloadCardActivity">            <Button                android:id="@+id/btnUnlockBack"                android:layout_width="wrap_content"                android:layout_height="wrap_content"                android:text="BACK"                app:layout_constraintStart_toStartOf="parent"                app:layout_constraintTop_toTopOf="parent" />            <LinearLayout                android:layout_width="match_parent"                android:layout_height="wrap_content"                android:orientation="vertical"                app:layout_constraintBottom_toBottomOf="parent"                app:layout_constraintEnd_toEndOf="parent"                app:layout_constraintStart_toStartOf="parent"                app:layout_constraintTop_toBottomOf="@+id/btnUnlockBack">                <TextView                    android:id="@+id/tvUnlockTitle"                    android:layout_width="wrap_content"                    android:layout_height="wrap_content"                    android:layout_gravity="center"                    android:text="@string/tv_unlock_title" />                <EditText                    android:id="@+id/edtUnlockpw"                    android:layout_width="match_parent"                    android:layout_height="wrap_content"                    android:layout_gravity="center"                    android:hint="@string/edt_unlock_pw"                    android:maxLines="1" />                <Button                    android:id="@+id/btnUnlockGoHelper"                    android:layout_width="match_parent"                    android:layout_height="wrap_content"                    android:layout_gravity="center"                    android:text="@string/btn_unlock_resetpw"                    app:layout_constraintStart_toStartOf="@id/edtUnlockpw"                    app:layout_constraintTop_toBottomOf="@id/edtUnlockpw" />            </LinearLayout>        </androidx.constraintlayout.widget.ConstraintLayout>    </androidx.core.widget.NestedScrollView></androidx.constraintlayout.widget.ConstraintLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.download_card.DownloadCardActivity">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".feature.download_card.DownloadCardActivity">
+
+
+            <Button
+                android:id="@+id/btnUnlockBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BACK"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/btnUnlockBack"
+        android:layout_width="13dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="54dp"
+        android:background="@drawable/btn_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnUnlockBack">
+
+                <TextView
+                    android:id="@+id/tvUnlockTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/tv_unlock_title" />
+    <TextView
+        android:id="@+id/tvUnlockTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="207dp"
+        android:text="@string/tv_unlock_title"
+        android:fontFamily="@font/notosans_black"
+        android:textSize="18sp"
+        android:lineSpacingExtra="6sp"
+        android:textColor="@color/greyish_brown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edtUnlockpw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="@string/edt_unlock_pw"
+                    android:maxLines="1" />
+    <EditText
+        android:id="@+id/edtUnlockpw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edt_unlock_pw"
+        android:maxLines="1"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="85dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUnlockTitle"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:inputType="textPassword"
+        />
+
+    <View
+        android:layout_height="1.5dp"
+        android:layout_width="0dp"
+        android:background="@drawable/bg_input_underbar_not"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtUnlockpw"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        />
+
+
+                <Button
+                    android:id="@+id/btnUnlockGoHelper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/btn_unlock_resetpw"
+                    app:layout_constraintStart_toStartOf="@id/edtUnlockpw"
+                    app:layout_constraintTop_toBottomOf="@id/edtUnlockpw" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+    <Button
+        android:id="@+id/btnUnlockGoHelper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_unlock_resetpw"
+        android:layout_marginTop="78dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtUnlockpw"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="46dp"
+        android:background="@drawable/bg_btn"
+        android:layout_marginEnd="46dp"
+        android:textColor="@color/white"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
