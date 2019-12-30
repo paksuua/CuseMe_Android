@@ -44,6 +44,20 @@ Glide
 ```
 2. 프로젝트 구조
 
+|                  Activity                              |                 Description   |
+| ----------------------------------- | ------------------------------------------- |
+| DisabledActivity.                                 |  도움 요청과 관련한 이미지, 설명, 음성이 나타남    |
+| UnlockActivity  | 잠금 해제시 보호자 관리 페이지     |
+| HelperActivity, HelperFragment  |  카드 아이템 클릭시   삭제, 숨기기, 수정, 취소 기능의 하단바 생성  |
+| DetailCardActivity  | 일련번호를 통해서 새로운 카드를 다운  |
+| HelperSortFragment  |  카드의 보이는 순, 사용 빈도 순, 이름 순으로 카드 정렬    |
+| ManagementActivity  | 보호자가 발달 장애인이 볼 수 있는 카드를 선택 및 정렬,발달장애인이 볼 수 있는 카드를 삭제, 숨기기, 수정  |
+| DownloadCardActivity  | 카드를 선택 및 정렬, 발달장애인이 볼 수 있는 카드를 삭제, 숨기기, 수정  |
+| DetailCardActivity  | 카드의 세부사항(제목, 내용, 음성, 이미지)를 확인  |
+| AddCardActivity  | 카드의 제목, 내용, 음성, 이미지를 넣고 새로운 카드 생성  |
+| ModCardActivity  | 카드의 제목, 내용, 음성, 이미지를 수정  |
+| Setting Activity   | 보호자의 비밀번호 변경, 전화번호 설정  |
+
 
 3. 핵심 기능 구현
 
