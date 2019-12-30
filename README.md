@@ -30,7 +30,7 @@
     ```
     implementation "androidx.navigation:navigation-fragment-ktx:2.1.0-alpha05"
     implementation "androidx.navigation:navigation-ui-ktx:2.1.0-alpha05"
-    '''
+    ```
     
     RecyclerView
     ```
