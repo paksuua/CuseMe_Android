@@ -1,21 +1,1 @@
-<resources>
-    <string name="app_name">ExcuseMe_Android</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="record_notice">다른 사람에게 들려질 목소리입니다.</string>
-    <string name="tv_down_title">카드 다운 받기</string>
-    <string name="btn_down_newcard">다운로드</string>
-    <string name="btn_down_go_addcard">직접 만들기</string>
-
-    <!-- region Unlock Activity -->
-    <string name="tv_unlock_title">관리자 모드 로그인</string>
-    <string name="edt_unlock_pw">비밀번호를 입력하세요</string>
-    <string name="btn_unlock_resetpw">잠금해제</string>
-    <!-- endregion -->
-
-    <!-- region DetailCard Activity -->
-    <string name="tv_detail_record_title">의사 카드 음성 녹음</string>
-    <string name="ctv_detail_record_tts">자동음성생성</string>
-    <!-- endregion -->
-
-</resources>
+<resources>    <string name="app_name">ExcuseMe_Android</string>    <string name="hello_blank_fragment">Hello blank fragment</string>    <string name="record_notice">다른 사람에게 들려질 목소리입니다.</string>    <string name="tv_down_title">카드 다운 받기</string>    <string name="btn_down_newcard">다운로드</string>    <string name="btn_down_go_addcard">직접 만들기</string>    <!-- region Unlock Activity -->    <string name="tv_unlock_title">관리자 모드 로그인</string>    <string name="edt_unlock_pw">비밀번호를 입력하세요</string>    <string name="btn_unlock_resetpw">잠금해제</string>    <!-- endregion -->    <!-- region DetailCard Activity -->    <string name="tv_detail_record_title">의사 카드 음성 녹음</string>    <string name="ctv_detail_record_tts">자동음성생성</string>    <!-- endregion --></resources>
