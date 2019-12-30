@@ -2,7 +2,7 @@
 큐즈미 프로젝트
 
 1. 프로젝트 사용 라이브러리
-  > Retrofit
+
   
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -16,13 +16,6 @@
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.1.1'
 
 
-    
-
-    Bottom Sheet
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-
-2) 
     // CardView
     //implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
