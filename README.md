@@ -52,7 +52,7 @@ Glide
 | DetailCardActivity  | 카드의 이미지, 숨김여부, 일렬번호, 제목, 설명, 카드 사용시 보호자알림 전송 여부, 음성 듣기  |
 | HelperSortFragment  |  카드의 보이는 순, 사용 빈도 순, 이름 순으로 카드 정렬    |
 | ManagementActivity  | 보호자가 발달 장애인이 볼 수 있는 카드를 선택 및 정렬, 발달장애인이 볼 수 있는 카드를 삭제, 숨기기, 수정  |
-| DownloadCardActivity  | 카드를 선택 및 정렬, 발달장애인이 볼 수 있는 카드를 삭제, 숨기기, 수정  |
+| DownloadCardActivity  | 카드의 일련번호를 통해서 새로운 카드를 다운  |
 | DetailCardActivity  | 카드의 세부사항(제목, 내용, 음성, 이미지)를 확인  |
 | AddCardActivity  | 카드의 제목, 내용, 음성, 이미지를 넣고 새로운 카드 생성  |
 | ModCardActivity  | 카드의 제목, 내용, 음성, 이미지를 수정  |
