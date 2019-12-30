@@ -48,7 +48,7 @@
         app:layout_constraintTop_toTopOf="@id/btnSelectSortConfirm" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/svSelectSortSearch"
+        android:id="@+id/cvSelectSortSearch"
         android:layout_width="match_parent"
         android:layout_height="37dp"
         android:layout_marginHorizontal="16dp"
@@ -63,6 +63,7 @@
             android:layout_height="match_parent">
 
             <SearchView
+                android:id="@+id/svSelectSortSearch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +81,7 @@
         android:background="@drawable/dot_selected"
         app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortSeeSort"
         app:layout_constraintStart_toStartOf="@id/ctvSelectSortSeeSort"
-        app:layout_constraintTop_toBottomOf="@id/svSelectSortSearch" />
+        app:layout_constraintTop_toBottomOf="@id/cvSelectSortSearch" />
 
     <CheckedTextView
         android:id="@+id/ctvSelectSortSeeSort"
@@ -94,7 +95,7 @@
         android:textColor="@color/mainpink"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/ctvSelectSortCountSort"
-        app:layout_constraintStart_toStartOf="@id/svSelectSortSearch"
+        app:layout_constraintStart_toStartOf="@id/cvSelectSortSearch"
         app:layout_constraintTop_toBottomOf="@id/vSelectSortSeeSort" />
     <!-- endregion-->
 
@@ -147,7 +148,7 @@
         android:text="@string/tv_select_sort_name_sort"
         android:textColor="@color/greyish_two"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@id/svSelectSortSearch"
+        app:layout_constraintEnd_toEndOf="@id/cvSelectSortSearch"
         app:layout_constraintStart_toEndOf="@id/ctvSelectSortCountSort"
         app:layout_constraintTop_toBottomOf="@id/vSelectSortNameSort"
         android:layout_marginTop="3dp"/>
