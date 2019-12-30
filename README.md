@@ -3,10 +3,10 @@
 
 1. 프로젝트 사용 라이브러리
 
-  
+  '''
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.google.code.gson:gson:2.8.6'
-  
+  '''
 
 
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
