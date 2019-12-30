@@ -24,6 +24,7 @@ class HelperViewHolder(itemView: View, private val onClicked: (Boolean) -> Unit)
         Glide.with(itemView).load(data.imageUrl).into(imgCard)
         tvCard.text = data.title
         itemView.setOnClickListener {
+            tvCard.text = data.title
             it.isSelected = !it.isSelected
             onClicked(it.isSelected)
         }
