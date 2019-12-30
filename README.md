@@ -99,7 +99,7 @@ val mScaleGestureDetector = ScaleGestureDetector(
         }
     })
     
-    ```
+```
 
 
 2)Long Click / Drag&Drop
@@ -184,7 +184,7 @@ class TTSActivity : AppCompatActivity() {
                 }
             })
             
-            ```
+```
             
             
 5)애니메이션
