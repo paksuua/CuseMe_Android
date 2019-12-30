@@ -43,3 +43,12 @@ Glide
     ```
 2. 프로젝트 구조
 3. 핵심 기능 구현
+1)Zoom In / Zoom Out
+2)Long Click / Drag&Drop
+3)중복 터치 방지
+4)TTS
+5)애니메이션
+6)Sort(보이는 순, 빈도순, 이름순)
+7)Searching
+
+
