@@ -128,7 +128,7 @@ class AddCardActivity : AppCompatActivity() {
     private fun startRecording() {
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             setOutputFile(recordFileName)
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
 
@@ -139,7 +139,6 @@ class AddCardActivity : AppCompatActivity() {
             }
 
             start()
-
             audioTimer =
                 AudioTimer(this@AddCardActivity) {
                     tvAddCardRecordNotice.text = "${audioTimer.count}초"

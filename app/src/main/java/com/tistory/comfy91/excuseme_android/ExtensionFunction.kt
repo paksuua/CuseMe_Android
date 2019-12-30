@@ -49,3 +49,5 @@ fun Context.toast(msg: String) {
 fun String.toast(context: Context) {
     Toast.makeText(context, this, Toast.LENGTH_LONG).show()
 }
+
+
