@@ -49,7 +49,7 @@ Glide
 
 1)Zoom In / Zoom Out
 
-'''
+```
 val mScaleGestureDetector = ScaleGestureDetector(
     this,
     object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
@@ -99,12 +99,12 @@ val mScaleGestureDetector = ScaleGestureDetector(
         }
     })
     
-    '''
+    ```
 
 
 2)Long Click / Drag&Drop
 
-'''
+```
 class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDirs: Int, swipeDirs: Int)
     : ItemTouchHelper.Callback(){
 
@@ -133,12 +133,12 @@ class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDir
     }
 }
 
-'''
+```
 
 
 3)중복 터치 방지
 
-'''
+```
 btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
 
     private var mLastClickTime: Long = 0
@@ -157,12 +157,12 @@ btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
     }
 })
 
-'''
+```
 
 
 4)TTS
 
-'''
+```
 class TTSActivity : AppCompatActivity() {
     private lateinit var tts: TextToSpeech
 
@@ -184,12 +184,12 @@ class TTSActivity : AppCompatActivity() {
                 }
             })
             
-            '''
+            ```
             
             
 5)애니메이션
 
-'''
+```
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <scale
@@ -209,13 +209,12 @@ class TTSActivity : AppCompatActivity() {
         android:interpolator="@android:anim/accelerate_interpolator"/>
 </set>
 
-
-'''
+```
 
 
 6)Sort(보이는 순, 빈도순, 이름순)
 
-'''
+```
 private fun dataSort(sortStandard: Int) {
     when (sortStandard) {
         SORT_BY_VISIBILITY -> dummyData.sortByDescending { it.visibility }
@@ -226,11 +225,11 @@ private fun dataSort(sortStandard: Int) {
     selectSortAdapter.notifyDataSetChanged()
 }
 
-'''
+```
 
 7)Searching
 
-'''
+```
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
@@ -263,7 +262,7 @@ private fun dataSort(sortStandard: Int) {
     }
 }
 
-'''
+```
 
 
 
