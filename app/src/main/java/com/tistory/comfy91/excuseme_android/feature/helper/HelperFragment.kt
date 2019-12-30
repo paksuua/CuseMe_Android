@@ -36,9 +36,13 @@ import java.io.IOException
 class HelperFragment() : Fragment() {
     private lateinit var helperAdapter: RvHelperAdapter
     private lateinit var dummyData: ArrayList<DataHelperCard>
-    private var fragbottom_flag=true
-    private val changeTv: (String) -> Unit = {
-        tvHelper.text = it
+    private var selected_card_num = 0
+    private val changeTv: (Boolean) -> Unit = {
+        if(it) selected_card_num ++
+        else selected_card_num --
+
+        if (selected_card_num > 0) (activity as HelperActivity).BottomBarChange(false)
+        else (activity as HelperActivity).BottomBarChange(true)
     }
     val onBtnAllClicked: () -> Unit = {
         btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
@@ -166,28 +170,18 @@ class HelperFragment() : Fragment() {
         }
         helperAdapter.data = dummyData
         helperAdapter.notifyDataSetChanged()
-
-        /// 여기서 Activity로 bottom_flag값을 넘겨야 하는데 그게 잘 안된단 마리지
-        if(checkAnyCardChecked()){
-            fragbottom_flag=true
-            return
-        }else{
-            fragbottom_flag=false
-            return
-        }
-        (activity as HelperActivity).bottom_flag=fragbottom_flag
     }
 
     private fun checkAnyCardChecked(): Boolean{
-        var result = false
-
+        /*
         for(x in 0 until dummyData.size){
             if(dummyData[x].visibility){
                 result = true
                 break
             }
         }
-        return result
+        */
+        return tvHelper.text != ""
     }
 
 

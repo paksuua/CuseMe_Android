@@ -14,7 +14,7 @@ import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 import com.tistory.comfy91.excuseme_android.newStartActivity
 import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
 
-class HelperViewHolder(itemView: View, private val onClicked: (String) -> Unit): RecyclerView.ViewHolder(itemView){
+class HelperViewHolder(itemView: View, private val onClicked: (Boolean) -> Unit): RecyclerView.ViewHolder(itemView){
     private val imgCard: ImageView = itemView.findViewById(R.id.imgHelperCard)
     private val tvCard: TextView = itemView.findViewById(R.id.tvHelperCard)
 
@@ -24,7 +24,8 @@ class HelperViewHolder(itemView: View, private val onClicked: (String) -> Unit):
         Glide.with(itemView).load(data.imageUrl).into(imgCard)
         tvCard.text = data.title
         itemView.setOnClickListener {
-            onClicked(data.desc)
+            it.isSelected = !it.isSelected
+            onClicked(it.isSelected)
         }
 
        /* when(listenerFlag){

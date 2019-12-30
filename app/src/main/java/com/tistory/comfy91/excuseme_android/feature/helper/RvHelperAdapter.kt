@@ -3,12 +3,13 @@ package com.tistory.comfy91.excuseme_android.feature.helper
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
 
-class RvHelperAdapter(private val context: Context, private val onBtnAllClicked: (String)-> Unit): RecyclerView.Adapter<HelperViewHolder>(){
+class RvHelperAdapter(private val context: Context, private val onBtnAllClicked: (Boolean)-> Unit): RecyclerView.Adapter<HelperViewHolder>(){
     var data = arrayListOf<DataHelperCard>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperViewHolder {

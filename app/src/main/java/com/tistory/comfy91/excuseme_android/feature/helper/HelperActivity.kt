@@ -5,12 +5,14 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.SelectSortFragment
@@ -28,9 +30,6 @@ class HelperActivity : AppCompatActivity() {
     private lateinit var rotate_forward: Animation
     lateinit var rotate_backward: Animation
     private val transction = supportFragmentManager.beginTransaction()
-
-    //메인 바텀바 노출 flag
-    var bottom_flag =true;
 
 
     private val TAG = javaClass.name
@@ -94,9 +93,6 @@ class HelperActivity : AppCompatActivity() {
                 isOpen = false
             }
         }
-
-        // 하단바 전환
-        BottomBarChange()
 
         // 카드 다운로드뷰로 이동
         if(isOpen){
@@ -205,14 +201,14 @@ class HelperActivity : AppCompatActivity() {
         //endregion
     }
 
-    private fun BottomBarChange(){
+    fun BottomBarChange(bottom_flag: Boolean){
         if(bottom_flag){
             cstHelperBottom.isVisible=true
             btnHelperAddCard.isVisible=true
-            cstHelperBottom.setOnClickListener {
-                btnHelperNewCard.isVisible=true
-                btnHelperDownCard.isVisible=true
-            }
+//            cstHelperBottom.setOnClickListener {
+//                btnHelperNewCard.isVisible=true
+//                btnHelperDownCard.isVisible=true
+//            }
         }else{
             cstHelperBottom.isVisible=false
             btnHelperAddCard.isVisible=false
