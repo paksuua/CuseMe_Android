@@ -1,4 +1,4 @@
-package com.tistory.comfy91.excuseme_android
+package com.tistory.comfy91.excuseme_android.feature.helper
 
 
 import android.content.Context
@@ -20,6 +20,7 @@ class RvHelperAdapter(private val context: Context, private val onBtnAllClicked:
             onBtnAllClicked
         )
     }
+
 
     override fun getItemCount(): Int {
         return data.size

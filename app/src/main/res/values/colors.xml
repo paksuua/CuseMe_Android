@@ -19,4 +19,5 @@
     <color name="white_real">#ffffff</color>
     <color name="pinkish_grey_two">#c3c3c3</color>
     <color name="black">#343434</color>
+    <color name="black_10">#1a000000</color>
 </resources>

@@ -52,35 +52,11 @@
 
     <!-- endregion -->
 
-    <!-- region AddCard Activity -->
-    <string name="tv_addcard_notice">앨범에서 사진 가져오기</string>
-    <string name="tv_detail_notice">녹음한 음성을 확인할 수 있습니다.</string>
-    <string name="ctv_detail_alert">보호자 알림</string>
-    <!-- endregion -->
-
-    <!-- region SelectSort Fragment -->
-    <string name="btn_select_sort_confirm">완료</string>
-    <!-- endregion -->
-
-    <!-- region ChanePhoneNum Activity -->
-    <string name="tv_phonenum_title">보호자 연락처 변경</string>
-    <string name="btn_change_phonenum">변경하기</string>
-    <string name="edt_phone_numpw">보호자 연락처</string>
-    <string name="btn_changepw">비밀번호 변경</string>
-
-    <!-- endregion -->
-
-    <!-- region ChanePhoneNum Activity -->
-    <string name="edt_changepw_exist_pw">기존 비밀번호</string>
-    <string name="edt_changepw_newpw">새 비밀번호</string>
-    <string name="edt_changepw_newpw_confirm">새 비밀번호 확인</string>
-    <string name="tv_changepw_notice">*새 비밀번호를 입력해주세요</string>
-    <!-- endregion -->
-
-    <!-- region ChanePhoneNum Activity -->
-    <string name="btn_setting_change_pw">비밀번호 변경</string>
-    <string name="btn_setting_change_phonenum">보호자 연락처 변경</string>
-
     <!-- region Helper Activity -->
     <string name="tv_show_nocard">카드가 보여지게 하려면\n카드 관리 탭으로 이동하세요</string>
+    <!-- endregion -->
+
+    <!-- region Addcard Activity -->
+    <string name="tv_addcard_notice">앨범에서 사진 가져오기</string>
+    <!-- endregion -->
 </resources>
