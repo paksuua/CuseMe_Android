@@ -184,7 +184,7 @@ class HelperFragment() : Fragment() {
         return tvHelper.text != ""
     }
 
-
+//
 
     private fun deleteHelperCard() {
         val it: MutableIterator<DataHelperCard> = dummyData.iterator()
