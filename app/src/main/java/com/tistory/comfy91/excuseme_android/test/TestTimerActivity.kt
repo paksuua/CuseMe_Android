@@ -1,7 +1,9 @@
-package com.tistory.comfy91.excuseme_android
+package com.tistory.comfy91.excuseme_android.test
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.SelectSortFragment
 
 class TestTimerActivity : AppCompatActivity() {
 

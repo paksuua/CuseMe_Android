@@ -6,63 +6,164 @@
     android:layout_height="match_parent"
     tools:context=".SelectSortFragment">
 
-    <Button
+    <androidx.cardview.widget.CardView
         android:id="@+id/btnSelectSortConfirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="완료"
+        android:layout_width="60dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginRight="8dp"
+        android:backgroundTint="@color/mainpink"
+        app:cardCornerRadius="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_regular"
+                android:lineSpacingExtra="6sp"
+                android:text="완료"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
         android:id="@+id/btnSelectSortSetting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="setting\"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginEnd="18dp"
+        android:background="@drawable/btn_managerhome_setting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/btnSelectSortConfirm" />
 
-    <SearchView
-        android:id="@+id/svSelectSortSearch"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvSelectSortSearch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="#ffffff"
+        android:elevation="6dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintStart_toStartOf="@id/btnSelectSortConfirm"
-        app:layout_constraintTop_toBottomOf="@id/btnSelectSortConfirm" />
+        app:layout_constraintTop_toBottomOf="@id/btnSelectSortConfirm">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <SearchView
+                android:id="@+id/svSelectSortSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- region 보이는순-->
+    <View
+        android:id="@+id/vSelectSortSeeSort"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/dot_selected"
+        app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortSeeSort"
+        app:layout_constraintStart_toStartOf="@id/ctvSelectSortSeeSort"
+        app:layout_constraintTop_toBottomOf="@id/cvSelectSortSearch" />
 
     <CheckedTextView
         android:id="@+id/ctvSelectSortSeeSort"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/checked_text_seesort"
-        app:layout_constraintStart_toStartOf="@id/svSelectSortSearch"
-        app:layout_constraintTop_toBottomOf="@id/svSelectSortSearch" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:checked="true"
+        android:fontFamily="@font/notosans_bold"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/tv_select_cort_see_sort"
+        android:textColor="@color/mainpink"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/ctvSelectSortCountSort"
+        app:layout_constraintStart_toStartOf="@id/cvSelectSortSearch"
+        app:layout_constraintTop_toBottomOf="@id/vSelectSortSeeSort" />
+    <!-- endregion-->
+
+
+    <!-- region 빈도순 -->
+    <View
+        android:id="@+id/vSelectSortCountSort"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:background="@drawable/dot_selected"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortCountSort"
+        app:layout_constraintStart_toStartOf="@id/ctvSelectSortCountSort"
+        app:layout_constraintTop_toTopOf="@id/vSelectSortSeeSort" />
 
     <CheckedTextView
         android:id="@+id/ctvSelectSortCountSort"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/checked_text_seesort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:checked="false"
+        android:fontFamily="@font/notosans_regular"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/tv_select_sort_count_sort"
+        android:textColor="@color/greyish_two"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/ctvSelectSortNameSort"
         app:layout_constraintStart_toEndOf="@id/ctvSelectSortSeeSort"
-        app:layout_constraintTop_toBottomOf="@id/svSelectSortSearch" />
+        app:layout_constraintTop_toBottomOf="@id/vSelectSortCountSort" />
+
+    <!-- endregion -->
+
+    <!-- region 이름 순 -->
+    <View
+        android:id="@+id/vSelectSortNameSort"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:background="@drawable/dot_selected"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortNameSort"
+        app:layout_constraintStart_toStartOf="@id/ctvSelectSortNameSort"
+        app:layout_constraintTop_toTopOf="@id/vSelectSortCountSort"/>
 
     <CheckedTextView
         android:id="@+id/ctvSelectSortNameSort"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/checked_text_seesort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/tv_select_sort_name_sort"
+        android:textColor="@color/greyish_two"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/cvSelectSortSearch"
         app:layout_constraintStart_toEndOf="@id/ctvSelectSortCountSort"
-        app:layout_constraintTop_toBottomOf="@id/svSelectSortSearch" />
+        app:layout_constraintTop_toBottomOf="@id/vSelectSortNameSort"
+        android:layout_marginTop="3dp"/>
 
+    <!-- endregion -->
     <TextView
         android:id="@+id/tvSelectSortAlert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_regular"
         android:text="등록된 카드가 없습니다."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ctvSelectSortNameSort"
-        />
+        app:layout_constraintTop_toBottomOf="@id/ctvSelectSortNameSort" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSelectSort"

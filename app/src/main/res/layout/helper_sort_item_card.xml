@@ -25,7 +25,9 @@
             android:layout_marginStart="120dp"
             android:background="@drawable/checked_text_check"
             card_view:layout_constraintStart_toStartOf="@id/imgHelperCard"
-            card_view:layout_constraintTop_toTopOf="@id/imgHelperCard" />
+            card_view:layout_constraintTop_toTopOf="@id/imgHelperCard"
+
+           />
 
         <TextView
             android:id="@+id/tvHelperCard"
@@ -40,5 +42,8 @@
             android:textSize="16sp"
             android:fontFamily="@font/notosans_light"
             android:lineSpacingExtra="6sp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.cardview.widget.CardView>

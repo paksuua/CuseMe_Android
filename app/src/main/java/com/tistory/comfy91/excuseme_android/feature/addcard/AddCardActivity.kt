@@ -78,10 +78,7 @@ class AddCardActivity : AppCompatActivity() {
         // 실행(count) 버튼 리스너 설정
         tvAddcardRecordPlay.setOnClickListener{ play() }
 
-        btnAddcardCancelRecord.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            btnAddcardRecord.isVisible = true
-        }
+
 
         btnAddcardSaveRecord.isEnabled = false
     }
@@ -131,7 +128,7 @@ class AddCardActivity : AppCompatActivity() {
     private fun startRecording() {
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             setOutputFile(recordFileName)
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
 
@@ -142,7 +139,6 @@ class AddCardActivity : AppCompatActivity() {
             }
 
             start()
-
             audioTimer =
                 AudioTimer(this@AddCardActivity) {
                     tvAddCardRecordNotice.text = "${audioTimer.count}초"

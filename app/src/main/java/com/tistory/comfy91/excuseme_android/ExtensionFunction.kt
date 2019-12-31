@@ -6,12 +6,15 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import java.util.*
 
 
 /**
  * UUID 생성 코드
  * var uniqueID = UUID.randomUUID().toString()
  */
+
+
 
 fun String.logDebug(any: Any) {
     Log.d(any::class.java.simpleName, this)
@@ -46,3 +49,5 @@ fun Context.toast(msg: String) {
 fun String.toast(context: Context) {
     Toast.makeText(context, this, Toast.LENGTH_LONG).show()
 }
+
+

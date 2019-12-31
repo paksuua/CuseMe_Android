@@ -21,10 +21,13 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
     private val ctvCheck: CheckedTextView = itemView.findViewById(R.id.ctvHelperCheck)
     lateinit var dataVisibilityChange: () -> Unit
 
+
+
     fun bind(data: DataHelperSortCard, position: Int, listenerFlag: Int) {
         Glide.with(itemView).load(data.imageUrl).into(imgCard)
         tvCard.text = data.title
         ctvCheck.isChecked = data.visibility
+
 
         when(listenerFlag){
             HELPER_SORT_ACTIVITY -> itemView.setOnSingleClickListener{clicked()}
@@ -37,6 +40,7 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
                 }
             }
         }
+
     }
 
     private fun clicked(){
