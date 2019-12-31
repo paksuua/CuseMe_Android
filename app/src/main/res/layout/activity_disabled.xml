@@ -1,1 +1,69 @@
-<?xml version="1.0" encoding="utf-8"?><androidx.constraintlayout.widget.ConstraintLayout    xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"    xmlns:tools="http://schemas.android.com/tools"    android:layout_width="match_parent"    android:layout_height="match_parent"    tools:context=".feature.disabled.DisabledActivity">    <Button        android:id="@+id/btnDisabledUnlock"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        android:layout_marginStart="16dp"        android:layout_marginTop="38dp"        android:layout_marginEnd="284dp"        android:text="Button"        app:layout_constraintEnd_toEndOf="parent"        app:layout_constraintStart_toStartOf="parent"        app:layout_constraintTop_toTopOf="parent" />    <SearchView        android:id="@+id/svSortSearch"        android:layout_width="match_parent"        android:layout_height="wrap_content"        android:layout_marginTop="10dp"        app:layout_constraintStart_toStartOf="@id/btnDisabledUnlock"        app:layout_constraintTop_toBottomOf="@id/btnDisabledUnlock" />    <TextView        android:id="@+id/tvDisabledShowCardText"        android:layout_width="0dp"        android:layout_height="0dp"        android:layout_marginTop="10dp"        android:gravity="center"        android:text="TextView"        android:textAlignment="center"        android:textSize="25sp"        android:textStyle="bold"        app:layout_constraintDimensionRatio="5:1"        app:layout_constraintEnd_toEndOf="parent"        app:layout_constraintStart_toStartOf="parent"        app:layout_constraintTop_toBottomOf="@+id/svSortSearch" />    <TextView        android:id="@+id/tv2"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        android:layout_marginTop="30dp"        android:text="TextView"        app:layout_constraintEnd_toEndOf="parent"        app:layout_constraintStart_toEndOf="@+id/btnDisabledUnlock"        app:layout_constraintTop_toTopOf="parent" />    <androidx.recyclerview.widget.RecyclerView        android:id="@+id/rvDisabledCard"        android:layout_width="match_parent"        android:layout_height="0dp"        android:layout_marginTop="10dp"        app:layout_constraintBottom_toBottomOf="parent"        app:layout_constraintEnd_toEndOf="parent"        app:layout_constraintStart_toStartOf="parent"        app:layout_constraintTop_toBottomOf="@+id/tvDisabledShowCardText" /></androidx.constraintlayout.widget.ConstraintLayout>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.disabled.DisabledActivity">
+
+    <Button
+        android:id="@+id/btnDisabledUnlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="284dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/svSortSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/btnDisabledUnlock"
+        app:layout_constraintTop_toBottomOf="@id/btnDisabledUnlock" />
+
+    <TextView
+        android:id="@+id/tvDisabledShowCardText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintDimensionRatio="5:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/svSortSearch" />
+
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnDisabledUnlock"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDisabledCard"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDisabledShowCardText" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
