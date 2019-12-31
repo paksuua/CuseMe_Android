@@ -1,20 +1,17 @@
-package com.tistory.comfy91.excuseme_android
+package com.tistory.comfy91.excuseme_android.feature.detailcard
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
-import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.tistory.comfy91.excuseme_android.data.DataHelperCard
+import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
+import com.tistory.comfy91.excuseme_android.logDebug
+import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
 import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_detail_card.*
-import kotlinx.android.synthetic.main.helper_sort_item_card.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*

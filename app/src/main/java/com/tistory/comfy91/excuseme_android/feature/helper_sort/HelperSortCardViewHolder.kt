@@ -5,13 +5,11 @@ import android.view.View
 import android.widget.CheckedTextView
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.tistory.comfy91.excuseme_android.DetailCardActivity
+import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
-import com.tistory.comfy91.excuseme_android.newStartActivity
 import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
 
 class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit) :

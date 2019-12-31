@@ -4,22 +4,15 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.tistory.comfy91.excuseme_android.R
-import com.tistory.comfy91.excuseme_android.SelectSortFragment
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
-import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
-import com.tistory.comfy91.excuseme_android.feature.addcard.AudioTimer
 import com.tistory.comfy91.excuseme_android.feature.download_card.DownloadCardActivity
 import kotlinx.android.synthetic.main.activity_helper.*
 
@@ -131,7 +124,9 @@ class HelperActivity : AppCompatActivity() {
         // 카드관리 프래그먼트로 전환
         btnHelperAllCard.setOnClickListener {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.frameHelper, SelectSortFragment())
+                .replace(R.id.frameHelper,
+                    SelectSortFragment()
+                )
                 .commit()
         }
 

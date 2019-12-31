@@ -1,18 +1,13 @@
 package com.tistory.comfy91.excuseme_android.feature.helper
 
-import android.content.Intent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 //import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.tistory.comfy91.excuseme_android.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
-import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
-import com.tistory.comfy91.excuseme_android.newStartActivity
-import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
 
 class HelperViewHolder(itemView: View, private val onClicked: (Boolean) -> Unit): RecyclerView.ViewHolder(itemView){
     private val imgCard: ImageView = itemView.findViewById(R.id.imgHelperCard)
