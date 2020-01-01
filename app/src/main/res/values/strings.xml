@@ -9,7 +9,7 @@
 
     <!-- region Unlock Activity -->
     <string name="tv_unlock_title">관리자 모드 로그인</string>
-    <string name="edt_unlock_pw">비밀번호를 입력하세요</string>
+    <string name="edt_unlock_pw">비밀번호를 입력하세요.</string>
     <string name="btn_unlock_resetpw">잠금해제</string>
     <!-- endregion -->
 
@@ -36,7 +36,7 @@
     <string name="edt_changepw_exist_pw">기존 비밀번호</string>
     <string name="edt_changepw_newpw">새 비밀번호</string>
     <string name="edt_changepw_newpw_confirm">새 비밀번호 확인</string>
-    <string name="tv_changepw_notice">*새 비밀번호를 입력해주세요</string>
+    <string name="tv_changepw_notice">*새 비밀번호를 입력해주세요.</string>
     <!-- endregion -->
 
     <!-- region ChanePhoneNum Activity -->
@@ -49,14 +49,30 @@
     <string name="tv_select_cort_see_sort">보이는 순</string>
     <string name="tv_select_sort_count_sort">빈도 순</string>
     <string name="tv_select_sort_name_sort">이름 순</string>
+    <string name="btn_select_sort_name_confirm">완료</string>
 
+\
     <!-- endregion -->
 
     <!-- region Helper Activity -->
-    <string name="tv_show_nocard">카드가 보여지게 하려면\n카드 관리 탭으로 이동하세요</string>
+    <string name="tv_show_nocard">카드가 보여지게 하려면\n카드 관리 탭으로 이동하세요.</string>
     <!-- endregion -->
 
     <!-- region Addcard Activity -->
     <string name="tv_addcard_notice">앨범에서 사진 가져오기</string>
     <!-- endregion -->
+
+
+    <!-- region DownloadCard Activity -->
+    <string name="edt_down_input_cardnum">카드 일련번호를 입력하세요.</string>
+    <string name="btn_down_input_make_card">직접 만들기</string>
+    <string name="btn_down_title">카드 내려받기</string>
+    <string name="btn_down_new_card">내려받기</string>
+
+
+
+    <!-- endregion -->
+
+
+
 </resources>

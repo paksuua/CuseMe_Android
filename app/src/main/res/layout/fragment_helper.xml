@@ -16,22 +16,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="10dp">
+
         <Button
-            android:id="@+id/btnHelperUnlock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/btnSelectSortConfirm"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="38dp"
+            android:background="@drawable/bg_btn_pink"
+            android:text="완료"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            android:textSize="20dp"
-            android:text="완료"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
             android:id="@+id/btnHelperGoSort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="42dp"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/btn_managerhome_setting"
             android:textSize="20dp"
-            android:text="편집"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tvHelper"
             android:layout_width="match_parent"
@@ -39,7 +48,7 @@
             android:background="#ffffff"
             android:layout_marginTop="10dp"
             android:hint="카드를 누르지 않았을 때 뜨는 일러(글)"
-            app:layout_constraintTop_toBottomOf="@+id/btnHelperUnlock"
+            app:layout_constraintTop_toBottomOf="@+id/btnSelectSortConfirm"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

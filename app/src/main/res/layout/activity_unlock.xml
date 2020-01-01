@@ -1,104 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.download_card.DownloadCardActivity">
+    android:fillViewport="true">
 
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        tools:context=".feature.download_card.DownloadCardActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <Button
+            android:id="@+id/btnUnlockBack"
+            android:layout_width="13dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="54dp"
+            android:background="@drawable/btn_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvUnlockTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:fontFamily="@font/notosans_regular"
+            android:lineSpacingExtra="6sp"
+            android:text="@string/tv_unlock_title"
+            android:textAlignment="center"
+            android:textColor="@color/greyish_brown_two"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnUnlockBack" />
+
+
+        <EditText
+            android:id="@+id/edt_unlockpw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".feature.download_card.DownloadCardActivity">
+            android:layout_marginHorizontal="52dp"
+            android:colorControlActivated="#fb6d6a"
+            android:colorControlNormal="#bebebe"
+            android:ems="10"
+            android:hint="@string/edt_unlock_pw"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingVertical="20dp"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUnlockTitle"
+            app:layout_constraintVertical_bias="0.12" />
+
+        <TextView
+            android:id="@+id/tvPwWrongNotice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="5sp"
+            android:textColor="@color/mainpink"
+            android:textSize="12sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.176"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_unlockpw"
+            tools:text="*비밀번호가 틀렸습니다" />
+
+        <Button
+            android:id="@+id/btnUnlockGoHelper"
+            style="@android:style/ButtonBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="52dp"
+            android:layout_marginTop="51dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_btn_gray"
+            android:fontFamily="@font/notosans_regular"
+            android:gravity="center"
+            android:lineSpacingExtra="6sp"
+            android:text="잠금해제"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:cpb_cornerRadius="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.153"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPwWrongNotice"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="359dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="52dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-    <Button
-        android:id="@+id/btnUnlockBack"
-        android:layout_width="13dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="54dp"
-        android:background="@drawable/btn_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnUnlockBack">
-
-    <TextView
-        android:id="@+id/tvUnlockTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="207dp"
-        android:text="@string/tv_unlock_title"
-        android:fontFamily="@font/notosans_black"
-        android:textSize="18sp"
-        android:lineSpacingExtra="6sp"
-        android:textColor="@color/greyish_brown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <EditText
-        android:id="@+id/edtUnlockpw"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/edt_unlock_pw"
-        android:maxLines="1"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="85dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvUnlockTitle"
-        android:background="@android:color/transparent"
-        android:ems="10"
-        android:inputType="textPassword"
-        />
-
-    <View
-        android:layout_height="1.5dp"
-        android:layout_width="0dp"
-        android:background="@drawable/bg_input_underbar_not"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtUnlockpw"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        />
-
-
-                <Button
-                    android:id="@+id/btnUnlockGoHelper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_unlock_resetpw"
-                    android:layout_marginTop="78dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/edtUnlockpw"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="46dp"
-                    android:background="@drawable/bg_btn"
-                    android:layout_marginEnd="46dp"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

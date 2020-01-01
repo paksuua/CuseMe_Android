@@ -74,4 +74,6 @@ dependencies {
     //lottie
     implementation 'com.airbnb.android:lottie:3.3.1'
 
+    implementation 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
 }
+

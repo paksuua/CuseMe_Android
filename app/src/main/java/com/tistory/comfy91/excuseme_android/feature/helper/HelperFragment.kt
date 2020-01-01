@@ -59,7 +59,7 @@ class HelperFragment() : Fragment() {
         InitUI()
 
         // DisabledAvtivity로 이동
-        btnHelperUnlock.setOnClickListener{
+        btnSelectSortConfirm.setOnClickListener{
             activity?.let{
                 val intent = Intent (it, DisabledActivity::class.java)
                 it.startActivity(intent)

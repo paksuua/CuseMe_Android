@@ -9,60 +9,109 @@
 
     <Button
         android:id="@+id/btnDisabledUnlock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="38dp"
-        android:layout_marginEnd="284dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/btn_home_lock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SearchView
-        android:id="@+id/svSortSearch"
-        android:layout_width="match_parent"
+
+    <Button
+        android:id="@+id/btnDisabledChangeSort"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/btn_home_reload"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_home_quote_left"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="@id/btnDisabledUnlock"
-        app:layout_constraintTop_toBottomOf="@id/btnDisabledUnlock" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/tvDisabledShowCardText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDisabledUnlock"
+        app:srcCompat="@drawable/img_home_quote_left" />
+
+    <ImageView
+        android:id="@+id/img_home_quote_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvDisabledShowCardText"
+        app:layout_constraintTop_toBottomOf="@+id/btnDisabledChangeSort"
+        app:srcCompat="@drawable/img_home_quote_right" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimView"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="home_wave_android.json"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="172dp" />
+
+
+
+    <ImageView
+        android:id="@+id/mg_home_cumi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="270dp"
+        android:layout_marginEnd="23dp"
+        app:layout_constraintBottom_toTopOf="@+id/rvDisabledCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/img_home_cumi" />
 
     <TextView
         android:id="@+id/tvDisabledShowCardText"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
-        android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintDimensionRatio="5:1"
+        android:textSize="18sp"
+        android:textColor="#5d413f"
+        android:letterSpacing="-0.02"
+        android:lineSpacingExtra="6sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svSortSearch" />
-
-
-    <TextView
-        android:id="@+id/tv2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnDisabledUnlock"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/btnDisabledUnlock" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDisabledCard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/bg_rvdiasabled_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDisabledShowCardText" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDisabledShowCardText">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 

@@ -22,12 +22,11 @@
         android:id="@+id/btnHelperSortBack"
         android:layout_width="28dp"
         android:layout_height="28dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="11dp"
         android:background="@drawable/btn_edit_cancel"
-        app:layout_constraintStart_toStartOf="@id/btnHelperSortSelectAll"
-        app:layout_constraintTop_toTopOf="@id/btnHelperSortSelectAll"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHelperSortCard"
