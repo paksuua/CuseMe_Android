@@ -27,6 +27,7 @@ import com.tistory.comfy91.excuseme_android.logDebug
 import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_helper_sort.*
 import kotlinx.android.synthetic.main.fragment_helper.*
+import kotlinx.android.synthetic.main.fragment_select_sort.*
 import retrofit2.Call
 import java.io.IOException
 import retrofit2.Callback
@@ -73,7 +74,7 @@ class HelperFragment() : Fragment() {
 
     private fun initUi() {
         // DisabledAvtivity로 이동
-        btnSelectSortConfirm.setOnClickListener{
+        btnSelectSortConfirm?.setOnClickListener{
             activity?.let{
                 val intent = Intent (it, DisabledActivity::class.java)
                 it.startActivity(intent)
@@ -137,45 +138,45 @@ class HelperFragment() : Fragment() {
     private fun getAllCardData(){
         SingletoneToken.getInstance()
             .token?.let{
-                cardDataRepository
-                    .getAllCards(it)
-                    .enqueue(object: Callback<ResCards>{
-                        override fun onFailure(call: Call<ResCards>, t: Throwable) {
-                            "Fail to Get All Card Data message:${t.message}".logDebug(this@HelperFragment)
-                        }
+            cardDataRepository
+                .getAllCards(it)
+                .enqueue(object: Callback<ResCards>{
+                    override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                        "Fail to Get All Card Data message:${t.message}".logDebug(this@HelperFragment)
+                    }
 
-                        override fun onResponse(
-                            call: Call<ResCards>,
-                            response: Response<ResCards>
-                        ) {
-                            if(response.isSuccessful){
-                                response.body()!!.let{res->
-                                    "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@HelperFragment)
+                    override fun onResponse(
+                        call: Call<ResCards>,
+                        response: Response<ResCards>
+                    ) {
+                        if(response.isSuccessful){
+                            response.body()!!.let{res->
+                                "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@HelperFragment)
 
-                                    when(res.success){
-                                        true->{
-                                            disabledCardList.clear()
-                                            disabledCardList.addAll(res.data!!)
+                                when(res.success){
+                                    true->{
+                                        disabledCardList.clear()
+                                        disabledCardList.addAll(res.data!!)
 //                                            helperAdapter.data.clear()
 //                                            helperAdapter.data.addAll(disabeld)
-                                            helperAdapter.notifyDataSetChanged()
-                                        }
-                                        false ->{
-                                            "Get All Card Data Response is not Success".logDebug(this@HelperFragment)
-                                        }
+                                        helperAdapter.notifyDataSetChanged()
+                                    }
+                                    false ->{
+                                        "Get All Card Data Response is not Success".logDebug(this@HelperFragment)
                                     }
                                 }
                             }
-                            else{
-                                response.body()?.let{ it ->
-                                    "success: ${it.success} status: ${it.status}, data: ${it.data}, message: ${it.message}".logDebug(this@HelperFragment)
-                                }
-                                "resonser is not success".logDebug(this@HelperFragment)
-                            }
                         }
+                        else{
+                            response.body()?.let{ it ->
+                                "success: ${it.success} status: ${it.status}, data: ${it.data}, message: ${it.message}".logDebug(this@HelperFragment)
+                            }
+                            "resonser is not success".logDebug(this@HelperFragment)
+                        }
+                    }
 
-                    })
-            }
+                })
+        }
     }
 
 
@@ -205,7 +206,6 @@ class HelperFragment() : Fragment() {
     }
 
     fun alertDialog(view: View) {
-
         val alertDialog = AlertDialog.Builder(context).create()
         alertDialog.setTitle("카드를 완전히\n삭제하시겠습니까?")
         //alertDialog.setMessage("Message")
@@ -234,7 +234,7 @@ class HelperFragment() : Fragment() {
             disabledCardList[x].visibility = false
         }
         onBtnAllClicked()
-}
+    }
     private fun play(){
         onPlay(playFlag)
         tvAddCardRecordNotice.text = when (playFlag) {
@@ -274,6 +274,6 @@ class HelperFragment() : Fragment() {
                         dummyData as java.util.ArrayList<out Parcelable>
                     )
                 }
-        }
+            }
     }
 }

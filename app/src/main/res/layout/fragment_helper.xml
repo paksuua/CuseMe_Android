@@ -74,6 +74,7 @@
 
 
         <com.airbnb.lottie.LottieAnimationView
+            xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
             android:id="@+id/lottieAnimView"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -83,7 +84,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/mg_home_cumi"
             app:lottie_autoPlay="true"
-            app:lottie_fileName="home_wave_android_360x78.json"
+            app:lottie_fileName="home_wave_android.json"
             app:lottie_loop="true" />
 
         <ImageView
