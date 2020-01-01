@@ -42,7 +42,7 @@ Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 ```
-2. 프로젝트 구조
+## 2. 프로젝트 구조
 
 |                  Activity                              |                 Description   |
 | ----------------------------------- | ------------------------------------------- |
@@ -59,7 +59,7 @@ Glide
 | Setting Activity   | 보호자의 비밀번호 변경, 전화번호 설정  |
 
 
-3. 핵심 기능 구현
+## 3. 핵심 기능 구현
 
 
 1)Zoom In / Zoom Out
@@ -278,7 +278,6 @@ private fun dataSort(sortStandard: Int) {
 }
 
 ```
-
 
 
 
