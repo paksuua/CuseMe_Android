@@ -17,6 +17,7 @@ import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.download_card.DownloadCardActivity
@@ -38,7 +39,7 @@ class HelperActivity : AppCompatActivity() {
 
     var fromServerData: ArrayList<CardBean> = arrayListOf()
 
-    private val cardDataRepository = DummyCardDataRepository()
+    private val cardDataRepository = ServerCardDataRepository()
     private lateinit var helperFragment: HelperFragment
     private var isOpen = false
 
@@ -46,8 +47,6 @@ class HelperActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_helper)
-
-
 
         fab_open = AnimationUtils.loadAnimation(applicationContext,
             R.anim.fab_open

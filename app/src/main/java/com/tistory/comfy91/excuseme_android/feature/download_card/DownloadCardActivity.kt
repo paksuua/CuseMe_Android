@@ -10,6 +10,7 @@ import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.helper.HelperActivity
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_unlock.*
 
 class DownloadCardActivity : AppCompatActivity() {
 
-    private val cardDataRepository= DummyCardDataRepository()
+    private val cardDataRepository= ServerCardDataRepository()
     private var token = SingletoneToken.getInstance().token
 
     override fun onCreate(savedInstanceState: Bundle?) {

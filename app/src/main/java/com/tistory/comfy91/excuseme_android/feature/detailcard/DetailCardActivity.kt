@@ -14,6 +14,7 @@ import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.feature.modcard.ModCardActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
@@ -31,7 +32,7 @@ class DetailCardActivity : AppCompatActivity() {
     private lateinit var recordFileName: String
     private var card: CardBean? = null
     private lateinit var dialogBuilder: AlertDialog.Builder
-    private val cardDataRepository = DummyCardDataRepository()
+    private val cardDataRepository = ServerCardDataRepository()
     private var token = SingletoneToken.getInstance().token
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -5,6 +5,7 @@ import android.opengl.Visibility
 import com.tistory.comfy91.excuseme_android.data.*
 import com.tistory.comfy91.excuseme_android.data.server.*
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 import com.tistory.comfy91.excuseme_android.data.server.BodyChangePw as BodyChangePw1
@@ -19,8 +20,7 @@ interface Service{
      */
     @GET("/cards/")
     fun getAllCards(
-        @Header("token") token: String,
-        @Body bodyGetAllCards: BodyGetAllCards
+        @Header("token") token: String
     ): Call<ResCards>
 
 
@@ -40,7 +40,7 @@ interface Service{
      * 발달 장애인이 보는 카드 전체 조회
      *  @param uuid : UUID
      */
-    @GET("/cards/visible")
+    @POST("/cards/visible")
     fun getDisabledCards(
         @Body uuid: BodyGetDisabledCard
     ):Call<ResCards>
@@ -56,10 +56,9 @@ interface Service{
     @POST("/cards")
     fun addCard(
         @Header("token") token: String,
-        @Part("title") title: String,
-        @Part("content") desc : String,
+        @Part("title") title: RequestBody,
+        @Part("content") desc : RequestBody,
         @Part("visible") visibility: Boolean,
-        @Part("Sequence") sequence: Int,
         @Part image: MultipartBody.Part,
         @Part record: MultipartBody.Part
     ): Call<ResCards>
@@ -81,7 +80,6 @@ interface Service{
         @Header("token") token: String,
         @Body bodyDeleteCard: BodyDeleteCard1
     ): Call<ResCards>
-
 
 
     /**
@@ -110,18 +108,16 @@ interface Service{
      * = uuid로 기존 사용자인지 새로운 사용자 인지 체크,
      * 새로운 사용자일 때 DB에 저장됨
      */
-    @GET("/auth/start")
+    @POST("/auth/start")
     fun startApp(
         @Body bodyStartApp: BodyStartApp
     ): Call<ResUser>
-
-
 
     /**
      * @param uuid: 보호자 모드로 넘어갈 때 uuid를 받아서 토큰을 생성
      * @param password: 보호자(사용자) 비밀번호
      */
-    @GET("/auth/signin")
+    @POST("/auth/signin")
     fun helperSignIn(
         @Body bodyHelperSingIn: BodyHelperSignIn
     ): Call<ResponseLogin>

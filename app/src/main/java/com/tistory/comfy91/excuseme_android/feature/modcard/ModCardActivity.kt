@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -18,10 +19,12 @@ import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.addcard.AudioTimer
 import com.tistory.comfy91.excuseme_android.isPermissionNotGranted
 import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.startSettingActivity
+import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_detail_card.*
 import kotlinx.android.synthetic.main.activity_mod_card.btnModcardMod
 import kotlinx.android.synthetic.main.activity_mod_card.btnModcardBack
@@ -31,17 +34,21 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ModCardActivity : AppCompatActivity() {
-
+    private val TAG = javaClass.name
     private lateinit var card: CardBean
     private lateinit var dialogBuilder: AlertDialog.Builder
     private var token = SingletoneToken.getInstance().token
-    private val cardDataRepsitory = DummyCardDataRepository()
+    private val cardDataRepsitory = ServerCardDataRepository()
     private var isCardImageFilled = true
     private var isCardAudioFilled = true
     private var isExistRecordFile = false
+    private lateinit var recordFileName: String
 
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
@@ -75,6 +82,10 @@ class ModCardActivity : AppCompatActivity() {
                 ""
             )
         }
+
+        // Record to the external cache directory for visibility
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
     }
 
     private fun initUi() {
@@ -108,12 +119,114 @@ class ModCardActivity : AppCompatActivity() {
         }
 
 
-
         imgModcardCardImg.setOnClickListener {
             getImageFromAlbum()
         }
 
+        // 녹음 버튼 리스너 설정
+        btnModcardTogRecord.setOnClickListener {
+            it.requestFocus()
+
+            btnModcardTogRecord.isVisible = false
+            record()
+        }
+
+        // 실행(count) 버튼 리스너 설정
+        ctvAddcardRecordPlay.setOnClickListener{ play() }
+
+
+
     }
+
+    private fun play(){
+        if(isExistRecordFile){
+            onPlay(playFlag)
+            tvAddCardRecordNotice.text = when (playFlag) {
+                true -> "Stop playing"
+                false -> "Start playing"
+            }
+            playFlag = !playFlag
+        }
+        else{
+            "녹음 파일 없음".logDebug(this@ModCardActivity)
+        }
+    }
+
+    private fun onPlay(start: Boolean) = if (start) startPlaying() else stopPlaying()
+
+    private fun startPlaying() {
+        player = MediaPlayer().apply {
+            try {
+                setDataSource(recordFileName)
+                prepare()
+                start()
+                ctvAddcardRecordPlay.isChecked = false
+            } catch (e: IOException) {
+                "prepare() failed".logDebug(this@ModCardActivity)
+                Log.e(TAG, "prepare() failed")
+            }
+        }
+    }
+
+    private fun stopPlaying() {
+        player?.release()
+        player = null
+    }
+
+    private fun record(){
+        onRecord(recordFlag)
+//        btnAddcardTogRecord.text = when (recordFlag) {
+//            true -> "Stop recording"
+//            false -> "Start recording"
+//        }
+        recordFlag = !recordFlag
+    }
+
+
+    private fun onRecord(start: Boolean) = if (start) startRecording() else stopRecording()
+
+    private fun startRecording() {
+        recorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setOutputFile(recordFileName)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+
+            try {
+                prepare()
+            } catch (e: IOException) {
+                Log.e(TAG, "prepare() failed")
+            }
+
+            start()
+            audioTimer =
+                AudioTimer(this@ModCardActivity) {
+                    tvAddCardRecordNotice.text = "${audioTimer.count}초"
+                }
+            audioTimer.start()
+
+            ctvAddcardRecordPlay.isVisible = false
+        }
+    }
+
+    private fun stopRecording() {
+        recorder?.apply {
+            stop()
+            release()
+        }
+        recorder = null
+
+        audioTimer.cancel()
+        btnAddcardSaveRecord.isEnabled = true
+        tvAddCardRecordNotice.text = getString(R.string.record_notice)
+        ctvAddcardRecordPlay.apply{
+            isVisible = true
+            isEnabled = true
+            isExistRecordFile = true
+        }
+    }
+
+
 
 
 
@@ -321,6 +434,14 @@ class ModCardActivity : AppCompatActivity() {
             }
         }
     } // end onActivityResult()
+
+    override fun onStop() {
+        super.onStop()
+        recorder?.release()
+        recorder = null
+        stopPlaying()
+    }
+
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000

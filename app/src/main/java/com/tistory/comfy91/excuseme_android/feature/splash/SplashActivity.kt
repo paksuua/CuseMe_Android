@@ -8,6 +8,7 @@ import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.api.Service
 import com.tistory.comfy91.excuseme_android.data.repository.DummyUserDataRepository
 import com.tistory.comfy91.excuseme_android.data.ResUser
+import com.tistory.comfy91.excuseme_android.data.repository.ServerUserDataRepository
 import com.tistory.comfy91.excuseme_android.data.server.BodyStartApp
 import com.tistory.comfy91.excuseme_android.feature.disabled.DisabledActivity
 import com.tistory.comfy91.excuseme_android.feature.login.Login
@@ -20,8 +21,7 @@ import retrofit2.Response
 
 class SplashActivity : AppCompatActivity() {
 
-    private val userDataRespository =
-        DummyUserDataRepository()
+    private val userDataRespository = ServerUserDataRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +45,7 @@ class SplashActivity : AppCompatActivity() {
     private fun requestStartApp() {
         Login.getUUID(this@SplashActivity)
             .let {
+                "(uuid : ${it})".logDebug(this@SplashActivity)
                 requestServer(it)
             }
 

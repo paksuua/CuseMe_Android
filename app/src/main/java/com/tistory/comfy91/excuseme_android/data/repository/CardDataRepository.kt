@@ -7,6 +7,7 @@ import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Part
 
@@ -17,13 +18,14 @@ interface CardDataRepository {
 
     fun getDisabledCards(uuid: BodyGetDisabledCard): Call<ResCards>
 
-    fun addCard(token: String,
-                 title: String,
-                desc : String,
-                visibility: Boolean,
-                sequence: Int,
-                image: MultipartBody.Part,
-                record: MultipartBody.Part): Call<ResCards>
+    fun addCard(
+        token: String,
+        title: RequestBody,
+        desc : RequestBody,
+        visibility: Boolean,
+        image: MultipartBody.Part,
+        record: MultipartBody.Part
+    ): Call<ResCards>
 
 
     fun editCardDetail(token: String, cardIdx: String, cardBean: CardBean): Call<ResCards>

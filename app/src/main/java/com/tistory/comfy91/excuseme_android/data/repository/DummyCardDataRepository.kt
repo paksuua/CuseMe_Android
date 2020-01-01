@@ -5,7 +5,9 @@ import com.tistory.comfy91.excuseme_android.data.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
+import okhttp3.MediaType
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.mock.Calls
 
@@ -41,6 +43,27 @@ import retrofit2.mock.Calls
 
 class DummyCardDataRepository :
     CardDataRepository {
+
+    override fun addCard(
+        token: String,
+        title: RequestBody,
+        desc: RequestBody,
+        visibility: Boolean,
+        image: MultipartBody.Part,
+        record: MultipartBody.Part
+    ): Call<ResCards> {
+        return Calls.response(
+            ResCards(
+                200,
+                true,
+                "카드 작성 성공",
+                listOf()
+            )
+
+
+
+        )
+    }
 
     override fun getAllCards(token: String): Call<ResCards> {
         return Calls.response(
@@ -172,26 +195,7 @@ class DummyCardDataRepository :
         )
     }
 
-    override fun addCard(
-        token: String,
-        title: String,
-        desc : String,
-        visibility: Boolean,
-        sequence: Int,
-        image: MultipartBody.Part,
-        record: MultipartBody.Part
-    ): Call<ResCards> {
-        return Calls.response(
-            ResCards(
-                200,
-                true,
-                "Success Add Card",
-                listOf()
-            )
-        )
 
-
-    }
 
     override fun editCardDetail(
         token: String,
