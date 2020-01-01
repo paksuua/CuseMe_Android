@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_three"
     tools:context=".feature.addcard.AddCardActivity">
 
     <TextView
@@ -35,66 +37,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/btnDetailEdit" />
 
-
     <ImageView
         android:id="@+id/imgDetailCardImg"
         android:layout_width="match_parent"
-        android:layout_height="295dp"
-        android:layout_marginHorizontal="16dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="18dp"
         android:layout_marginTop="22dp"
         android:background="@color/white_two"
+        app:layout_constraintDimensionRatio="10:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.583"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnDetailBack" />
 
-    <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="40dp"
-        android:layout_height="28dp"
-        android:backgroundTint="#ffffff"
-        android:padding="0dp"
-        card_view:cardCornerRadius="17dp"
-        card_view:cardUseCompatPadding="true"
-        card_view:layout_constraintCircleRadius="17dp"
-        card_view:layout_constraintEnd_toEndOf="@id/imgDetailCardImg"
-        card_view:layout_constraintTop_toTopOf="@id/imgDetailCardImg"
-        card_view:strokeColor="@color/seafoam_blue"
-        card_view:strokeWidth="1.5dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <CheckedTextView
-                android:id="@+id/ctvDetailTog"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:lineSpacingExtra="5sp"
-                android:text="on"
-                android:textColor="@color/seafoam_blue"
-                android:textSize="14sp" />
-
-
-        </LinearLayout>
-
-
-    </com.google.android.material.card.MaterialCardView>
+    <CheckedTextView
+        android:id="@+id/ctvDetailTog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="36dp"
+        android:paddingHorizontal="5dp"
+        android:background="@drawable/ckt_onoff"
+        android:gravity="center_vertical"
+        android:enabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgDetailCardImg" />
 
     <TextView
         android:id="@+id/tvDetailCardTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="28dp"
         android:fontFamily="@font/notosans_regular"
         android:maxLines="1"
         android:text="Default Title"
-        app:layout_constraintStart_toStartOf="@+id/imgDetailCardImg"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgDetailCardImg" />
 
     <TextView
         android:id="@+id/tvDetailCardDesc"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="76dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="18dp"
+        android:fontFamily="@font/notosans_light"
         android:lineSpacingExtra="6sp"
         android:maxLines="8"
         android:nestedScrollingEnabled="true"
@@ -102,63 +90,31 @@
         android:text="Default Desc"
         android:textColor="@color/greyish_brown_three"
         android:textSize="16sp"
-        android:fontFamily="@font/notosans_light"
-        app:layout_constraintBottom_toTopOf="@id/lyDetailRecord"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvDetailCardTitle"
-        app:layout_constraintTop_toBottomOf="@id/tvDetailCardTitle"
-        android:layout_marginHorizontal="20dp"/>
+        app:layout_constraintTop_toBottomOf="@id/tvDetailCardTitle" />
 
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/ctvDetailAlert"
-        android:layout_width="110dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="157dp"
-        android:backgroundTint="#ffffff"
-        app:cardCornerRadius="15dp"
-        app:layout_constraintStart_toEndOf="@id/tvDetailCardTitle"
-        app:layout_constraintTop_toBottomOf="@id/imgDetailCardImg"
-        app:strokeColor="@color/mainpink"
-        app:strokeWidth="1.5dp"
-        >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/imgDetailAlert"
-                android:layout_width="18dp"
-                android:layout_height="14dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/btn_carddetail_selectcheck_selected"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="8dp"
-                android:lineSpacingExtra="6sp"
-                android:text="보호자 알림"
-                android:textColor="@color/mainpink"
-                android:textSize="17sp"
-                android:fontFamily="@font/notosans_light"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-
+    <ImageView
+        android:id="@+id/imgDetailAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/btn_send_message"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDetailCardTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvDetailCardTitle" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lyDetailRecord"
         android:layout_width="match_parent"
         android:layout_height="185dp"
+        android:layout_marginTop="16dp"
         android:background="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDetailCardDesc">
 
         <TextView
             android:id="@+id/btnDetailRecordTitle"
@@ -183,20 +139,19 @@
             app:layout_constraintStart_toStartOf="@id/btnDetailRecordTitle"
             app:layout_constraintTop_toBottomOf="@id/btnDetailRecordTitle" />
 
-        <CheckedTextView
+        <ImageView
             android:id="@+id/ctvDetaliRecordPlay"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/test_icon_checked"
+            android:background="@drawable/circle_background"
+            android:elevation="6dp"
             android:enabled="false"
+            android:src="@drawable/btn_carddetail_play"
+            app:layout_constraintBottom_toBottomOf="@+id/tvDetailRecordNotice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
+            app:layout_constraintTop_toTopOf="@+id/btnDetailRecordTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -72,6 +72,7 @@ class HelperActivity : AppCompatActivity() {
                 btnHelperNewCard.isVisible = true
                 btnHelperDownCard.isClickable = true
                 btnHelperNewCard.isClickable = true
+                btnHelperAddCard.setBackgroundResource(btn_home_close)
                 isOpen = true
             } else {
                 backHelperBlur.isVisible=false
@@ -80,6 +81,7 @@ class HelperActivity : AppCompatActivity() {
                 btnHelperAddCard.startAnimation(rotate_forward)
                 btnHelperDownCard.isVisible = false
                 btnHelperNewCard.isVisible = false
+                btnHelperAddCard.setBackgroundResource(R.drawable.btn_managerhome_plus)
                 isOpen = false
             }
         }
