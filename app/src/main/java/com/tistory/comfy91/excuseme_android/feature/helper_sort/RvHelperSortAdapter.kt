@@ -8,13 +8,14 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 
 class RvHelperSortAdapter(private val context: Context, private val onBtnAllClicked: ()-> Unit, private val bind: Int): RecyclerView.Adapter<HelperSortCardViewHolder>(),
     Filterable {
-    var data = arrayListOf<DataHelperSortCard>()
+    var data = arrayListOf<CardBean>()
     var isChanged = false
-    var searchedList: ArrayList<DataHelperSortCard> ? = null
+    var searchedList: ArrayList<CardBean> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperSortCardViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.helper_sort_item_card, parent, false)
@@ -35,6 +36,7 @@ class RvHelperSortAdapter(private val context: Context, private val onBtnAllClic
         holder.bind(searchedList!![position], position, bind)
         holder.dataVisibilityChange = {
             searchedList!![position].visibility = !(searchedList!![position].visibility)
+            this.notifyDataSetChanged()
         }
     }
 
@@ -67,7 +69,7 @@ class RvHelperSortAdapter(private val context: Context, private val onBtnAllClic
                 if (charString.isEmpty()) {
                     searchedList = data
                 } else {
-                    val filteredList = ArrayList<DataHelperSortCard>()
+                    val filteredList = ArrayList<CardBean>()
                     //이부분에서 원하는 데이터를 검색할 수 있음
                     for (row in data) {
 
@@ -85,7 +87,7 @@ class RvHelperSortAdapter(private val context: Context, private val onBtnAllClic
             }
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
                 Log.d("search3","publishResults")
-                searchedList = filterResults.values as ArrayList<DataHelperSortCard>
+                searchedList = filterResults.values as ArrayList<CardBean>
                 notifyDataSetChanged()
             }
         }

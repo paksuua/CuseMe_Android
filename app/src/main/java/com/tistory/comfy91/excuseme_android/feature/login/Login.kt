@@ -6,6 +6,23 @@ import java.util.*
 object Login {
     private const val LOGIN_KEY = "login"
     private const val USER_KEY = "user"
+    private const val PASSWORD = "password"
+
+    fun getPwFlag(context: Context):Boolean{
+        context.getSharedPreferences(LOGIN_KEY, Context.MODE_PRIVATE)
+            .let{
+                return it.getBoolean(PASSWORD, false)
+            }
+    }
+
+    fun savePwFlag(context: Context, flag: Boolean){
+        context.getSharedPreferences(LOGIN_KEY, Context.MODE_PRIVATE)
+            .let{
+                it.edit()
+                    .putBoolean(PASSWORD, flag)
+                    .apply()
+            }
+    }
 
     fun getUser(context: Context): String {
         context.getSharedPreferences(LOGIN_KEY, Context.MODE_PRIVATE)
@@ -20,7 +37,6 @@ object Login {
                 it.edit()
                     .putString(USER_KEY, user)
                     .apply()
-
             }
     }
 
@@ -34,16 +50,16 @@ object Login {
 
     }
 
-    fun getUUID(): String {
+    private fun makeUUID(): String {
         return UUID.randomUUID().toString()
     }
 
 
-    fun login(context: Context): String {
+    fun getUUID(context: Context): String {
         getUser(context).let {
             when (it) {
                 "" -> {
-                    getUUID().let { uuid ->
+                    makeUUID().let { uuid ->
                         saveUser(
                             context,
                             uuid

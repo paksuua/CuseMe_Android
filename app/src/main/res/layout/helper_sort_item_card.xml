@@ -20,7 +20,7 @@
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/ctvHelperCheck"
+            android:id="@+id/btnHelperCheck"
             android:layout_width="40dp"
             android:layout_height="28dp"
             android:layout_marginStart="110dp"

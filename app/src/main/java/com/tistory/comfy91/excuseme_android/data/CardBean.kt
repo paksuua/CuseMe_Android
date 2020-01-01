@@ -1,16 +1,17 @@
 package com.tistory.comfy91.excuseme_android.data
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class CardBean(
     @SerializedName("cardIdx")
     val cardIdx: Int,
 
     @SerializedName("title")
-    val title: String,
+    var title: String,
 
     @SerializedName("content")
-    val desc: String,
+    var desc: String,
 
     @SerializedName("image")
     val imageUrl: String,
@@ -22,7 +23,7 @@ data class CardBean(
     val count: Int,
 
     @SerializedName("visible")
-    val visibility: Int,
+    var visibility: Boolean,
 
     @SerializedName("serialNum")
     val serialNum: String,
@@ -32,4 +33,4 @@ data class CardBean(
 
     @SerializedName("userIdx")
     val userIdx: String?
-)
+):Serializable

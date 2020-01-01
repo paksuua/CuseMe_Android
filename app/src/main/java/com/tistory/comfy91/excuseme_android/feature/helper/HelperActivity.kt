@@ -4,6 +4,8 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
+import android.service.autofill.Validators.not
+import retrofit2.Call
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -11,10 +13,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.tistory.comfy91.excuseme_android.R
-import com.tistory.comfy91.excuseme_android.data.DataHelperCard
+import com.tistory.comfy91.excuseme_android.data.CardBean
+import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
+import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.download_card.DownloadCardActivity
+import com.tistory.comfy91.excuseme_android.logDebug
+import com.tistory.comfy91.excuseme_android.newStartActivity
 import kotlinx.android.synthetic.main.activity_helper.*
+import retrofit2.Callback
+import retrofit2.Response
 
 class HelperActivity : AppCompatActivity() {
 
@@ -24,30 +34,21 @@ class HelperActivity : AppCompatActivity() {
     lateinit var rotate_backward: Animation
     private val transction = supportFragmentManager.beginTransaction()
 
-
-    private val TAG = javaClass.name
     private lateinit var dialogBuilder: AlertDialog.Builder
-    private var recorder: MediaRecorder? = null
-    private var player: MediaPlayer? = null
 
-    private lateinit var recordFileName: String
-    private var recordFlag = true
-    private var playFlag = true
+    var fromServerData: ArrayList<CardBean> = arrayListOf()
 
-
-    // dummy card data
-    public lateinit var fromServerData: ArrayList<DataHelperCard>
+    private val cardDataRepository = DummyCardDataRepository()
+    private lateinit var helperFragment: HelperFragment
+    private var isOpen = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_helper)
 
-        var isOpen = false
-        //btnHelperAddCard.isVisible=true
 
 
-        //val navView: BottomNavigationView = findViewById(R.id.nvHelperFirst)
         fab_open = AnimationUtils.loadAnimation(applicationContext,
             R.anim.fab_open
         )
@@ -60,10 +61,66 @@ class HelperActivity : AppCompatActivity() {
         rotate_backward = AnimationUtils.loadAnimation(applicationContext,
             R.anim.rotate_backward
         )
+        initUI()
+    }
 
 
-        // 더미데이터 초기화
-        InitDummydata()
+
+    override fun onResume() {
+        super.onResume()
+        initData()
+    }
+
+
+    private fun requestCardsData(token: String){
+        cardDataRepository
+            .getAllCards(token)
+            .enqueue(object: Callback<ResCards> {
+                override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                    "Fail to Get All Card Data message:${t.message}".logDebug(this@HelperActivity)
+                }
+
+                override fun onResponse(
+                    call: Call<ResCards>,
+                    response: Response<ResCards>
+                ) {
+                    if(response.isSuccessful){
+                        response.body()!!.let{res->
+                            "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@HelperActivity)
+
+                            when(res.success){
+                                true->{
+                                    fromServerData.clear()
+                                    fromServerData.addAll(res.data!!)
+                                    helperFragment.helperAdapter.notifyDataSetChanged()
+                                }
+                                false ->{"Get All Card Data  Response is Not Sucess".logDebug(this@HelperActivity)}
+                            }
+                        }
+                    }
+                    else{
+                        response.body()?.let{ it ->
+                            "success: ${it.success} status: ${it.status}, data: ${it.data}, message: ${it.message}".logDebug(this@HelperActivity)
+                        }
+                        "resonser is not success".logDebug(this@HelperActivity)
+                    }
+                }
+
+            })
+    }
+
+    private fun initData(){
+//        SingletoneToken.getInstance().token
+//            ?.let {  }
+
+        //todo("삭제하고 위로 수정")
+        val token = SingletoneToken.getInstance()
+        token.token = "token"
+        token.token?.let{token -> requestCardsData(token)}
+
+
+    }
+    private fun initUI(){
 
         btnHelperAddCard.setOnClickListener {
             if (!isOpen) {
@@ -90,14 +147,12 @@ class HelperActivity : AppCompatActivity() {
         // 카드 다운로드뷰로 이동
         if(isOpen){
             btnHelperDownCard.setOnClickListener{
-                //val context = it.context
                 val intent = Intent(this, DownloadCardActivity::class.java)
                 startActivity(intent)
             }
 
             // 카드생성 뷰로 이동
             btnHelperNewCard.setOnClickListener{
-                //val context = it.context
                 val intent = Intent(this, AddCardActivity::class.java)
                 startActivity(intent)
             }
@@ -110,14 +165,13 @@ class HelperActivity : AppCompatActivity() {
         btnHelperNewCard.setOnClickListener {
             Toast.makeText(applicationContext, "Button NewCard Clicked", Toast.LENGTH_LONG)
                 .show()
-            /*val intent = Intent(this, NewCardActivity::class.java)
-            startActivity(intent)*/
+            this.newStartActivity(AddCardActivity::class.java)
         }
 
         // 홈미리보기 프래그먼트로 전환
         btnHelperGoDisabled.setOnClickListener {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.frameHelper, HelperFragment())
+                .replace(R.id.frameHelper, helperFragment)
                 .commit()
         }
 
@@ -130,71 +184,14 @@ class HelperActivity : AppCompatActivity() {
                 .commit()
         }
 
-        InitUI()
-    }
-
-    private fun InitUI(){
-        // 리사이클러뷰 어댑터 생성 및 설정
-        /*rvHelperAdapter =
-            RvHelperAdapter(
-                this,
-                onBtnAllClicked
-            )
-        rvHelperCard.adapter = rvHelperAdapter
-        rvHelperCard.layoutManager = rvLayoutManager
-        rvHelperAdapter.data = fromServerData
-        rvHelperAdapter.notifyDataSetChanged()*/
-
+        helperFragment = HelperFragment.newInstance(fromServerData)
         transction.add(
             R.id.frameHelper,
-            HelperFragment.newInstance(
-                fromServerData
-            )
+            helperFragment
         )
         transction.commit()
     }
 
-    private fun InitDummydata(){
-        fromServerData = arrayListOf(
-            DataHelperCard(
-            "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-            "first card",
-            true,
-            "큐즈밀리11"
-        ),
-        DataHelperCard(
-            "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-            "second card",
-            true,
-            "큐즈밀리22"
-        ),
-        DataHelperCard(
-            "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-            "third card",
-            true,
-            "큐즈밀리33"
-        ),
-        DataHelperCard(
-            "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-            "fourth card",
-            true,
-            "큐즈밀리44"
-        ),
-        DataHelperCard(
-            "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-            "fifth card",
-            true,
-            "큐즈밀리55"
-        ),
-        DataHelperCard(
-            "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-            "sixth card",
-            true,
-            "큐즈밀리66"
-        )
-        )
-        //endregion
-    }
 
     fun BottomBarChange(bottom_flag: Boolean){
         if(bottom_flag){
@@ -211,4 +208,6 @@ class HelperActivity : AppCompatActivity() {
             btnHelperDownCard.isVisible=false
         }
     }
+
+
 }

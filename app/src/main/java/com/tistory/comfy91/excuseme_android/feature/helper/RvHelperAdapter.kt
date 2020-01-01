@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
 
 class RvHelperAdapter(private val context: Context, private val onBtnAllClicked: (Boolean)-> Unit): RecyclerView.Adapter<HelperViewHolder>(){
-    var data = arrayListOf<DataHelperCard>()
+    var data = arrayListOf<CardBean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.sy_item_card, parent, false)

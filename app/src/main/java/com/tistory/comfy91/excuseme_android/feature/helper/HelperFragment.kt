@@ -17,18 +17,25 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
+import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.disabled.DisabledActivity
 import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortActivity
 import com.tistory.comfy91.excuseme_android.logDebug
 import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_helper_sort.*
 import kotlinx.android.synthetic.main.fragment_helper.*
+import retrofit2.Call
 import java.io.IOException
+import retrofit2.Callback
+import retrofit2.Response
 
 class HelperFragment() : Fragment() {
-    private lateinit var helperAdapter: RvHelperAdapter
-    private lateinit var dummyData: ArrayList<DataHelperCard>
+    lateinit var helperAdapter: RvHelperAdapter
+    private lateinit var dummyData: ArrayList<CardBean>
     private var selected_card_num = 0
     private val changeTv: (Boolean) -> Unit = {
         if(it) selected_card_num ++
@@ -44,6 +51,9 @@ class HelperFragment() : Fragment() {
     private var playFlag = true
     private lateinit var recordFileName: String
 
+    private var token: String? = null
+    private val cardDataRepository = DummyCardDataRepository()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,62 +66,25 @@ class HelperFragment() : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        InitUI()
+        initUi()
 
-        // DisabledAvtivity로 이동
-        btnSelectSortConfirm.setOnClickListener{
-            activity?.let{
-                val intent = Intent (it, DisabledActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
-
-        // HelperSortActivity로 이동
-        btnHelperGoSort.setOnClickListener{
-            activity?.let{
-                val intent = Intent (it, HelperSortActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
-
-        // 카드삭제
-        btnHelperDeleteCard.setOnClickListener {
-            // 삭제를 물어보는 다이얼로그 띄움
-            alertDialog(it)
-        }
-
-        // 카드 숨기기
-        btnHelperInvisCard.setOnClickListener {
-            //TODO: HelperSortActivity로 이동
-            activity?.let{
-                val intent = Intent (it, HelperSortActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
-
-        // 수정
-        btnHelperModCard.setOnClickListener {
-            //TODO: DetailCardActivity로 이동
-            activity?.let{
-                val intent = Intent (it, DetailCardActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
-
-        // 취소
-        btnHelperCancleCard.setOnClickListener {
-            // TODO: 선택한 카드 취소
-            setAllCardNotChecked()
-        }
     }
 
-    private fun InitUI() {
+    override fun onResume() {
+        super.onResume()
+        getAllCardData()
+    }
+
+
+
+
+    private fun initUi() {
 //        val rvSelectSort = view.findViewById<RecyclerView>(R.id.rvSelectSort)
         //region dummyData
 
          // 서버에서 HelperActivity로 받은 데이터를 HelperFragment에서 이용
         dummyData =  (activity as HelperActivity).fromServerData
-        (activity as HelperActivity).fromServerData=dummyData
+//        (activity as HelperActivity).fromServerData=dummyData
            /* arrayListOf(
             DataHelperCard(
                 "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
@@ -152,6 +125,54 @@ class HelperFragment() : Fragment() {
         )*/
         //endregion
 
+
+        // DisabledAvtivity로 이동
+        btnSelectSortConfirm.setOnClickListener{
+            activity?.let{
+                val intent = Intent (it, DisabledActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+
+        // HelperSortActivity로 이동
+        btnHelperGoSort.setOnClickListener{
+            activity?.let{
+                val intent = Intent (it.baseContext, HelperSortActivity::class.java)
+                intent.putExtra("CARD_DATA", dummyData)
+                it.startActivity(intent)
+            }
+        }
+
+        // 카드삭제
+        btnHelperDeleteCard.setOnClickListener {
+            // 삭제를 물어보는 다이얼로그 띄움
+            alertDialog(it)
+        }
+
+        // 카드 숨기기
+        btnHelperInvisCard.setOnClickListener {
+            //TODO: HelperSortActivity로 이동
+            activity?.let{
+                val intent = Intent (it, HelperSortActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+
+        // 수정
+        btnHelperModCard.setOnClickListener {
+            //TODO: DetailCardActivity로 이동
+            activity?.let{
+                val intent = Intent (it, DetailCardActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+
+        // 취소
+        btnHelperCancleCard.setOnClickListener {
+            // TODO: 선택한 카드 취소
+            setAllCardNotChecked()
+        }
+
         activity?.let{
             helperAdapter =
                 RvHelperAdapter(
@@ -164,6 +185,58 @@ class HelperFragment() : Fragment() {
         helperAdapter.data = dummyData
         helperAdapter.notifyDataSetChanged()
     }
+
+
+    private fun getAllCardData(){
+        SingletoneToken.getInstance()
+            .token?.let{
+                cardDataRepository
+                    .getAllCards(it)
+                    .enqueue(object: Callback<ResCards>{
+                        override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                            "Fail to Get All Card Data message:${t.message}".logDebug(this@HelperFragment)
+                        }
+
+                        override fun onResponse(
+                            call: Call<ResCards>,
+                            response: Response<ResCards>
+                        ) {
+                            if(response.isSuccessful){
+                                response.body()!!.let{res->
+                                    "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@HelperFragment)
+
+                                    when(res.success){
+                                        true->{
+                                            helperAdapter.data.clear()
+                                            helperAdapter.data.addAll(res.data!!)
+                                            helperAdapter.notifyDataSetChanged()
+                                        }
+                                        false ->{
+
+                                        }
+                                    }
+                                }
+                            }
+                            else{
+                                response.body()?.let{ it ->
+                                    "success: ${it.success} status: ${it.status}, data: ${it.data}, message: ${it.message}".logDebug(this@HelperFragment)
+                                }
+                                "resonser is not success".logDebug(this@HelperFragment)
+                            }
+                        }
+
+                    })
+            }
+
+
+
+
+
+
+
+    }
+
+
 
     private fun checkAnyCardChecked(): Boolean{
         /*
@@ -180,7 +253,7 @@ class HelperFragment() : Fragment() {
 //
 
     private fun deleteHelperCard() {
-        val it: MutableIterator<DataHelperCard> = dummyData.iterator()
+        val it: MutableIterator<CardBean> = dummyData.iterator()
         while(it.hasNext()){
             if(it.next().visibility){
                 it.remove()
@@ -237,7 +310,7 @@ class HelperFragment() : Fragment() {
                 setDataSource(recordFileName)
                 prepare()
                 start()
-                tvAddcardRecordPlay.isChecked = false
+                ctvAddcardRecordPlay.isChecked = false
             } catch (e: IOException) {
                 "prepare() failed".logDebug(this@HelperFragment)
                 Log.e(TAG, "prepare() failed")
@@ -251,7 +324,7 @@ class HelperFragment() : Fragment() {
     }
 
     companion object{
-        fun newInstance(dummyData: ArrayList<DataHelperCard>)=
+        fun newInstance(dummyData: ArrayList<CardBean>)=
             HelperFragment().apply {
                 arguments=Bundle().apply {
                     putParcelableArrayList(

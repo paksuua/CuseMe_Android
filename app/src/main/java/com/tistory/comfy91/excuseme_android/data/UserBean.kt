@@ -13,5 +13,8 @@ data class UserBean(
     val salt: String,
 
     @SerializedName("phoneNum")
-    val phoneNum: String
+    val phoneNum: String,
+
+    @SerializedName("token")
+    val token: Token
 )

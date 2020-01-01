@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
  * message = ex: "카드 전체 조회 성공"
  */
 data class ResCards(
+    val status: Int,
     val success: Boolean,
     val message: String,
     val data: List<CardBean>?

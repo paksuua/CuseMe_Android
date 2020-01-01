@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 //import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
 
 class HelperViewHolder(itemView: View, private val onClicked: (Boolean) -> Unit): RecyclerView.ViewHolder(itemView){
@@ -15,7 +16,7 @@ class HelperViewHolder(itemView: View, private val onClicked: (Boolean) -> Unit)
 
     lateinit var dataVisibilityChange: ()-> Unit
 
-    fun bind(data: DataHelperCard, listenerFlag: Int){
+    fun bind(data: CardBean, listenerFlag: Int){
         Glide.with(itemView).load(data.imageUrl).into(imgCard)
         tvCard.text = data.title
         itemView.setOnClickListener {

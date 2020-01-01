@@ -12,5 +12,4 @@ object ServerService{
         .build()
 
     val service: Service = retrofit.create(Service::class.java)
-
 }

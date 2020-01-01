@@ -1,14 +1,14 @@
 package com.tistory.comfy91.excuseme_android.feature.helper_sort
 
-import android.app.AlertDialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 import kotlinx.android.synthetic.main.activity_helper_sort.*
 
@@ -24,16 +24,14 @@ class HelperSortActivity : AppCompatActivity() {
         )
     private val rvLayoutManager = GridLayoutManager(this@HelperSortActivity, 2)
 
-    // dummy
-    private lateinit var dummyData: ArrayList<DataHelperSortCard>
+    private var cardList: ArrayList<CardBean> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_helper_sort)
 
-        // dummy data 생성
-        makeDummyData()
 
+        getCards()
         uiInit()
     } // end onCreate()
 
@@ -41,7 +39,7 @@ class HelperSortActivity : AppCompatActivity() {
         // 리사이클러뷰 어댑터 생성 및 설정
         rvHelperSortCard.adapter = rvHelperSortCardAdapter
         rvHelperSortCard.layoutManager = rvLayoutManager
-        rvHelperSortCardAdapter.data = dummyData
+        rvHelperSortCardAdapter.data = cardList
         rvHelperSortCardAdapter.notifyDataSetChanged()
 
         // ItemTouchHelper 설정 - 사용자의
@@ -63,50 +61,43 @@ class HelperSortActivity : AppCompatActivity() {
         }
 
         // 선택한 카드 삭제 버튼 설정
-        btnHelperSortDeleteCard.setOnClickListener{
-            deleteSelectedCard()
-        }
+        btnHelperSortDeleteCard.setOnClickListener{deleteSelectedCard()}
 
-        btnHelperSortBack.setOnClickListener {
-            /*if(rvHelperSortCardAdapter.isChanged){
-                alertDialog(it)
-            }*/
-        }
+        btnHelperSortBack.setOnClickListener { showDialog()}
+
     }
 
-    private fun makeDummyData(){
-        dummyData = arrayListOf(
-            DataHelperSortCard(
-                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-                "first card",
-                false,
-                0
-            ),
-            DataHelperSortCard(
-                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-                "second card",
-                false,
-                0
+    private fun showDialog(){
+        AlertDialog.Builder(this@HelperSortActivity)
+            .apply{
+                this.setMessage("변경 내용을\n저장하시겠습니까?")
+                this.setPositiveButton("저장"
+                ) { _, _ ->
+                    //todo("변경된 카드 서버에 전송")
+                    this@HelperSortActivity.finish()
+                }
 
-            ),
-            DataHelperSortCard(
-                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-                "third card",
-                false,
-                0
-            ),
-            DataHelperSortCard(
-                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-                "fourth card",
-                false,
-                0
-            )
-        )
+                this.setNegativeButton("저장 안함"
+                ) { _, _ -> this@HelperSortActivity.finish() }
+            }
+            .show()
+
+
+    }
+
+    private fun getCards(){
+        intent.getSerializableExtra("CARD_DATA")
+            ?.let{
+                cardList.addAll(it as ArrayList<CardBean>)
+                rvHelperSortCardAdapter.searchedList.clear()
+                rvHelperSortCardAdapter.searchedList.addAll(cardList)
+                rvHelperSortCardAdapter.notifyDataSetChanged()
+            }
     }
     private fun setAllCardisChecked(){
         // until : 끝값은 사용하지 않는다.
-        for(x in 0 until dummyData.size ){
-            dummyData[x].visibility = true
+        for(x in 0 until cardList.size ){
+            cardList[x].visibility = true
         }
         onBtnAllClicked()
     }
@@ -114,8 +105,8 @@ class HelperSortActivity : AppCompatActivity() {
     private fun checkAnyCardChecked(): Boolean{
         var result = false
 
-        for(x in 0 until dummyData.size){
-            if(dummyData[x].visibility){
+        for(x in 0 until cardList.size){
+            if(cardList[x].visibility){
                 result = true
                 break
             }
@@ -124,7 +115,7 @@ class HelperSortActivity : AppCompatActivity() {
     }
 
     private fun deleteSelectedCard() {
-        val it: MutableIterator<DataHelperSortCard> = dummyData.iterator()
+        val it: MutableIterator<CardBean> = cardList.iterator()
         while(it.hasNext()){
             if(it.next().visibility){
                 it.remove()
@@ -132,4 +123,6 @@ class HelperSortActivity : AppCompatActivity() {
         }
         rvHelperSortCardAdapter.notifyDataSetChanged()
     }
+
+
 } // end class

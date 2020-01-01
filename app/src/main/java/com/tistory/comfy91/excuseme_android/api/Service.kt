@@ -1,9 +1,14 @@
 package com.tistory.comfy91.excuseme_android.api
 
 
+import android.opengl.Visibility
 import com.tistory.comfy91.excuseme_android.data.*
+import com.tistory.comfy91.excuseme_android.data.server.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangePw as BodyChangePw1
+import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard as BodyDeleteCard1
 
 interface Service{
 
@@ -14,7 +19,8 @@ interface Service{
      */
     @GET("/cards/")
     fun getAllCards(
-        @Header("token") token: String
+        @Header("token") token: String,
+        @Body bodyGetAllCards: BodyGetAllCards
     ): Call<ResCards>
 
 
@@ -39,10 +45,6 @@ interface Service{
         @Body uuid: BodyGetDisabledCard
     ):Call<ResCards>
 
-    data class BodyGetDisabledCard(
-        val uuid: String
-    )
-
 
     /**
      * 카드 추가
@@ -50,10 +52,16 @@ interface Service{
      * @param cardBean = 추가할 카드
      */
     //TODO("Body로 더 많은 변수를 넘겨줌 에러가 날 수 있으므로 확인하기")
+    @Multipart
     @POST("/cards")
     fun addCard(
         @Header("token") token: String,
-        @Body cardBean: CardBean
+        @Part("title") title: String,
+        @Part("content") desc : String,
+        @Part("visible") visibility: Boolean,
+        @Part("Sequence") sequence: Int,
+        @Part image: MultipartBody.Part,
+        @Part record: MultipartBody.Part
     ): Call<ResCards>
 
     /**
@@ -71,12 +79,10 @@ interface Service{
     @DELETE("/cards")
     fun deleteCard(
         @Header("token") token: String,
-        @Body bodyDeleteCard: BodyDeleteCard
+        @Body bodyDeleteCard: BodyDeleteCard1
     ): Call<ResCards>
 
-    data class BodyDeleteCard(
-        val cardIdx: Int
-    )
+
 
     /**
      * 카드 다운받기
@@ -109,9 +115,7 @@ interface Service{
         @Body bodyStartApp: BodyStartApp
     ): Call<ResUser>
 
-    data class BodyStartApp(
-        val uuid: String
-    )
+
 
     /**
      * @param uuid: 보호자 모드로 넘어갈 때 uuid를 받아서 토큰을 생성
@@ -120,12 +124,9 @@ interface Service{
     @GET("/auth/signin")
     fun helperSignIn(
         @Body bodyHelperSingIn: BodyHelperSignIn
-    ): Call<Token>
+    ): Call<ResponseLogin>
 
-    data class BodyHelperSignIn(
-        val uuid: String,
-        val password: String
-    )
+
 
     /**
      * 비밀번호 변경
@@ -133,13 +134,10 @@ interface Service{
     @PUT("/auth")
     fun changePw(
         @Header("token") token: String,
-        @Body bodyChangePw: BodyChangePw
+        @Body bodyChangePw: BodyChangePw1
     ):Call<ResUser>
 
-    data class BodyChangePw(
-        val password: String,
-        val newPassword: String
-    )
+
 
     /**
      * 보호자 전화변경
@@ -152,8 +150,6 @@ interface Service{
         @Body bodyChangePhoneNum: BodyChangePhoneNum
     ): Call<ResUser>
 
-    data class BodyChangePhoneNum(
-        val phoneNum: String
-    )
+
     // endregion
 }

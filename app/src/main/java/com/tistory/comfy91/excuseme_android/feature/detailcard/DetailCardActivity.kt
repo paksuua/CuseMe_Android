@@ -1,17 +1,26 @@
 package com.tistory.comfy91.excuseme_android.feature.detailcard
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.tistory.comfy91.excuseme_android.R
-import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
-import com.tistory.comfy91.excuseme_android.logDebug
-import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
+import com.tistory.comfy91.excuseme_android.*
+import com.tistory.comfy91.excuseme_android.data.CardBean
+import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
+import com.tistory.comfy91.excuseme_android.feature.modcard.ModCardActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_detail_card.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,29 +29,16 @@ class DetailCardActivity : AppCompatActivity() {
     private var player: MediaPlayer? = null
     private var playFlag = false
     private lateinit var recordFileName: String
+    private var card: CardBean? = null
+    private lateinit var dialogBuilder: AlertDialog.Builder
+    private val cardDataRepository = DummyCardDataRepository()
+    private var token = SingletoneToken.getInstance().token
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_card)
-        //itemView.context.newStartActivity(DetailCardActivity::class.java)
-        //var li
 
-        var card=intent.getSerializableExtra("CARDDATA") as DataHelperSortCard
-
-
-        if(!card.imageUrl.isNullOrEmpty()){
-                Glide.with(this).load(card.imageUrl).into(imgDetailCardImg)
-            }
-        tvDetailCardTitle.text = card.title
-
-        if(card.visibility){ // 보일경우 이미지 변경
-           /* val assetsBitmap: Bitmap? = getBitmapFromAssets("flower8.jpg")
-            ctvHelperCheck.setImageBitmap(assetsBitmap)*/
-        }else{ // 안보일 경우
-           /* val assetsBitmap: Bitmap? = getBitmapFromAssets("flower8.jpg")
-            ctvHelperCheck.setImageBitmap(assetsBitmap)*/
-        }
-
-
+        getCard()
         //tvDetailCardDesc.text=descList[0]. 서버에서 desc data 받아옴
         // 음성 데이터 양식 서버에서 받아옴
         /* if(음성 녹음 데이터가 유효하면){
@@ -62,7 +58,7 @@ class DetailCardActivity : AppCompatActivity() {
                 imgDetailCardImg.setImageDrawable(대체이미지)
             }*/
 
-        InitUi()
+        initUi()
 
         ctvDetaliRecordPlay.setOnClickListener {
             if(playFlag){
@@ -73,10 +69,32 @@ class DetailCardActivity : AppCompatActivity() {
         }
     }
 
-    private fun InitUi(){
+    private fun getCard(){
+        card = intent.getSerializableExtra("CARD_DATA") as CardBean
+    }
+
+    private fun initUi(){
+        dialogBuilder = AlertDialog.Builder(this@DetailCardActivity)
+
+        card?.let{
+            Glide.with(this).load(it.imageUrl).into(imgDetailCardImg)
+            tvDetailCardTitle.text = it.title
+            tvDetailCardDesc.text = it.desc
+        }
+
         btnDetailBack.setOnSingleClickListener { finish() }
         btnDetailDelete.setOnSingleClickListener{
-            //todo
+            dialogBuilder
+                .setMessage("카드를 완젼히\n삭제하시겠습니까?")
+                .setPositiveButton("삭제") { _, _ -> deleteCard()}
+                .setNegativeButton("취소") { _, _ -> finish() }
+                .setCancelable(false)
+                .show()
+        }
+        btnDetailEdit.setOnClickListener {
+            val intent = Intent(this@DetailCardActivity, ModCardActivity::class.java)
+            intent.putExtra("CARD_DATA", card)
+            startActivityForResult(intent, MODIFY_CARD)
         }
 
         // Record to the external cache directory for visibility
@@ -87,7 +105,41 @@ class DetailCardActivity : AppCompatActivity() {
         //tvAddcardRecordPlay.setOnClickListener{ play() }
     }
 
-    // Custom method to get assets folder image as bitmap
+
+    private fun deleteCard(){
+        if(token == null){
+            token = "token"
+        }
+        requestDeleteCard(token!!)
+    }
+
+    private fun requestDeleteCard(token: String){
+        cardDataRepository
+            .deleteCard(token, BodyDeleteCard(card!!.cardIdx) )
+            .enqueue(object: Callback<ResCards> {
+                override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                    "request delete card is fail message: ${t.message}".logDebug(this@DetailCardActivity)
+                }
+
+                override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+                    if(response.isSuccessful){
+                        response
+                            .body()!!
+                            .let{res ->
+                                "request delete card is success".logDebug(this@DetailCardActivity)
+                                if(res.success){this@DetailCardActivity.finish()}
+                                else{}
+                            }
+                    }
+                    else{
+                        "request delete card is not success".logDebug(this@DetailCardActivity)
+                    }
+                }
+
+            })
+    }
+
+
     private fun getBitmapFromAssets(fileName: String): Bitmap? {
         return try {
             BitmapFactory.decodeStream(assets.open(fileName))
@@ -114,7 +166,7 @@ class DetailCardActivity : AppCompatActivity() {
                 setDataSource(recordFileName)
                 prepare()
                 start()
-                tvAddcardRecordPlay.isChecked = false
+                ctvAddcardRecordPlay.isChecked = false
             } catch (e: IOException) {
                 "prepare() failed".logDebug(this@DetailCardActivity)
                 //Log.e(TAG, "prepare() failed")
@@ -125,5 +177,35 @@ class DetailCardActivity : AppCompatActivity() {
     private fun stopPlaying() {
         player?.release()
         player = null
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            MODIFY_CARD ->{
+                if(resultCode == Activity.RESULT_OK){
+                    "카드가 수정되었습니다.".toast(this)
+                }
+                else{
+                    "modify card result is not result ok, resultCode: ${resultCode}".logDebug(this@DetailCardActivity)
+                }
+            }
+            DELETE_CARD ->{
+                if(resultCode == Activity.RESULT_OK){
+
+                }
+                else{
+                    "delete card result is not result ok, resultCode: ${resultCode}".logDebug(this@DetailCardActivity)
+                }
+            }
+            else ->{
+                "requestCode : ${requestCode} resultCode : ${resultCode}".logDebug(this@DetailCardActivity)
+            }
+        }
+    }
+    companion object{
+        private const val MODIFY_CARD = 3333
+        private const val DELETE_CARD = 2222
     }
 }
