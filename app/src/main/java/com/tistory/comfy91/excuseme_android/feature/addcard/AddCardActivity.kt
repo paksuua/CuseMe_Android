@@ -67,10 +67,10 @@ class AddCardActivity : AppCompatActivity() {
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         // 녹음 버튼 리스너 설정
-        btnAddcardRecord.setOnClickListener {
+        btnAddcardTogRecord.setOnClickListener {
             it.requestFocus()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            btnAddcardRecord.isVisible = false
+            btnAddcardTogRecord.isVisible = false
         }
         // 녹음 버튼
         btnAddcardTogRecord.setOnClickListener { record() }
@@ -116,10 +116,10 @@ class AddCardActivity : AppCompatActivity() {
 
     private fun record(){
         onRecord(recordFlag)
-        btnAddcardTogRecord.text = when (recordFlag) {
+        /*btnAddcardTogRecord.text = when (recordFlag) {
             true -> "Stop recording"
             false -> "Start recording"
-        }
+        }*/
         recordFlag = !recordFlag
     }
 

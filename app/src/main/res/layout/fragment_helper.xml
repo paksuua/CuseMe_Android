@@ -7,130 +7,241 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".feature.helper.HelperFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cstHelperTop"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="#DFDFDF"
-        app:layout_constraintTop_toTopOf="parent"
+    <Button
+        android:id="@+id/btnHelperUnlock"
+        android:layout_width="60dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/btn_solid_pink"
+        android:text="완료"
+        android:textColor="@color/white_three"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:padding="10dp">
-        <Button
-            android:id="@+id/btnHelperUnlock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textSize="20dp"
-            android:text="완료"/>
-        <Button
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/btnHelperGoSort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="22dp"
+            android:background="@color/white_three"
+            android:text="편집"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnHelperUnlock"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="20dp"
-            android:text="편집"/>
+            app:layout_constraintTop_toTopOf="@+id/btnHelperUnlock" />
+
         <TextView
             android:id="@+id/tvHelper"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="120dp"
-            android:background="#ffffff"
-            android:layout_marginTop="10dp"
-            android:hint="카드를 누르지 않았을 때 뜨는 일러(글)"
-            app:layout_constraintTop_toBottomOf="@+id/btnHelperUnlock"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:fontFamily="@font/notosans_medium"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="#5d413f"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnHelperUnlock" />
+
+        <ImageView
+            android:id="@+id/img_home_quote_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tvHelper"
+            app:layout_constraintEnd_toStartOf="@+id/tvHelper"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvHelper"
+            app:srcCompat="@drawable/img_home_quote_left" />
+
+        <ImageView
+            android:id="@+id/img_home_quote_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tvHelper"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvHelper"
+            app:layout_constraintTop_toTopOf="@+id/tvHelper"
+            app:srcCompat="@drawable/img_home_quote_right" />
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimView"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="6dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mg_home_cumi"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="home_wave_android_360x78.json"
+            app:lottie_loop="true" />
+
+        <ImageView
+            android:id="@+id/mg_home_cumi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="23dp"
+            app:layout_constraintBottom_toTopOf="@+id/rvHelperCard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/img_home_cumi" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHelperCard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="33dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/bg_rvhelper_round"
+        app:layout_constraintBottom_toTopOf="@+id/cstHelperSecond"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cstHelperTop"
-        app:layout_constraintBottom_toTopOf="@+id/cstHelperSecond"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvHelper"/>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/imgHelperCard"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/imgEmpty"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginTop="87dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cstHelperTop"
-        app:layout_constraintBottom_toTopOf="@+id/cstHelperSecond">
-       <!-- <ImageView
-            android:layout_width="228dp"
-            android:layout_height="236dp"
-            />
-        <TextView
-            android:id="@+id/"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="#b2b2b2"
-
-            android:lineSpacingExtra="6sp"
-            android:gravity="center_horizontal"
-            android:fontFamily="@font/notosans_light"
-            android:text="카드가 보여지게 하려면\n카드 관리 탭으로 이동하세요"            />-->
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cstHelperSecond"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:background="@color/mainpink"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/tvHelper">
 
         <ImageView
-            android:id="@+id/btnHelperDeleteCard"
-            android:layout_width="49dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_star_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnHelperInvisCard"
+            android:id="@+id/imgHelperCard"
+            android:layout_width="match_parent"
+            android:layout_height="236dp"
+            android:background="@drawable/img_managementhome_empty"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/btnHelperInvisCard"
-            android:layout_width="49dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_star_half_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnHelperModCard"
-            app:layout_constraintStart_toEndOf="@id/btnHelperDeleteCard"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btnHelperModCard"
-            android:layout_width="49dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_star_border_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnHelperCancleCard"
-            app:layout_constraintStart_toEndOf="@id/btnHelperInvisCard"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btnHelperCancleCard"
-            android:layout_width="49dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_star_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <TextView
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/tv_show_nocard"
+            android:textAlignment="center"
+            android:textSize="16dp"
+            android:textColor="#b2b2b2"
+            android:fontFamily="@font/notosans_regular"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnHelperModCard"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgHelperCard"
+            app:layout_constraintBottom_toBottomOf="@+id/imgEmpty"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/cstHelperSecond"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mainpink"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:paddingTop="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnHelperDeleteCard"
+                android:paddingTop="1dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+                <ImageView
+                    android:layout_marginTop="4dp"
+                    android:layout_width="20dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/btn_managerhome_delete"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="삭제"
+                    android:textColor="@color/white_three"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/notosans_bold"/>
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnHelperInvisCard"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:layout_marginTop="13dp"
+                android:layout_width="36dp"
+                android:layout_height="20dp"
+                android:src="@drawable/btn_managerhome_off"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="숨기기"
+                android:textColor="@color/white_three"
+                android:textSize="10sp"
+                android:fontFamily="@font/notosans_bold"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnHelperModCard"
+            android:paddingTop="1dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:layout_marginTop="2dp"
+                android:layout_width="28.1dp"
+                android:layout_height="26dp"
+                android:src="@drawable/btn_managerhome_modify"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="수정"
+                android:textColor="@color/white_three"
+                android:textSize="10sp"
+                android:fontFamily="@font/notosans_bold"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnHelperCancleCard"
+            android:gravity="center"
+            android:paddingTop="8.8dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/btn_managerhome_cancel"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="취소"
+                android:textColor="@color/white_three"
+                android:textSize="10sp"
+                android:fontFamily="@font/notosans_bold"/>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

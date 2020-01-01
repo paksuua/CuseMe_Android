@@ -12,50 +12,37 @@
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/btn_newcard_close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 카드 추가 버튼 -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/btnAddcardAdd"
+
+    <TextView
         android:layout_width="60dp"
         android:layout_height="32dp"
+        android:background="@drawable/btn_solid_pink"
+        android:gravity="center"
+        android:lineSpacingExtra="6sp"
+        android:text="추가"
+        android:textColor="@color/white_three"
+        android:textSize="18sp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/mainpink"
-        android:paddingTop="3dp"
-        app:cardCornerRadius="17dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAddcardBack"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnAddcardBack">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/notosans_regular"
-                android:gravity="center"
-                android:lineSpacingExtra="6sp"
-                android:text="추가"
-                android:textColor="@color/white_real"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="@+id/btnAddcardBack" />
 
     <!--region 카드 이미지 -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/cdAddcardCardImg"
         android:layout_width="match_parent"
         android:layout_height="295dp"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="18dp"
         android:elevation="6dp"
         app:cardCornerRadius="5dp"
+        app:cardMaxElevation="6dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintStart_toStartOf="@id/btnAddcardBack"
         app:layout_constraintTop_toBottomOf="@+id/btnAddcardBack">
@@ -68,7 +55,8 @@
                 android:id="@+id/imgAddcardCardImg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white_real"
+                android:background="@drawable/bg_add_card_img"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="parent" />
 
@@ -112,97 +100,105 @@
         android:maxLines="1"
         android:textColorHint="@color/pinkish_grey_two"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/imgAddcardCardImg"
-        app:layout_constraintTop_toBottomOf="@id/imgAddcardCardImg" />
+        app:layout_constraintStart_toStartOf="@+id/cdAddcardCardImg"
+        app:layout_constraintTop_toBottomOf="@id/cdAddcardCardImg" />
 
 
+    <!-- region 녹음부분 -->
     <EditText
         android:id="@+id/edtAddcardDesc"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="18dp"
+        android:layout_margin="20dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/notosans_light"
+        android:gravity="top"
         android:hint="카드 내용을 입력해주세요."
         android:inputType="textMultiLine"
+        android:lineSpacingExtra="6sp"
         android:overScrollMode="always"
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical"
         android:scrollHorizontally="false"
+        android:textColor="@color/pinkish_grey_two"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@id/lyAddCardRecord"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toStartOf="@+id/edtAddcardTitle"
         app:layout_constraintTop_toBottomOf="@id/edtAddcardTitle"
-        android:background="@android:color/transparent"
-        android:textSize="16sp"
-        android:textColor="@color/pinkish_grey_two"
-        android:lineSpacingExtra="6sp"
-        android:fontFamily="@font/notosans_light"
-        android:gravity="top"/>
+        app:layout_constraintVertical_bias="0.0" />
 
-
-
-    <!-- region 녹음부분 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lyAddCardRecord"
         android:layout_width="match_parent"
         android:layout_height="179dp"
+        android:padding="20dp"
         app:behavior_hideable="true"
         app:behavior_peekHeight="200dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginHorizontal="20dp">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/btnAddcardRecord"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <ImageView
+            android:id="@+id/btnAddCardTts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_make_tts"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvAddCardRecordNotice"
+            app:layout_constraintBottom_toBottomOf="@+id/tvAddCardRecordNotice"/>
+
+        <TextView
+            android:id="@+id/tvAddCardRecordNotice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/record_notice"
+            app:layout_constraintStart_toStartOf="parent    "
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/black"
+            android:fontFamily="@font/notosans_light"
+            android:lineSpacingExtra="6sp"/>
+
+        <CheckedTextView
+            android:id="@+id/tvAddcardRecordPlay"
+            android:layout_width="28dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="28dp"
+            android:background="@drawable/ckt_add_card_play"
+            android:enabled="false"
+            app:layout_constraintBottom_toBottomOf="@+id/btnAddcardTogRecord"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnAddcardTogRecord" />
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:id="@+id/btnAddcardTogRecord"
+            android:src="@drawable/btn_newcard_recording_selected"
+            android:background="@drawable/circle_background"
+            android:elevation="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tvNotice"
-            app:layout_constraintTop_toBottomOf="@+id/tvNotice" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvAddCardRecordNotice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/record_notice"
-                app:layout_constraintStart_toStartOf="parent    "
-                app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@color/black"
-                android:fontFamily="@font/notosans_light"
-                android:lineSpacingExtra="6sp"/>
-
-            <CheckedTextView
-                android:id="@+id/tvAddcardRecordPlay"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/test_icon_checked"
-                android:enabled="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-
-            <Button
-                android:id="@+id/btnAddcardTogRecord"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="default start record"
-                app:layout_constraintStart_toEndOf="@id/tvAddcardRecordPlay"
-                app:layout_constraintTop_toTopOf="@id/tvAddcardRecordPlay" />
-
-            <Button
-                android:id="@+id/btnAddcardSaveRecord"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="확인"
-                app:layout_constraintBottom_toBottomOf="@id/btnAddcardTogRecord"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btnAddcardTogRecord"
-                app:layout_constraintTop_toTopOf="@+id/btnAddcardTogRecord" />
-
+        <CheckedTextView
+            android:id="@+id/btnAddcardSaveRecord"
+            android:layout_width="81dp"
+            android:layout_height="34dp"
+            android:background="@drawable/ckt_add_card_confirm"
+            android:lineSpacingExtra="6sp"
+            android:text="확인"
+            android:textAlignment="center"
+            android:textColor="@color/white_three"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@id/btnAddcardTogRecord"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnAddcardTogRecord"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- endregion -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.R.drawable.btn_home_close
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
 import com.tistory.comfy91.excuseme_android.feature.download_card.DownloadCardActivity
@@ -23,7 +24,6 @@ class HelperActivity : AppCompatActivity() {
     private lateinit var rotate_forward: Animation
     lateinit var rotate_backward: Animation
     private val transction = supportFragmentManager.beginTransaction()
-
 
     private val TAG = javaClass.name
     private lateinit var dialogBuilder: AlertDialog.Builder
@@ -75,6 +75,7 @@ class HelperActivity : AppCompatActivity() {
                 btnHelperNewCard.isVisible = true
                 btnHelperDownCard.isClickable = true
                 btnHelperNewCard.isClickable = true
+                btnHelperAddCard.setBackgroundResource(btn_home_close)
                 isOpen = true
             } else {
                 backHelperBlur.isVisible=false
@@ -83,6 +84,7 @@ class HelperActivity : AppCompatActivity() {
                 btnHelperAddCard.startAnimation(rotate_forward)
                 btnHelperDownCard.isVisible = false
                 btnHelperNewCard.isVisible = false
+                btnHelperAddCard.setBackgroundResource(R.drawable.btn_managerhome_plus)
                 isOpen = false
             }
         }
@@ -108,8 +110,8 @@ class HelperActivity : AppCompatActivity() {
             startActivity(intent)
         }
         btnHelperNewCard.setOnClickListener {
-            Toast.makeText(applicationContext, "Button NewCard Clicked", Toast.LENGTH_LONG)
-                .show()
+            val intent = Intent(this, AddCardActivity::class.java)
+            startActivity(intent)
             /*val intent = Intent(this, NewCardActivity::class.java)
             startActivity(intent)*/
         }
