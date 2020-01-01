@@ -31,10 +31,11 @@ class DownloadCardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_download_card)
 
-
         uiInit()
 
+    }
 
+    private fun uiInit(){
         edtDownkInputCardNum.doOnTextChanged { text1, start, count, after ->
             if (!text1.isNullOrBlank()) {
                 btnDownNewCard.background = ContextCompat.getDrawable(this, R.drawable.bg_btn_pink)
@@ -44,12 +45,7 @@ class DownloadCardActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    private fun uiInit(){
-        btnDownBack.setOnClickListener {
-            finish()
-        }
+        btnDownBack.setOnClickListener {finish()}
 
         btnDownNewCard.setOnClickListener {
             if(token == null){
@@ -81,7 +77,7 @@ class DownloadCardActivity : AppCompatActivity() {
                                         }
                                 }
                                 else{
-
+                                    "Down Card is not success,  message : ${response.message()}, code : ${response.code()} "
                                 }
                             }
                         })

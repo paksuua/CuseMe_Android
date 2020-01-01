@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckedTextView
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -30,6 +31,7 @@ import com.tistory.comfy91.excuseme_android.isPermissionNotGranted
 import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.startSettingActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
+import kotlinx.android.synthetic.main.activity_mod_card.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -57,7 +59,7 @@ class AddCardActivity : AppCompatActivity() {
 
     private lateinit var audioTimer: AudioTimer
 
-    private lateinit var recordFileName: String
+    private var recordFileName: String? = null
     private lateinit var selectPicUri : Uri
 
     private var token = SingletoneToken.getInstance().token
@@ -92,12 +94,20 @@ class AddCardActivity : AppCompatActivity() {
             it.requestFocus()
 
             btnAddcardTogRecord.isVisible = false
-
             record()
         }
 
         // 실행(count) 버튼 리스너 설정
-        ctvAddcardRecordPlay.setOnClickListener{play()}
+        ctvAddcardRecordPlay.setOnClickListener{
+            if(!isExistRecordFile){
+                record()
+            }
+            else{
+                play()
+            }
+
+        }
+
         ctvAddcardRecordPlay.apply {
             when(isExistRecordFile){
                 true ->  setBackgroundResource(R.drawable.ctv_record)
@@ -108,11 +118,11 @@ class AddCardActivity : AppCompatActivity() {
             }
         }
 
+        // 확인 버튼
         btnAddcardSaveRecord
-            .apply {
-                isChecked = true
-                setOnClickListener {}
-            }
+            .apply {isChecked = true}
+            .setOnClickListener {(it as CheckedTextView).toggle()}
+
 
         // TTS
         btnAddCardTts.setOnClickListener(object: View.OnClickListener{
@@ -120,32 +130,48 @@ class AddCardActivity : AppCompatActivity() {
 
             override fun onClick(view: View?) {
                 val imageView = view as ImageView
-                if(isClicked){
-                    Glide
-                        .with(imageView.context)
-                        .load(R.drawable.btn_newcard_maketts_unselected)
-                        .into(imageView)
-                }
-                else{
-                    Glide
-                        .with(imageView.context)
-                        .load(R.drawable.btn_newcard_maketts_selected)
-                        .into(imageView)
-                }
                 isClicked != isClicked
+                setTTSUI(isClicked, imageView)
+
             }
 
         })
+    }
+
+    private fun setTTSUI(isClicked: Boolean, imageView: ImageView){
+        if(isExistRecordFile){
+            recordFileName = null
+        }
+
+        if(isClicked){
+            Glide
+                .with(imageView.context)
+                .load(R.drawable.btn_newcard_maketts_selected)
+                .into(imageView)
+        }
+        else{
+            Glide
+                .with(imageView.context)
+                .load(R.drawable.btn_newcard_maketts_unselected)
+                .into(imageView)
+        }
+        tvAddcardTTSNotice.isVisible = isClicked
+        ctvAddcardRecordPlay.isVisible = !isClicked
+        circleCounterView.isVisible = !isClicked
+        btnAddcardSaveRecord.isVisible = !isClicked
+
+    }
+
+    private fun setCompleteUi(){
+        ctvAddcardRecordPlay.isChecked = false
+
     }
 
 
     private fun play(){
         if(isExistRecordFile){
             onPlay(playFlag)
-            tvAddCardRecordNotice.text = when (playFlag) {
-                true -> "Stop playing"
-                false -> "Start playing"
-            }
+            ctvAddcardRecordPlay.isChecked = playFlag
             playFlag = !playFlag
         }
         else{
@@ -157,6 +183,7 @@ class AddCardActivity : AppCompatActivity() {
 
     private fun startPlaying() {
         player = MediaPlayer().apply {
+            setOnCompletionListener { setCompleteUi()  }
             try {
                 setDataSource(recordFileName)
                 prepare()
@@ -166,26 +193,32 @@ class AddCardActivity : AppCompatActivity() {
                 "prepare() failed".logDebug(this@AddCardActivity)
                 Log.e(TAG, "prepare() failed")
             }
-        }
+    }
     }
 
     private fun stopPlaying() {
         player?.release()
         player = null
+        ctvAddcardRecordPlay.isChecked = false
     }
 
     private fun record(){
         onRecord(recordFlag)
         when(recordFlag){
             true ->{
-                ctvAddcardRecordPlay.setBackgroundResource(R.drawable.btn_newcard_stop)
-
+                ctvAddcardRecordPlay.isEnabled = true
+                ctvAddcardRecordPlay.setBackgroundResource(R.drawable.ctv_record)
+                ctvAddcardRecordPlay.isChecked = true
             }
             false->{
+                ctvAddcardRecordPlay.isChecked = false
                 if(isExistRecordFile){
                     ctvAddcardRecordPlay.setBackgroundResource(R.drawable.ctv_record)
                 }
-
+                else{
+                    ctvAddcardRecordPlay.isEnabled = false
+                    ctvAddcardRecordPlay.setBackgroundResource(R.drawable.btn_newcard_play_unslected)
+                }
             }
         }
 //        btnAddcardTogRecord.text = when (recordFlag) {
@@ -227,7 +260,10 @@ class AddCardActivity : AppCompatActivity() {
         recorder = null
 
         audioTimer.cancel()
-        btnAddcardSaveRecord.isEnabled = true
+        btnAddcardSaveRecord.apply {
+            isEnabled = true
+            isChecked = false
+        }
         tvAddCardRecordNotice.text = getString(R.string.record_notice)
         ctvAddcardRecordPlay.apply{
             isVisible = true
@@ -408,7 +444,6 @@ class AddCardActivity : AppCompatActivity() {
 
                 })
             // endregion
-
         }
     }
 
@@ -416,12 +451,10 @@ class AddCardActivity : AppCompatActivity() {
         val intent = Intent(this, DetailCardActivity::class.java)
         startActivity(intent)
     }
+
     companion object {
         private const val IMAGE_PICK_CODE = 1000
         private const val PERMISSION_CODE = 1111
 
     }
-
-
-
 }

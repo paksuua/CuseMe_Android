@@ -1,11 +1,7 @@
 package com.tistory.comfy91.excuseme_android.feature.helper
 
 import android.content.Intent
-import android.media.MediaPlayer
-import android.media.MediaRecorder
 import android.os.Bundle
-import android.service.autofill.Validators.not
-import retrofit2.Call
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -14,18 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCards
-import com.tistory.comfy91.excuseme_android.data.SingletoneToken
-import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
-import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
-import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.download_card.DownloadCardActivity
-import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.newStartActivity
 import kotlinx.android.synthetic.main.activity_helper.*
-import retrofit2.Callback
-import retrofit2.Response
 
 class HelperActivity : AppCompatActivity() {
 
@@ -37,16 +25,26 @@ class HelperActivity : AppCompatActivity() {
 
     private lateinit var dialogBuilder: AlertDialog.Builder
 
-    var fromServerData: ArrayList<CardBean> = arrayListOf()
-
-    private val cardDataRepository = ServerCardDataRepository()
+    var disabledCardList: ArrayList<CardBean> = arrayListOf()
+    var allCardList: ArrayList<CardBean> = arrayListOf()
     private lateinit var helperFragment: HelperFragment
+    private lateinit var selectSortFragment: HelperFragment
     private var isOpen = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_helper)
+
+        (intent.getSerializableExtra("DISABLED_CARD"))?.let{
+            disabledCardList = it as ArrayList<CardBean>
+        }
+        (intent.getSerializableExtra("ALL_CARD_DATA"))?.let{
+            allCardList= it as ArrayList<CardBean>
+        }
+        (intent.getSerializableExtra("DOWN_CARD"))?.let{
+
+        }
+
 
         fab_open = AnimationUtils.loadAnimation(applicationContext,
             R.anim.fab_open
@@ -63,64 +61,7 @@ class HelperActivity : AppCompatActivity() {
         initUI()
     }
 
-
-
-    override fun onResume() {
-        super.onResume()
-        initData()
-    }
-
-
-    private fun requestCardsData(token: String){
-        cardDataRepository
-            .getAllCards(token)
-            .enqueue(object: Callback<ResCards> {
-                override fun onFailure(call: Call<ResCards>, t: Throwable) {
-                    "Fail to Get All Card Data message:${t.message}".logDebug(this@HelperActivity)
-                }
-
-                override fun onResponse(
-                    call: Call<ResCards>,
-                    response: Response<ResCards>
-                ) {
-                    if(response.isSuccessful){
-                        response.body()!!.let{res->
-                            "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@HelperActivity)
-
-                            when(res.success){
-                                true->{
-                                    fromServerData.clear()
-                                    fromServerData.addAll(res.data!!)
-                                    helperFragment.helperAdapter.notifyDataSetChanged()
-                                }
-                                false ->{"Get All Card Data  Response is Not Sucess".logDebug(this@HelperActivity)}
-                            }
-                        }
-                    }
-                    else{
-                        response.body()?.let{ it ->
-                            "success: ${it.success} status: ${it.status}, data: ${it.data}, message: ${it.message}".logDebug(this@HelperActivity)
-                        }
-                        "resonser is not success".logDebug(this@HelperActivity)
-                    }
-                }
-
-            })
-    }
-
-    private fun initData(){
-//        SingletoneToken.getInstance().token
-//            ?.let {  }
-
-        //todo("삭제하고 위로 수정")
-        val token = SingletoneToken.getInstance()
-        token.token = "token"
-        token.token?.let{token -> requestCardsData(token)}
-
-
-    }
     private fun initUI(){
-
         btnHelperAddCard.setOnClickListener {
             if (!isOpen) {
                 backHelperBlur.isVisible=true
@@ -161,6 +102,7 @@ class HelperActivity : AppCompatActivity() {
             val intent = Intent(this, DownloadCardActivity::class.java)
             startActivity(intent)
         }
+
         btnHelperNewCard.setOnClickListener {
             Toast.makeText(applicationContext, "Button NewCard Clicked", Toast.LENGTH_LONG)
                 .show()
@@ -177,13 +119,12 @@ class HelperActivity : AppCompatActivity() {
         // 카드관리 프래그먼트로 전환
         btnHelperAllCard.setOnClickListener {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.frameHelper,
-                    SelectSortFragment()
-                )
+                .replace(R.id.frameHelper,selectSortFragment)
                 .commit()
         }
 
-        helperFragment = HelperFragment.newInstance(fromServerData)
+        helperFragment = HelperFragment.newInstance(disabledCardList)
+        selectSortFragment = SelectSortFragment.newInstance(allCardList)
         transction.add(
             R.id.frameHelper,
             helperFragment
@@ -196,10 +137,6 @@ class HelperActivity : AppCompatActivity() {
         if(bottom_flag){
             cstHelperBottom.isVisible=true
             btnHelperAddCard.isVisible=true
-//            cstHelperBottom.setOnClickListener {
-//                btnHelperNewCard.isVisible=true
-//                btnHelperDownCard.isVisible=true
-//            }
         }else{
             cstHelperBottom.isVisible=false
             btnHelperAddCard.isVisible=false
@@ -207,6 +144,4 @@ class HelperActivity : AppCompatActivity() {
             btnHelperDownCard.isVisible=false
         }
     }
-
-
 }
