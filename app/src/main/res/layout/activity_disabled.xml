@@ -112,6 +112,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDisabledShowCardText" />
+    
+    <ImageView
+        android:id="@+id/imgDisabledCardEmpty"
+        android:layout_width="276dp"
+        android:layout_height="236dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="279dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        />
+
+    <TextView
+        android:id="@+id/tvDisabledCardEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@id/imgDisabledCardEmpty"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="16sp"
+        android:textColor="#b2b2b2"
+        android:lineSpacingExtra="6sp"
+        android:gravity="center_horizontal"
+        tools:text="카드가 보여지게 하려면\n카드 관리 탭으로 이동하세요"
+        android:visibility="invisible"/>
 
 
 
