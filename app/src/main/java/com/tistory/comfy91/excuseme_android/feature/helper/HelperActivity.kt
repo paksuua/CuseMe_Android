@@ -29,8 +29,7 @@ class HelperActivity : AppCompatActivity() {
     var disabledCardList: ArrayList<CardBean> = arrayListOf()
     var allCardList: ArrayList<CardBean> = arrayListOf()
     private lateinit var helperFragment: HelperFragment
-    //소연 private lateinit var selectSortFragment: SelectSortFragment
-    private lateinit var selectSortFragment: HelperFragment
+    private lateinit var selectSortFragment: SelectSortFragment
     private var isOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
