@@ -71,19 +71,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edtDownkInputCardNum" />
 
-    <Button
-        android:id="@+id/btnDownMakeCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#00ff0000"
-        android:fontFamily="@font/notosans_light"
-        android:lineSpacingExtra="3sp"
-        android:text="@string/btn_down_input_make_card"
-        android:textColor="#b2b2b2"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDownNewCard" />
+
 
 
 

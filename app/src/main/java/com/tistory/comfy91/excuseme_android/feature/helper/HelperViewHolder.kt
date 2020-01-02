@@ -10,7 +10,7 @@ import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
 
-class HelperViewHolder(itemView: View, private val onClicked: (Boolean) -> Unit): RecyclerView.ViewHolder(itemView){
+class HelperViewHolder(itemView: View, private val onClicked: (Boolean, String) -> Unit): RecyclerView.ViewHolder(itemView){
     private val imgCard: ImageView = itemView.findViewById(R.id.imgHelperCard)
     private val tvCard: TextView = itemView.findViewById(R.id.tvHelperCard)
 
@@ -22,7 +22,7 @@ class HelperViewHolder(itemView: View, private val onClicked: (Boolean) -> Unit)
         itemView.setOnClickListener {
             tvCard.text = data.title
             it.isSelected = !it.isSelected
-            onClicked(it.isSelected)
+            onClicked(it.isSelected, data.desc)
         }
 
        /* when(listenerFlag){

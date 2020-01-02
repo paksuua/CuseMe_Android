@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.isPermissionNotGranted
@@ -63,7 +64,7 @@ class AddCardActivity : AppCompatActivity() {
     private lateinit var selectPicUri : Uri
 
     private var token = SingletoneToken.getInstance().token
-    private val cardDataRepository = ServerCardDataRepository()
+    private val cardDataRepository =DummyCardDataRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,7 +165,6 @@ class AddCardActivity : AppCompatActivity() {
 
     private fun setCompleteUi(){
         ctvAddcardRecordPlay.isChecked = false
-
     }
 
 
@@ -173,6 +173,7 @@ class AddCardActivity : AppCompatActivity() {
             onPlay(playFlag)
             ctvAddcardRecordPlay.isChecked = playFlag
             playFlag = !playFlag
+
         }
         else{
             "녹음 파일 없음".logDebug(this@AddCardActivity)
@@ -212,8 +213,10 @@ class AddCardActivity : AppCompatActivity() {
             }
             false->{
                 ctvAddcardRecordPlay.isChecked = false
+
                 if(isExistRecordFile){
                     ctvAddcardRecordPlay.setBackgroundResource(R.drawable.ctv_record)
+                    btnAddcardSaveRecord.isChecked = true
                 }
                 else{
                     ctvAddcardRecordPlay.isEnabled = false
@@ -260,10 +263,7 @@ class AddCardActivity : AppCompatActivity() {
         recorder = null
 
         audioTimer.cancel()
-        btnAddcardSaveRecord.apply {
-            isEnabled = true
-            isChecked = false
-        }
+
         tvAddCardRecordNotice.text = getString(R.string.record_notice)
         ctvAddcardRecordPlay.apply{
             isVisible = true

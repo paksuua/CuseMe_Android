@@ -1,16 +1,16 @@
 package com.tistory.comfy91.excuseme_android.feature.helper_sort
 
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 import kotlinx.android.synthetic.main.activity_helper_sort.*
+import android.content.Intent
+
+
 
 class HelperSortActivity : AppCompatActivity() {
     val onBtnAllClicked: () -> Unit = {
@@ -28,9 +28,10 @@ class HelperSortActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_helper_sort)
+        setContentView(com.tistory.comfy91.excuseme_android.R.layout.activity_helper_sort)
         getCards()
         uiInit()
+
     } // end onCreate()
 
     private fun uiInit(){

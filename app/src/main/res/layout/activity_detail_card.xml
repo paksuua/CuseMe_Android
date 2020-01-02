@@ -108,7 +108,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lyDetailRecord"
         android:layout_width="match_parent"
-        android:layout_height="185dp"
+        android:layout_height="100dp"
         android:layout_marginTop="16dp"
         android:background="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"

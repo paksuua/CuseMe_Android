@@ -19,6 +19,8 @@ import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
+import com.tistory.comfy91.excuseme_android.feature.helper.SelectSortFragment
+import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortActivity
 import com.tistory.comfy91.excuseme_android.feature.modcard.ModCardActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_detail_card.*
@@ -159,14 +161,18 @@ class DetailCardActivity : AppCompatActivity() {
         }
 
         btnDetailBack.setOnSingleClickListener { finish() }
+
         btnDetailDelete.setOnSingleClickListener{
+
             dialogBuilder
                 .setMessage("카드를 완젼히\n삭제하시겠습니까?")
-                .setPositiveButton("삭제") { _, _ -> deleteCard()}
+                .setPositiveButton("삭제") { _, _ -> deleteCard() }
                 .setNegativeButton("취소") { _, _ -> finish() }
                 .setCancelable(false)
                 .show()
+
         }
+
         btnDetailEdit.setOnClickListener {
             val intent = Intent(this@DetailCardActivity, ModCardActivity::class.java)
             intent.putExtra("CARD_DATA", card)

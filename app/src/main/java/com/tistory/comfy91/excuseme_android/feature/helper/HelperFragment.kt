@@ -37,14 +37,19 @@ class HelperFragment() : Fragment() {
     lateinit var helperAdapter: RvHelperAdapter
     private var disabledCardList: ArrayList<CardBean> = arrayListOf()
     private var selected_card_num = 0
-    private val changeTv: (Boolean) -> Unit = {
-        if(it) selected_card_num ++
+    private val changeBottomBar: (Boolean, String) -> Unit = { b: Boolean, s: String ->
+        tvHelper.text = s
+
+        if(b) {
+            selected_card_num ++
+        }
         else selected_card_num --
 
         if (selected_card_num > 0) (activity as HelperActivity).BottomBarChange(false)
         else (activity as HelperActivity).BottomBarChange(true)
+
     }
-    val onBtnAllClicked: () -> Unit = {
+    val onBtnClicked: () -> Unit = {
         btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
     }
     private var player: MediaPlayer? = null
@@ -74,7 +79,7 @@ class HelperFragment() : Fragment() {
 
     private fun initUi() {
         // DisabledAvtivity로 이동
-        btnSelectSortConfirm?.setOnClickListener{
+        btnHelperUnlock?.setOnClickListener{
             activity?.let{
                 val intent = Intent (it, DisabledActivity::class.java)
                 it.startActivity(intent)
@@ -125,13 +130,18 @@ class HelperFragment() : Fragment() {
             helperAdapter =
                 RvHelperAdapter(
                     it.baseContext,
-                    changeTv
+                    changeBottomBar
                 )
             rvHelperCard.adapter= helperAdapter
             rvHelperCard.layoutManager = GridLayoutManager(it.baseContext, 2)
         }
         helperAdapter.data = disabledCardList
         helperAdapter.notifyDataSetChanged()
+        /// 소연이가 추가한 컬럼
+        helperAdapter.data.clear()
+        helperAdapter.data.addAll(getCarDummy())
+        helperAdapter.notifyDataSetChanged()
+        ///여기까지임
     }
 
 
@@ -233,7 +243,7 @@ class HelperFragment() : Fragment() {
         for(x in 0 until disabledCardList.size ){
             disabledCardList[x].visibility = false
         }
-        onBtnAllClicked()
+        onBtnClicked()
     }
     private fun play(){
         onPlay(playFlag)
@@ -263,6 +273,87 @@ class HelperFragment() : Fragment() {
     private fun stopPlaying() {
         player?.release()
         player = null
+    }
+
+    private fun getCarDummy(): ArrayList<CardBean> {
+
+        var dummyList = arrayListOf(
+            CardBean(
+                0,
+                "first card",
+                "desc11",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            ),
+            CardBean(
+                0,
+                "second card",
+                "desc222",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+
+            ),
+            CardBean(
+                0,
+                "third card",
+                "desc33",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            ),
+            CardBean(
+                0,
+                "fourth card",
+                "desc44",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            ),
+            CardBean(
+                0,
+                "fifth card",
+                "desc55",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            ),
+            CardBean(
+                0,
+                "sixth card",
+                "desc66",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            )
+        )
+
+        return dummyList
     }
 
     companion object{

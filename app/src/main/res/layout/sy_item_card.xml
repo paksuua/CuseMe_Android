@@ -1,47 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="156dp"
-    android:layout_height="180dp"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shadows"
+    card_view:cardCornerRadius="10dp"
     card_view:cardUseCompatPadding="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black_15">
+        android:layout_height="wrap_content"
+        android:id="@+id/panel"
+        android:padding="1dp"
+        android:background="@drawable/card_bg_selector"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imgHelperCard"
             android:layout_width="match_parent"
-            android:layout_height="153dp"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
-        <CheckedTextView
-            android:id="@+id/btnHelperCheck"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="120dp"
-            android:background="@drawable/checked_text_check"
-            card_view:layout_constraintStart_toStartOf="@id/imgHelperCard"
-            card_view:layout_constraintTop_toTopOf="@id/imgHelperCard"
-
-            />
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="10:9"/>
 
         <TextView
             android:id="@+id/tvHelperCard"
             android:layout_width="match_parent"
-            android:layout_height="19dp"
-            android:background="@color/white"
-            android:text="Default Text"
-            card_view:layout_constraintStart_toStartOf="@id/imgHelperCard"
-            card_view:layout_constraintTop_toBottomOf="@id/imgHelperCard"
-            android:textAlignment="center"
-            android:textColor="@color/greyish_brown"
-            android:textSize="16sp"
-            android:fontFamily="@font/notosans_light"
-            android:lineSpacingExtra="6sp"/>
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="Text"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="@id/imgHelperCard"
+            app:layout_constraintTop_toBottomOf="@id/imgHelperCard" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
