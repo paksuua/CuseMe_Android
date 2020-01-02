@@ -1,16 +1,13 @@
 package com.tistory.comfy91.excuseme_android.api
 
 
-import android.opengl.Visibility
 import com.tistory.comfy91.excuseme_android.data.*
 import com.tistory.comfy91.excuseme_android.data.server.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import com.tistory.comfy91.excuseme_android.data.server.BodyChangePw as BodyChangePw1
-import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard as BodyDeleteCard1
 
 interface Service{
 
@@ -80,10 +77,10 @@ interface Service{
         @Part record: MultipartBody.Part
     ): Call<ResCards>
 
-    @DELETE("/cards")
+    @DELETE("/cards/{cardIdx}")
     fun deleteCard(
         @Header("token") token: String,
-        @Body bodyDeleteCard: BodyDeleteCard1
+        @Path("cardIdx") cardIdx: String
     ): Call<ResCards>
 
 

@@ -2,7 +2,6 @@ package com.tistory.comfy91.excuseme_android.feature.detailcard
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
@@ -12,28 +11,22 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.*
 import com.tistory.comfy91.excuseme_android.data.*
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
-import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.feature.disabled.DisabledActivity
 import com.tistory.comfy91.excuseme_android.feature.modcard.ModCardActivity
-import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_detail_card.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Multipart
 import java.io.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class DetailCardActivity : AppCompatActivity() {
@@ -216,7 +209,7 @@ class DetailCardActivity : AppCompatActivity() {
 
     private fun requestDeleteCard(token: String) {
         cardDataRepository
-            .deleteCard(token, BodyDeleteCard(card!!.cardIdx))
+            .deleteCard(token, card!!.cardIdx.toString())
             .enqueue(object : Callback<ResCards> {
                 override fun onFailure(call: Call<ResCards>, t: Throwable) {
                     "request delete card is fail message: ${t.message}".logDebug(this@DetailCardActivity)

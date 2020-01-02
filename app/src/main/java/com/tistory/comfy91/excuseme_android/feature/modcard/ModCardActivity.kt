@@ -191,11 +191,11 @@ class ModCardActivity : AppCompatActivity() {
             start()
             audioTimer =
                 AudioTimer(this@ModCardActivity) {
-                    tvAddCardRecordNotice.text = "${audioTimer.count}초"
+                    tvModCardRecordNotice.text = "${audioTimer.count}초"
                 }
             audioTimer.start()
 
-            ctvAddcardRecordPlay.isVisible = false
+            ctvModcardRecordPlay.isVisible = false
         }
     }
 
@@ -216,14 +216,8 @@ class ModCardActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-
-
-
     private fun setRecordUi(){
-        if(card.audioUrl.isNullOrEmpty()){
+        if(card.audioUrl.isEmpty()){
             ctvModcardAutoRecord.isVisible = false
             ctvModcardRecordPlay.isEnabled = false
         }
@@ -307,7 +301,6 @@ class ModCardActivity : AppCompatActivity() {
 
         }
         cardImageUrl
-
 
         intent.putExtra("MOD_CARD", card)
         this@ModCardActivity.setResult(Activity.RESULT_OK, intent)
@@ -428,9 +421,10 @@ class ModCardActivity : AppCompatActivity() {
                         "Success Get Image from Gallery".logDebug(this@ModCardActivity)
                         cardImageUrl = data?.data?.path
                         imgModCardImg.setImageURI(data?.data)
+                        newcard_photo_mod.isVisible = false
                     }
                     else -> {
-
+                        newcard_photo_mod.isVisible = true
                     }
                 }
             }

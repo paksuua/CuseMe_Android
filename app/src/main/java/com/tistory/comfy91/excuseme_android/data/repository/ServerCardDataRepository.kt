@@ -2,8 +2,6 @@ package com.tistory.comfy91.excuseme_android.data.repository
 
 import com.tistory.comfy91.excuseme_android.api.ServerService
 import com.tistory.comfy91.excuseme_android.data.*
-import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
-import com.tistory.comfy91.excuseme_android.data.server.BodyGetAllCards
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -48,8 +46,8 @@ class ServerCardDataRepository:
         return ServerService.service.editCardDetail(token, cardIdx, title, desc, visibility, image, record)
     }
 
-    override fun deleteCard(token: String, bodyDeleteCard: BodyDeleteCard): Call<ResCards> {
-        return ServerService.service.deleteCard(token, bodyDeleteCard)
+    override fun deleteCard(token: String, cardIdx: String): Call<ResCards> {
+        return ServerService.service.deleteCard(token, cardIdx)
     }
 
     override fun downCard(token: String, serialNum: String): Call<ResDownCard> {
