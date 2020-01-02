@@ -23,10 +23,10 @@
         android:layout_width="60dp"
         android:layout_height="32dp"
         android:background="@drawable/btn_solid_pink"
-        android:fontFamily="@font/notosans_regular"
         android:gravity="center"
         android:lineSpacingExtra="6sp"
         android:text="추가"
+        android:textAlignment="center"
         android:textColor="@color/white_three"
         android:textSize="18sp"
         android:layout_marginEnd="16dp"
@@ -101,7 +101,7 @@
         android:lineSpacingExtra="7sp"
         android:maxLines="1"
         android:textColorHint="@color/pinkish_grey_two"
-        android:textSize="20sp"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="@+id/cdAddcardCardImg"
         app:layout_constraintTop_toBottomOf="@id/cdAddcardCardImg" />
 
@@ -110,8 +110,9 @@
     <EditText
         android:id="@+id/edtAddcardDesc"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:layout_marginTop="18dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/notosans_light"
         android:gravity="top"
@@ -124,23 +125,25 @@
         android:scrollHorizontally="false"
         android:textColor="@color/pinkish_grey_two"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/lyAddCardRecord"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toStartOf="@+id/edtAddcardTitle"
-        app:layout_constraintTop_toBottomOf="@id/edtAddcardTitle"
+
+        app:layout_constraintTop_toBottomOf="@+id/edtAddcardTitle"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lyAddCardRecord"
         android:layout_width="match_parent"
-        android:layout_height="179dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
         android:padding="20dp"
         app:behavior_hideable="true"
         app:behavior_peekHeight="200dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtAddcardDesc">
 
         <TextView
             android:id="@+id/tvAddcardTTSNotice"
@@ -161,20 +164,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/btn_make_tts"
+            app:layout_constraintBottom_toBottomOf="@+id/tvAddCardRecordNotice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvAddCardRecordNotice"
-            app:layout_constraintBottom_toBottomOf="@+id/tvAddCardRecordNotice"/>
+            app:layout_constraintTop_toTopOf="@+id/tvAddCardRecordNotice" />
 
         <TextView
             android:id="@+id/tvAddCardRecordNotice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/record_notice"
-            app:layout_constraintStart_toStartOf="parent    "
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/black"
             android:fontFamily="@font/notosans_light"
-            android:lineSpacingExtra="6sp"/>
+            android:lineSpacingExtra="6sp"
+            android:text="@string/record_notice"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent    "
+            app:layout_constraintTop_toTopOf="parent" />
 
         <CheckedTextView
             android:id="@+id/ctvAddcardRecordPlay"
@@ -188,34 +191,33 @@
             app:layout_constraintTop_toTopOf="@id/btnAddcardTogRecord" />
 
         <ImageView
+            android:id="@+id/btnAddcardTogRecord"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:id="@+id/btnAddcardTogRecord"
-            android:src="@drawable/btn_newcard_recording_selected"
             android:background="@drawable/circle_background"
             android:elevation="3dp"
+            android:src="@drawable/btn_newcard_recording_selected"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.tistory.comfy91.excuseme_android.CircleCounterView
+            android:id="@+id/circleCounterView"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:id="@+id/circleCounterView"
             android:backgroundTint="@color/white_three"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <CheckedTextView
             android:id="@+id/btnAddcardSaveRecord"
             android:layout_width="81dp"
             android:layout_height="34dp"
             android:background="@drawable/ckt_add_card_confirm"
-            android:fontFamily="@font/notosans_regular"
+            android:gravity="center"
             android:lineSpacingExtra="6sp"
             android:text="확인"
             android:textAlignment="center"
@@ -223,7 +225,7 @@
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="@id/btnAddcardTogRecord"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnAddcardTogRecord"/>
+            app:layout_constraintTop_toTopOf="@+id/btnAddcardTogRecord" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- endregion -->

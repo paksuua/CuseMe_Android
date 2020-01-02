@@ -1,38 +1,35 @@
 package com.tistory.comfy91.excuseme_android.feature.helper
 
+import android.content.Intent
+import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 //import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
+import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
+import com.tistory.comfy91.excuseme_android.feature.disabled.CardAdapter
 
-class HelperViewHolder(itemView: View, private val onClicked: (Boolean) -> Unit): RecyclerView.ViewHolder(itemView){
+class HelperViewHolder(itemView: View, private val onClicked: (Boolean, String) -> Unit): RecyclerView.ViewHolder(itemView){
     private val imgCard: ImageView = itemView.findViewById(R.id.imgHelperCard)
     private val tvCard: TextView = itemView.findViewById(R.id.tvHelperCard)
-
     lateinit var dataVisibilityChange: ()-> Unit
 
     fun bind(data: CardBean, listenerFlag: Int){
         Glide.with(itemView).load(data.imageUrl).into(imgCard)
         tvCard.text = data.title
+
         itemView.setOnClickListener {
             tvCard.text = data.title
             it.isSelected = !it.isSelected
-            onClicked(it.isSelected)
+            onClicked(it.isSelected, data.desc)
         }
-
-       /* when(listenerFlag){
-            HELPER_SORT_ACTIVITY -> itemView.setOnSingleClickListener{clicked()}
-            SELECT_SORT_FRAGMENT -> {
-                //ctvCheck.setOnSingleClickListener{clicked()}
-                itemView.setOnSingleClickListener{itemView.context.newStartActivity(
-                    DetailCardActivity::class.java)}
-            }
-        }*/
     }
 
     private fun clicked(){

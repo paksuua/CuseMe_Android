@@ -15,37 +15,47 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.disabled.DisabledActivity
 import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortActivity
 import com.tistory.comfy91.excuseme_android.logDebug
 import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_helper_sort.*
 import kotlinx.android.synthetic.main.fragment_helper.*
-import kotlinx.android.synthetic.main.fragment_select_sort.*
+import kotlinx.android.synthetic.main.sy_item_card.*
 import retrofit2.Call
-import java.io.IOException
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 
 class HelperFragment() : Fragment() {
     lateinit var helperAdapter: RvHelperAdapter
     private var disabledCardList: ArrayList<CardBean> = arrayListOf()
     private var selected_card_num = 0
-    private val changeTv: (Boolean) -> Unit = {
-        if(it) selected_card_num ++
+    private lateinit var item: CardBean
+    private val changeBottomBar: (Boolean, String) -> Unit = { b: Boolean, s: String ->
+        tvHelper.text = s
+
+        if(b) {
+            selected_card_num ++
+        }
         else selected_card_num --
 
         if (selected_card_num > 0) (activity as HelperActivity).BottomBarChange(false)
         else (activity as HelperActivity).BottomBarChange(true)
     }
-    val onBtnAllClicked: () -> Unit = {
-        // 카드 삭제
+    val onBtnClicked: () -> Unit = {
+        btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
+    }
+
+    val onBtnModClicked: () -> Unit = {
+        btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
     }
     private var player: MediaPlayer? = null
     private var playFlag = true
@@ -74,7 +84,7 @@ class HelperFragment() : Fragment() {
 
     private fun initUi() {
         // DisabledAvtivity로 이동
-        btnHelperUnlock.setOnClickListener{
+        btnHelperUnlock?.setOnClickListener{
             activity?.let{
                 val intent = Intent (it, DisabledActivity::class.java)
                 it.startActivity(intent)
@@ -105,11 +115,12 @@ class HelperFragment() : Fragment() {
             }
         }
 
-        // 수정
+        // 수정  //TODO: DetailCardActivity로 이동
         btnHelperModCard.setOnClickListener {
-            //TODO: DetailCardActivity로 이동
+            val item: MutableIterator<CardBean> = disabledCardList.iterator()
             activity?.let{
                 val intent = Intent (it, DetailCardActivity::class.java)
+                intent.putExtra("CARD_DATA", disabledCardList)
                 it.startActivity(intent)
             }
         }
@@ -117,7 +128,7 @@ class HelperFragment() : Fragment() {
         // 취소
         btnHelperCancleCard.setOnClickListener {
             // TODO: 선택한 카드 취소
-            setAllCardNotChecked()
+            setAllCardNotSelected()
         }
 
         // HelperAdapter 초기화
@@ -125,13 +136,18 @@ class HelperFragment() : Fragment() {
             helperAdapter =
                 RvHelperAdapter(
                     it.baseContext,
-                    changeTv
+                    changeBottomBar
                 )
             rvHelperCard.adapter= helperAdapter
             rvHelperCard.layoutManager = GridLayoutManager(it.baseContext, 2)
         }
         helperAdapter.data = disabledCardList
         helperAdapter.notifyDataSetChanged()
+        /// 소연이가 추가한 컬럼
+        helperAdapter.data.clear()
+        helperAdapter.data.addAll(getCarDummy())
+        helperAdapter.notifyDataSetChanged()
+        ///여기까지임
     }
 
 
@@ -218,14 +234,23 @@ class HelperFragment() : Fragment() {
             AlertDialog.BUTTON_NEGATIVE, "삭제"
         ) { dialog, which -> deleteHelperCard() }
         alertDialog.show()
+
+        val btnPositive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        val btnNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+
+        val layoutParams = btnPositive.layoutParams as LinearLayout.LayoutParams
+        layoutParams.weight = 10f
+        btnPositive.layoutParams = layoutParams
+        btnNegative.layoutParams = layoutParams
     }
 
-    private fun setAllCardNotChecked(){
+    private fun setAllCardNotSelected(){
         // until : 끝값은 사용하지 않는다.
-        for(x in 0 until disabledCardList.size ){
-            disabledCardList[x].visibility = false
+        val it: MutableIterator<CardBean> = disabledCardList.iterator()
+        if (it.hasNext()){
+            this.item
         }
-        onBtnAllClicked()
+        onBtnClicked()
     }
     private fun play(){
         onPlay(playFlag)
@@ -256,6 +281,88 @@ class HelperFragment() : Fragment() {
         player?.release()
         player = null
     }
+
+    private fun getCarDummy(): ArrayList<CardBean> {
+
+        var dummyList = arrayListOf(
+            CardBean(
+                0,
+                "first card",
+                "desc11",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            ),
+            CardBean(
+                0,
+                "second card",
+                "desc222",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+
+            ),
+            CardBean(
+                0,
+                "third card",
+                "desc33",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            ),
+            CardBean(
+                0,
+                "fourth card",
+                "desc44",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            ),
+            CardBean(
+                0,
+                "fifth card",
+                "desc55",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            ),
+            CardBean(
+                0,
+                "sixth card",
+                "desc66",
+                "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                0,
+                false,
+                "serialNum",
+                0,
+                ""
+            )
+        )
+
+        return dummyList
+    }
+
 
     companion object{
         fun newInstance(dummyData: ArrayList<CardBean>)=

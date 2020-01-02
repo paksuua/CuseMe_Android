@@ -10,7 +10,7 @@ import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.DataHelperCard
 
-class RvHelperAdapter(private val context: Context, private val onBtnAllClicked: (Boolean)-> Unit): RecyclerView.Adapter<HelperViewHolder>(){
+class RvHelperAdapter(private val context: Context, private val onBtnClicked: (Boolean, String)-> Unit): RecyclerView.Adapter<HelperViewHolder>(){
     var data = arrayListOf<CardBean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperViewHolder {
@@ -18,7 +18,7 @@ class RvHelperAdapter(private val context: Context, private val onBtnAllClicked:
 
         return HelperViewHolder(
             view,
-            onBtnAllClicked
+            onBtnClicked
         )
     }
 
