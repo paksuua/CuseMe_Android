@@ -82,7 +82,7 @@ class HelperActivity : AppCompatActivity() {
                 backHelperBlur.isVisible=false
                 btnHelperDownCard.startAnimation(fab_close)
                 btnHelperNewCard.startAnimation(fab_close)
-                btnHelperAddCard.startAnimation(rotate_forward)
+                btnHelperAddCard.startAnimation(rotate_backward)
                 btnHelperDownCard.isVisible = false
                 btnHelperNewCard.isVisible = false
                 btnHelperAddCard.setBackgroundResource(R.drawable.btn_managerhome_plus)

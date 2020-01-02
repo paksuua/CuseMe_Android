@@ -218,14 +218,6 @@ class HelperFragment() : Fragment() {
             AlertDialog.BUTTON_NEGATIVE, "삭제"
         ) { dialog, which -> deleteHelperCard() }
         alertDialog.show()
-
-        val btnPositive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-        val btnNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-
-        val layoutParams = btnPositive.layoutParams as LinearLayout.LayoutParams
-        layoutParams.weight = 10f
-        btnPositive.layoutParams = layoutParams
-        btnNegative.layoutParams = layoutParams
     }
 
     private fun setAllCardNotChecked(){
