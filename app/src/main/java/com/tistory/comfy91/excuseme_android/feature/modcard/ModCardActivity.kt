@@ -331,33 +331,33 @@ class ModCardActivity : AppCompatActivity() {
 
         //////
 
-        cardDataRepsitory
-            .editCardDetail(token, (card.cardIdx).toString(), card)
-            .enqueue(object: Callback<ResCards> {
-                override fun onFailure(call: Call<ResCards>, t: Throwable) {
-                    "Request Edit Card is Fail, message: ${t.message}".logDebug(this@ModCardActivity)
-                }
-
-                override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
-                    if(response.isSuccessful){
-                        response.body()
-                            ?.let{
-                                "status : ${it.status}, success : ${it.success}message:  ${it.message} data: ${it.data}".logDebug(this@ModCardActivity)
-                                if(it.success){
-                                    intent.putExtra("MODIFY_CARD_DATA", card)
-                                    this@ModCardActivity.setResult(Activity.RESULT_OK, intent)
-                                    finish()
-                                }
-                                else{}
-                            }
-                    }
-                    else{
-                        "Request Edit Card is Not Successful".logDebug(this@ModCardActivity)
-                    }
-                }
-
-            })
-
+//        cardDataRepsitory
+//            .editCardDetail(token, (card.cardIdx).toString(), card)
+//            .enqueue(object: Callback<ResCards> {
+//                override fun onFailure(call: Call<ResCards>, t: Throwable) {
+//                    "Request Edit Card is Fail, message: ${t.message}".logDebug(this@ModCardActivity)
+//                }
+//
+//                override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+//                    if(response.isSuccessful){
+//                        response.body()
+//                            ?.let{
+//                                "status : ${it.status}, success : ${it.success}message:  ${it.message} data: ${it.data}".logDebug(this@ModCardActivity)
+//                                if(it.success){
+//                                    intent.putExtra("MODIFY_CARD_DATA", card)
+//                                    this@ModCardActivity.setResult(Activity.RESULT_OK, intent)
+//                                    finish()
+//                                }
+//                                else{}
+//                            }
+//                    }
+//                    else{
+//                        "Request Edit Card is Not Successful".logDebug(this@ModCardActivity)
+//                    }
+//                }
+//
+//            })
+//
 
     }
 

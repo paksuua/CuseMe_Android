@@ -4,6 +4,7 @@ import com.tistory.comfy91.excuseme_android.api.ServerService
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetAllCards
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
@@ -41,16 +42,20 @@ class ServerCardDataRepository:
     override fun editCardDetail(
         token: String,
         cardIdx: String,
-        cardBean: CardBean
+        title: RequestBody,
+        desc : RequestBody,
+        visibility: Boolean,
+        image: MultipartBody.Part,
+        record: MultipartBody.Part
     ): Call<ResCards> {
-        return ServerService.service.editCardDetail(token, cardIdx, cardBean)
+        return ServerService.service.editCardDetail(token, cardIdx, title, desc, visibility, image, record)
     }
 
     override fun deleteCard(token: String, bodyDeleteCard: BodyDeleteCard): Call<ResCards> {
         return ServerService.service.deleteCard(token, bodyDeleteCard)
     }
 
-    override fun downCard(token: String, serialNum: String): Call<ResCards> {
+    override fun downCard(token: String, serialNum: String): Call<ResDownCard> {
         return ServerService.service.downCard(token, serialNum)
     }
 

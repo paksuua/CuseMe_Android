@@ -2,27 +2,37 @@ package com.tistory.comfy91.excuseme_android.feature.detailcard
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.*
 import com.tistory.comfy91.excuseme_android.data.CardBean
+import com.tistory.comfy91.excuseme_android.data.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
-import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.feature.modcard.ModCardActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_detail_card.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Multipart
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,30 +45,14 @@ class DetailCardActivity : AppCompatActivity() {
     private val cardDataRepository = ServerCardDataRepository()
     private var token = SingletoneToken.getInstance().token
 
+    private lateinit var dialog: AlertDialog.Builder
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_card)
 
+        initData()
         getCard()
-        //tvDetailCardDesc.text=descList[0]. 서버에서 desc data 받아옴
-        // 음성 데이터 양식 서버에서 받아옴
-        /* if(음성 녹음 데이터가 유효하면){
-                음성 녹음 데이터 재생
-            }else{
-                tts로 description 띄우기
-            }*/
-
-
-        /*if(intent.hasExtra("imageUrl")) {
-
-            //이미지 url, title, desc, visibility, 음성파일
-            */
-        /*if(이미지 url 유효하면){
-                Glide.with(this).load(intent.getStringExtra("imageUrl")).into(imgDetailCardImg)
-            }else{
-                imgDetailCardImg.setImageDrawable(대체이미지)
-            }*/
-
         initUi()
 
         ctvDetaliRecordPlay.setOnClickListener {
@@ -70,8 +64,89 @@ class DetailCardActivity : AppCompatActivity() {
         }
     }
 
+    private fun initData(){dialog = AlertDialog.Builder(this)}
+
     private fun getCard(){
-        card = intent.getSerializableExtra("CARD_DATA") as CardBean
+        intent.getSerializableExtra("CARD_DATA")?.let{
+            card = it as CardBean
+            return
+        }
+
+        intent.getSerializableExtra("DOWN_CARD")?.let {
+            card = it as CardBean
+            showSelectVisibility(card!!)
+            return
+        }
+    }
+
+    private fun showSelectVisibility(card: CardBean){
+        dialogBuilder.apply{
+            setMessage("보이는 카드 목록에\n바로 추가하시겠습니까?")
+            setPositiveButton("추가") { dialogInterface, _ ->
+                card.visibility = true
+                requestCardEdit(card,dialogInterface)
+            }
+            setNegativeButton("취소") { _, _ -> finish() }
+            setCancelable(false)
+            show()
+        }
+    }
+
+    private fun requestCardEdit(card: CardBean, dialog: DialogInterface){
+        if(token == null){
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWR4IjozOSwidXVpZCI6ImYzZDViM2E1LTkwYjYtNDVlMy1hOThhLTEyODE5OWNmZTg1MCIsImlhdCI6MTU3NzkwMTA1MywiZXhwIjoxNTc3OTg3NDUzLCJpc3MiOiJnYW5naGVlIn0.QytUhsXf4bJirRR_zF3wdACiNu9ytwUE4mrPSNLCFLk"
+        }
+        readyForRequest(dialog)
+    }
+
+    private fun readyForRequest(dialog: DialogInterface){
+        val title_rb = RequestBody.create(MediaType.parse("text/plain"), card?.title)
+        val content_rb = RequestBody.create(MediaType.parse("text/plain"), card?.desc)
+
+        val options = BitmapFactory.Options()
+        val uri = Uri.fromFile(File(card?.imageUrl))
+        val inputStream: InputStream = contentResolver.openInputStream(uri)!!
+        val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
+        val byteArrayOutPutStream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutPutStream)
+
+        // photo
+        val photoBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutPutStream.toByteArray())
+        val photo_rb = MultipartBody.Part.createFormData("image", File(uri.toString()).name, photoBody)
+
+        // audio
+        val audioFile = File(card?.audioUrl)
+        val audioUri = Uri.fromFile(audioFile)
+        val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
+        val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name,audioBody)
+        "token : $token, title_rb: $title_rb, content_rb: $content_rb".logDebug(this@DetailCardActivity)
+
+        cardDataRepository.editCardDetail(
+            token!!,
+            card?.cardIdx.toString(),
+            title_rb,
+            content_rb,
+            card?.visibility!!,
+            photo_rb,
+            audio_rb
+        ).enqueue(object: Callback<ResCards>{
+            override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                "Fail to Edit Card, message : ${t.message}".logDebug(this@DetailCardActivity)
+            }
+
+            override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+                "code : ${response.code()}, message : ${response.message()}"
+                if(response.isSuccessful){
+                    response.body()?.let{
+                        "status: ${it.status}, success: ${it.success}, message : ${it.message}, data: ${it.data}".logDebug(this@DetailCardActivity)
+                        dialog.dismiss()
+                    }
+                }
+                else{
+                    "response is Not Success = Body is Empty".logDebug(this@DetailCardActivity)
+                }
+            }
+        })
     }
 
     private fun initUi(){

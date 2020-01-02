@@ -72,7 +72,11 @@ interface Service{
     fun editCardDetail(
         @Header("token") token: String,
         @Path("cardIdx") cardIdx: String,
-        @Body cardBean: CardBean
+        @Part("title") title: RequestBody,
+        @Part("content") desc : RequestBody,
+        @Part("visible") visibility: Boolean,
+        @Part image: MultipartBody.Part,
+        @Part record: MultipartBody.Part
     ): Call<ResCards>
 
     @DELETE("/cards")
@@ -89,7 +93,7 @@ interface Service{
     fun downCard(
         @Header("token") token: String,
         @Path("serialNum") serialNum: String
-    ): Call<ResCards>
+    ): Call<ResDownCard>
 
     /**
      * 카드 클릭 횟수 증가

@@ -3,6 +3,7 @@ package com.tistory.comfy91.excuseme_android.data.repository
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
 import okhttp3.MediaType
@@ -195,12 +196,14 @@ class DummyCardDataRepository :
         )
     }
 
-
-
     override fun editCardDetail(
         token: String,
         cardIdx: String,
-        cardBean: CardBean
+        title: RequestBody,
+        desc : RequestBody,
+        visibility: Boolean,
+        image: MultipartBody.Part,
+        record: MultipartBody.Part
     ): Call<ResCards> {
         return Calls.response(
                 ResCards(
@@ -225,8 +228,26 @@ class DummyCardDataRepository :
 
     }
 
-    override fun downCard(token: String, serialNum: String): Call<ResCards> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun downCard(token: String, serialNum: String):  Call<ResDownCard> {
+        return Calls.response(
+            ResDownCard(
+                200,
+                true,
+                "dummy 카드 다운 성공",
+                CardBean(
+                    3,
+                    "장난감",
+                    "장난감을 가지고 놀고싶어요. 자동차 모양 장난감을 좋아한답니다.",
+                    "https://s3sopt25.s3.ap-northeast-2.amazonaws.com/1577892774215.png",
+                    "https://s3sopt25.s3.ap-northeast-2.amazonaws.com/1577892774217.MP3",
+                    0,
+                    false,
+                    "h2kpa5zvkh",
+                    2,
+                    ""
+                )
+            )
+        )
     }
 
     override fun incCardCount(token: String, cardIdx: String): Call<ResCards> {

@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
@@ -55,22 +56,23 @@ class DownloadCardActivity : AppCompatActivity() {
                 ?.let{
                     cardDataRepository
                         .downCard(token!!,it)
-                        .enqueue( object: Callback<ResCards> {
-                            override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                        .enqueue( object: Callback<ResDownCard> {
+                            override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
                                 "Fail to Down Card, message : ${t.message}".logDebug(this@DownloadCardActivity)
                             }
 
                             override fun onResponse(
-                                call: Call<ResCards>,
-                                response: Response<ResCards>
+                                call: Call<ResDownCard>,
+                                response: Response<ResDownCard>
                             ) {
                                 if(response.isSuccessful){
                                     response.body()
                                         ?.let {res ->
                                             "Down Card is Success, status : ${res.status}, success: ${res.success}, message : ${res.message}, data: ${res.data}".logDebug(this@DownloadCardActivity)
                                             if(res.success){
+                                                val card = res.data!!
                                                 val intent = Intent(this@DownloadCardActivity, HelperActivity::class.java)
-                                                intent.putExtra("DOWN_CARD", true)
+                                                intent.putExtra("DOWN_CARD", card)
                                                 startActivity(intent)
                                                 this@DownloadCardActivity.finish()
                                             }

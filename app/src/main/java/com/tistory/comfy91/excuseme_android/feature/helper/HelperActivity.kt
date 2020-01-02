@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
+import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.download_card.DownloadCardActivity
 import com.tistory.comfy91.excuseme_android.newStartActivity
 import kotlinx.android.synthetic.main.activity_helper.*
@@ -42,7 +43,10 @@ class HelperActivity : AppCompatActivity() {
             allCardList= it as ArrayList<CardBean>
         }
         (intent.getSerializableExtra("DOWN_CARD"))?.let{
-
+            val cardBean = it as CardBean
+            val intent = Intent(this, DetailCardActivity::class.java)
+            intent.putExtra("CARD_DATA", cardBean)
+            startActivity(intent)
         }
 
 
