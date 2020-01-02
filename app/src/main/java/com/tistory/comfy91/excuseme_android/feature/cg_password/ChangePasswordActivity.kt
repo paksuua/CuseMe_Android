@@ -75,12 +75,14 @@ class ChangePasswordActivity : AppCompatActivity() {
         }
 
         button.setOnClickListener {
-            if (et_password_new.text != et_password_new_confirm) {
+            if (et_password_new.text == et_password_new_confirm.text) {
                 "비밀번호가 일치하지 않습니다.".toast(this@ChangePasswordActivity)
                 return@setOnClickListener
             }
             changePw()
         }
+
+        btnChangepwBack.setOnClickListener { finish() }
 
 
     }
@@ -111,6 +113,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                         }
                 } else {
                     "response is Not Success = Body is Empty".logDebug(this@ChangePasswordActivity)
+                    "비밀번호가 일치하지 않습니다.".logDebug(this@ChangePasswordActivity)
                 }
             }
 

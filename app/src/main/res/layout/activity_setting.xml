@@ -17,15 +17,6 @@
         />
 
 
-    <View
-        android:layout_height="1.5dp"
-        android:layout_width="0dp"
-        android:background="@drawable/bg_input_underbar_not"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSettingBack"
-        android:layout_marginTop="24dp"
-        />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/btnSettingCgpw"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -67,16 +58,6 @@
 
     </androidx.cardview.widget.CardView>
 
-
-    <View
-        android:layout_height="1.5dp"
-        android:layout_width="0dp"
-        android:background="@drawable/bg_input_underbar_not"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSettingCgpw"
-        />
-
-
     <androidx.cardview.widget.CardView
         android:id="@+id/btnSettingCgPhoneNum"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -117,17 +98,6 @@
 
 
     </androidx.cardview.widget.CardView>
-
-
-    <View
-        android:layout_height="1.5dp"
-        android:layout_width="0dp"
-        android:background="@drawable/bg_input_underbar_not"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSettingCgPhoneNum"
-        />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
