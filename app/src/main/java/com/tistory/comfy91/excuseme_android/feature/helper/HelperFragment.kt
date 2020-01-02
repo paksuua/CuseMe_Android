@@ -45,7 +45,7 @@ class HelperFragment() : Fragment() {
         else (activity as HelperActivity).BottomBarChange(true)
     }
     val onBtnAllClicked: () -> Unit = {
-        btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
+        // 카드 삭제
     }
     private var player: MediaPlayer? = null
     private var playFlag = true
@@ -74,7 +74,7 @@ class HelperFragment() : Fragment() {
 
     private fun initUi() {
         // DisabledAvtivity로 이동
-        btnSelectSortConfirm?.setOnClickListener{
+        btnHelperUnlock.setOnClickListener{
             activity?.let{
                 val intent = Intent (it, DisabledActivity::class.java)
                 it.startActivity(intent)

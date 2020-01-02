@@ -1,10 +1,7 @@
 package com.tistory.comfy91.excuseme_android.data.repository
 
 import com.tistory.comfy91.excuseme_android.api.ServerService
-import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCardDetail
-import com.tistory.comfy91.excuseme_android.data.ResCards
-import com.tistory.comfy91.excuseme_android.data.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.*
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetAllCards
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
@@ -15,7 +12,6 @@ import retrofit2.Call
 class ServerCardDataRepository:
     CardDataRepository{
 
-
     override fun getAllCards(token: String): Call<ResCards> {
         return ServerService.service.getAllCards(token)
     }
@@ -23,6 +19,7 @@ class ServerCardDataRepository:
     override fun getCardDetail(token: String, cardIdx: String): Call<ResCardDetail> {
         return ServerService.service.getCardDetail(token, cardIdx)
     }
+
 
     override fun getDisabledCards(uuid: BodyGetDisabledCard): Call<ResCards> {
         return ServerService.service.getDisabledCards(uuid)
