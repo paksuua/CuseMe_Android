@@ -28,7 +28,7 @@
             android:layout_marginEnd="6dp"
             android:background="@drawable/bg_btn_onoff"
             android:fontFamily="@font/notosans_bold"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:lineSpacingExtra="5sp"
             android:text="ON"
             android:textColor="@color/seafoam_blue"

@@ -28,7 +28,7 @@ fun <T>Context.newStartActivity(toClass: Class<T>){
     startActivity(intent)
 }
 
-fun View.setOnSingleClickListener(debounceTime: Long = 600L, action: ()->Unit){
+fun View.setOnSingleClickListener(debounceTime: Long = 6000L, action: ()->Unit){
     this.setOnClickListener (object: View.OnClickListener{
         private var lastClickTime: Long = 0
 

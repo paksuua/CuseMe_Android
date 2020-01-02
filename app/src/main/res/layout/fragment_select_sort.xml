@@ -6,30 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".feature.helper.SelectSortFragment">
 
-    <Button
-        android:id="@+id/btnSelectSortConfirm"
-        android:layout_width="60dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="38dp"
-        android:background="@drawable/bg_btn_pink"
-        android:text="@string/btn_select_sort_name_confirm"
-        android:textColor="@color/white"
-        android:textSize="18sp"
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="176dp"
+        android:background="@drawable/bg_select_sort_top"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/ctvSelectSortNameSort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="48dp"
+        android:fontFamily="@font/notosans_regular"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/tv_select_sort_name_sort"
+        android:textColor="@color/greyish_two"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/svSelectSortSearch" />
 
     <TextView
         android:id="@+id/btnSelectSortSetting"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:layout_marginTop="42dp"
         android:layout_marginEnd="18dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/btn_managerhome_setting"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintBottom_toTopOf="@+id/svSelectSortSearch"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <SearchView
         android:id="@+id/svSelectSortSearch"
@@ -37,45 +47,44 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/shadows"
+        android:background="@drawable/searchview_stroke"
         android:searchIcon="@drawable/ic_managerhome_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
     <ImageView
         android:id="@+id/img_select_sort_clicked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="62dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="3dp"
         android:src="@drawable/bg_btn_select_sort_clicked"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svSelectSortSearch" />
+        app:layout_constraintBottom_toTopOf="@+id/ctvSelectSortSeeSort"
+        app:layout_constraintStart_toStartOf="parent" />
 
-
-    <TextView
-        android:id="@+id/ctvSelectSortSeeSort"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/notosans_medium"
-        android:lineSpacingExtra="6sp"
-        android:text="@string/tv_select_cort_see_sort"
-        android:textAlignment="center"
-        android:textColor="@color/mainpink"
+    <Button
+        android:id="@+id/imgSelectSortConfirm"
+        android:layout_width="60dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_btn_pink"
+        android:gravity="center"
+        android:text="@string/btn_select_sort_name_confirm"
+        android:textColor="@color/white"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svSelectSortSearch" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/svSelectSortSearch"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/ctvSelectSortCountSort"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
         android:fontFamily="@font/notosans_regular"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="6sp"
@@ -88,40 +97,29 @@
         app:layout_constraintTop_toBottomOf="@+id/svSelectSortSearch" />
 
     <TextView
-        android:id="@+id/ctvSelectSortNameSort"
-        android:layout_width="wrap_content"
+        android:id="@+id/ctvSelectSortSeeSort"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="48dp"
-        android:fontFamily="@font/notosans_regular"
-        android:gravity="center_horizontal"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="27dp"
+        android:fontFamily="@font/notosans_medium"
         android:lineSpacingExtra="6sp"
-        android:text="@string/tv_select_sort_name_sort"
-        android:textColor="@color/greyish_two"
+        android:text="@string/tv_select_cort_see_sort"
+        android:textAlignment="center"
+        android:textColor="@color/mainpink"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svSelectSortSearch" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSelectSort"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ctvSelectSortSeeSort" />
-
+        app:layout_constraintTop_toBottomOf="@+id/svSelectSortSearch" />
 
     <LinearLayout
         android:id="@+id/tvSelectSortAlert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="144dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svSelectSortSearch">
+        app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
         <ImageView
             android:id="@+id/imageView4"
@@ -144,6 +142,16 @@
             android:textColor="#b2b2b2"
             android:textSize="16sp" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSelectSort"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 
 
