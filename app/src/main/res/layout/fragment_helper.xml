@@ -74,6 +74,7 @@
 
 
         <com.airbnb.lottie.LottieAnimationView
+            xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
             android:id="@+id/lottieAnimView"
             android:layout_width="match_parent"
             android:layout_height="80dp"

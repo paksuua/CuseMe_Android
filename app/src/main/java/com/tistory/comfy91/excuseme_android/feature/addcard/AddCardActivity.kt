@@ -1,8 +1,9 @@
 package com.tistory.comfy91.excuseme_android.feature.addcard
 
 import android.Manifest
-import android.animation.ValueAnimator
 import android.app.Activity
+import android.content.ContentProvider
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -24,12 +25,14 @@ import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.isPermissionNotGranted
 import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.startSettingActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
+import kotlinx.android.synthetic.main.activity_mod_card.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -55,15 +58,13 @@ class AddCardActivity : AppCompatActivity() {
     private var isExistRecordFile = false
     private var isCardImageFilled = false
 
-    // timer
     private lateinit var audioTimer: AudioTimer
-    private lateinit var circleAnimation: ValueAnimator
 
     private var recordFileName: String? = null
     private lateinit var selectPicUri : Uri
 
     private var token = SingletoneToken.getInstance().token
-    private val cardDataRepository = ServerCardDataRepository()
+    private val cardDataRepository =DummyCardDataRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,14 +80,6 @@ class AddCardActivity : AppCompatActivity() {
         // Record to the external cache directory for visibility
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
-        circleAnimation = ValueAnimator.ofFloat(0f, 360f)
-            .apply{
-                this.setDuration(10000)
-                .addUpdateListener { animation ->
-                    var value: Float = animation?.getAnimatedValue() as Float
-                    circleCounterView.angle = value
-                }
-            }
     }
 
     private fun initUI() {
@@ -201,7 +194,7 @@ class AddCardActivity : AppCompatActivity() {
                 "prepare() failed".logDebug(this@AddCardActivity)
                 Log.e(TAG, "prepare() failed")
             }
-        }
+    }
     }
 
     private fun stopPlaying() {
@@ -259,7 +252,6 @@ class AddCardActivity : AppCompatActivity() {
                     tvAddCardRecordNotice.text = "${audioTimer.count}초"
                 }
             audioTimer.start()
-            circleAnimation.start()
         }
     }
 
@@ -271,12 +263,6 @@ class AddCardActivity : AppCompatActivity() {
         recorder = null
 
         audioTimer.cancel()
-        circleAnimation.cancel()
-
-        btnAddcardSaveRecord.apply {
-            isEnabled = true
-            isChecked = false
-        }
 
         tvAddCardRecordNotice.text = getString(R.string.record_notice)
         ctvAddcardRecordPlay.apply{
@@ -380,25 +366,15 @@ class AddCardActivity : AppCompatActivity() {
                         selectPicUri = data?.data!!
                         imgAddcardCardImg.setImageURI(selectPicUri)
                         isCardImageFilled = true
-
-                        makeImageViewVisible(false)
                     }
                     else -> {
                         "Fail Get Image From Gallery".logDebug(this@AddCardActivity)
                         isCardImageFilled = false
-                        if(selectPicUri == null){
-                            makeImageViewVisible(true)
-                        }
                     }
                 }
             }
         }
     } // end onActivityResult()
-
-    private fun makeImageViewVisible(bool : Boolean){
-        newcard_photo.isVisible = bool
-        newcard_tv.isVisible = bool
-    }
 
     override fun onStop() {
         super.onStop()

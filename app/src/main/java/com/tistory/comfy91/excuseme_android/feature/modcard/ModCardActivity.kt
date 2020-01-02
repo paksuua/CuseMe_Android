@@ -6,9 +6,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.media.MediaRecorder
-import android.net.Uri
 import android.os.Bundle
-import android.telecom.Call
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -16,21 +14,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
-import com.tistory.comfy91.excuseme_android.*
+import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.addcard.AudioTimer
+import com.tistory.comfy91.excuseme_android.isPermissionNotGranted
+import com.tistory.comfy91.excuseme_android.logDebug
+import com.tistory.comfy91.excuseme_android.startSettingActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
+import kotlinx.android.synthetic.main.activity_detail_card.*
 import kotlinx.android.synthetic.main.activity_mod_card.btnModcardMod
 import kotlinx.android.synthetic.main.activity_mod_card.btnModcardBack
 import kotlinx.android.synthetic.main.activity_mod_card.*
 import okhttp3.MediaType
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.io.File
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,10 +45,10 @@ class ModCardActivity : AppCompatActivity() {
     private lateinit var dialogBuilder: AlertDialog.Builder
     private var token = SingletoneToken.getInstance().token
     private val cardDataRepsitory = ServerCardDataRepository()
+    private var isCardImageFilled = true
     private var isCardAudioFilled = true
     private var isExistRecordFile = false
-    private  var newRecordFileName: String? = null
-    private var cardImageUrl: String? = null
+    private lateinit var recordFileName: String
 
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
@@ -77,17 +82,18 @@ class ModCardActivity : AppCompatActivity() {
                 ""
             )
         }
+
+        // Record to the external cache directory for visibility
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
     }
 
     private fun initUi() {
-        if(!card.imageUrl.isNullOrEmpty()){
-            newcard_photo_mod.isVisible = false
-            Glide.with(this).load(card.imageUrl).into(imgModCardImg)
-        }
-        edtModcardTitle.setText(card.title)
-        edtModcardDesc.setText(card.desc)
+        Glide.with(this).load(card.imageUrl).into(imgDetailCardImg)
+        tvDetailCardTitle.text = card.title
+        tvDetailCardDesc.text = card.desc
+        //todo("on,off")
 
-        // 녹음 관련 ui 설정
         setRecordUi()
 
         dialogBuilder = AlertDialog.Builder(this)
@@ -97,40 +103,45 @@ class ModCardActivity : AppCompatActivity() {
         }
 
 
-        // 최종 수정 버튼
         btnModcardMod.setOnClickListener {
             when(isAllCardInfoFilled()){
-                true ->{editCard()}
+                true ->{
+                    card.apply {
+                        this.title = edtModcardTitle.text.toString()
+                        this.desc = edtModcardDesc.text.toString()
+
+                    }
+                    editCard()}
                 false ->{
-                    "카드 정보가 불충분합니다".toast(this@ModCardActivity)
+                    "카드 정보가 불충분합니다".logDebug(this@ModCardActivity)
                 }
             }
         }
 
-        imgModCardImg.setOnClickListener {
+
+        imgModcardCardImg.setOnClickListener {
             getImageFromAlbum()
         }
-    }
 
-    // 모든 데이터 채워졌는지 확인
-    private fun isAllCardInfoFilled(): Boolean {
-        var result = true
-        if (edtModcardTitle.text.isNullOrEmpty()) {
-            result = false
+        // 녹음 버튼 리스너 설정
+        btnModcardTogRecord.setOnClickListener {
+            it.requestFocus()
+
+            btnModcardTogRecord.isVisible = false
+            record()
         }
-        else if (edtModcardDesc.text.isNullOrEmpty()) {
-            result = false
-        }
-        else if(!cardImageUrl.isNullOrEmpty()){
-            result = false
-        }
-        return result
+
+        // 실행(count) 버튼 리스너 설정
+        ctvAddcardRecordPlay.setOnClickListener{ play() }
+
+
+
     }
 
     private fun play(){
-        if(!card.audioUrl.isNullOrEmpty()){
+        if(isExistRecordFile){
             onPlay(playFlag)
-            tvModCardRecordNotice.text = when (playFlag) {
+            tvAddCardRecordNotice.text = when (playFlag) {
                 true -> "Stop playing"
                 false -> "Start playing"
             }
@@ -146,7 +157,7 @@ class ModCardActivity : AppCompatActivity() {
     private fun startPlaying() {
         player = MediaPlayer().apply {
             try {
-                setDataSource(newRecordFileName)
+                setDataSource(recordFileName)
                 prepare()
                 start()
                 ctvAddcardRecordPlay.isChecked = false
@@ -175,11 +186,10 @@ class ModCardActivity : AppCompatActivity() {
     private fun onRecord(start: Boolean) = if (start) startRecording() else stopRecording()
 
     private fun startRecording() {
-        setRecordFileName()
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setOutputFile(newRecordFileName)
+            setOutputFile(recordFileName)
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
 
             try {
@@ -191,11 +201,11 @@ class ModCardActivity : AppCompatActivity() {
             start()
             audioTimer =
                 AudioTimer(this@ModCardActivity) {
-                    tvModCardRecordNotice.text = "${audioTimer.count}초"
+                    tvAddCardRecordNotice.text = "${audioTimer.count}초"
                 }
             audioTimer.start()
 
-            ctvModcardRecordPlay.isVisible = false
+            ctvAddcardRecordPlay.isVisible = false
         }
     }
 
@@ -216,8 +226,14 @@ class ModCardActivity : AppCompatActivity() {
         }
     }
 
+
+
+
+
+
+
     private fun setRecordUi(){
-        if(card.audioUrl.isEmpty()){
+        if(card.audioUrl.isNullOrEmpty()){
             ctvModcardAutoRecord.isVisible = false
             ctvModcardRecordPlay.isEnabled = false
         }
@@ -226,25 +242,9 @@ class ModCardActivity : AppCompatActivity() {
             ctvModcardRecordPlay.isEnabled = true
         }
 
-        // TTS 버튼
         ctvModcardAutoRecord.setOnClickListener {
             ctvModcardAutoRecord.isVisible = !ctvModcardAutoRecord.isVisible
         }
-
-        // 녹음 버튼 리스너 설정
-        btnModcardTogRecord.setOnClickListener {
-            it.requestFocus()
-            btnModcardTogRecord.isVisible = false
-            record()
-        }
-
-        // 실행(count) 버튼 리스너 설정
-        ctvModcardRecordPlay.setOnClickListener{ play() }
-    }
-
-    private fun setRecordFileName(){
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        newRecordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
     }
 
     private fun getImageFromAlbum() {
@@ -254,6 +254,24 @@ class ModCardActivity : AppCompatActivity() {
             intent,
             IMAGE_PICK_CODE
         )
+    }
+
+
+    private fun isAllCardInfoFilled(): Boolean {
+        var result = true
+        if (edtModcardTitle.text.isNullOrEmpty()) {
+            result = false
+        }
+        else if (edtModcardDesc.text.isNullOrEmpty()) {
+            result = false
+        }
+        else if(!isCardImageFilled){
+            result = false
+        }
+        else if(!isCardAudioFilled) {
+            result = false
+        }
+        return result
     }
 
     override fun onRequestPermissionsResult(
@@ -295,16 +313,10 @@ class ModCardActivity : AppCompatActivity() {
 
 
     private fun editCard(){
-        card.title = edtModcardTitle.text.toString()
-        card.desc =  edtModcardDesc.text.toString()
-        newRecordFileName?.let{
-
+        if(token == null){
+            token = "string"
         }
-        cardImageUrl
-
-        intent.putExtra("MOD_CARD", card)
-        this@ModCardActivity.setResult(Activity.RESULT_OK, intent)
-
+        reqEditCard(token!!)
     }
 
     private fun reqEditCard(token: String){
@@ -316,16 +328,8 @@ class ModCardActivity : AppCompatActivity() {
 
         val options = BitmapFactory.Options()
 
-        var audio_rb: MultipartBody.Part? = null
-        if(!newRecordFileName.isNullOrEmpty()){
-            val audioFile = File(newRecordFileName)
-            val audioUri = Uri.fromFile(File(newRecordFileName))
-            val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
-            audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name,audioBody)
-        }
 
-
-
+        //////
 
 //        cardDataRepsitory
 //            .editCardDetail(token, (card.cardIdx).toString(), card)
@@ -353,7 +357,7 @@ class ModCardActivity : AppCompatActivity() {
 //                }
 //
 //            })
-
+//
 
     }
 
@@ -419,12 +423,12 @@ class ModCardActivity : AppCompatActivity() {
                     Activity.RESULT_OK -> {
                         // 정상적으로 이미지를 가져온 경우
                         "Success Get Image from Gallery".logDebug(this@ModCardActivity)
-                        cardImageUrl = data?.data?.path
-                        imgModCardImg.setImageURI(data?.data)
-                        newcard_photo_mod.isVisible = false
+                        imgModcardCardImg.setImageURI(data?.data)
+                        isCardImageFilled = true
+
                     }
                     else -> {
-                        newcard_photo_mod.isVisible = true
+                        isCardImageFilled = false
                     }
                 }
             }
@@ -438,6 +442,7 @@ class ModCardActivity : AppCompatActivity() {
         stopPlaying()
     }
 
+
     companion object {
         private const val IMAGE_PICK_CODE = 1000
         private const val PERMISSION_CODE = 1111
@@ -445,4 +450,7 @@ class ModCardActivity : AppCompatActivity() {
         private const val IMAGE_PERMISSON = 3333
 
     }
+
+
+
 }

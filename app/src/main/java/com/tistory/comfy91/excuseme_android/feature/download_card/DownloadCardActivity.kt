@@ -71,7 +71,7 @@ class DownloadCardActivity : AppCompatActivity() {
                                             "Down Card is Success, status : ${res.status}, success: ${res.success}, message : ${res.message}, data: ${res.data}".logDebug(this@DownloadCardActivity)
                                             if(res.success){
                                                 val card = res.data!!
-                                                val intent = Intent(this@DownloadCardActivity, DetailCardActivity::class.java)
+                                                val intent = Intent(this@DownloadCardActivity, HelperActivity::class.java)
                                                 intent.putExtra("DOWN_CARD", card)
                                                 startActivity(intent)
                                                 this@DownloadCardActivity.finish()

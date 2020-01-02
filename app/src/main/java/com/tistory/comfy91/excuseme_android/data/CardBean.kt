@@ -14,13 +14,13 @@ data class CardBean(
     var desc: String,
 
     @SerializedName("image")
-    var imageUrl: String,
+    val imageUrl: String,
 
     @SerializedName("record")
-    var audioUrl: String,
+    val audioUrl: String,
 
     @SerializedName("count")
-    var count: Int,
+    val count: Int,
 
     @SerializedName("visible")
     var visibility: Boolean,
