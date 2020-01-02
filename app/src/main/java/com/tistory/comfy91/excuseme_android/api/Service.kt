@@ -79,10 +79,10 @@ interface Service{
         @Part record: MultipartBody.Part
     ): Call<ResCards>
 
-    @DELETE("/cards")
+    @DELETE("/cards/{cardIdx}")
     fun deleteCard(
         @Header("token") token: String,
-        @Body bodyDeleteCard: BodyDeleteCard1
+        @Path ("cardIdx") cardIdx: String
     ): Call<ResCards>
 
 

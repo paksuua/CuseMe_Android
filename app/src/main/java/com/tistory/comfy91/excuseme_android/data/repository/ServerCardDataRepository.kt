@@ -51,8 +51,8 @@ class ServerCardDataRepository:
         return ServerService.service.editCardDetail(token, cardIdx, title, desc, visibility, image, record)
     }
 
-    override fun deleteCard(token: String, bodyDeleteCard: BodyDeleteCard): Call<ResCards> {
-        return ServerService.service.deleteCard(token, bodyDeleteCard)
+    override fun deleteCard(token: String, cardIdx: String): Call<ResCards> {
+        return ServerService.service.deleteCard(token, cardIdx)
     }
 
     override fun downCard(token: String, serialNum: String): Call<ResDownCard> {

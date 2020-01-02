@@ -100,12 +100,8 @@ class AddCardActivity : AppCompatActivity() {
 
         // 실행(count) 버튼 리스너 설정
         ctvAddcardRecordPlay.setOnClickListener{
-            if(!isExistRecordFile){
-                record()
-            }
-            else{
-                play()
-            }
+            if(!isExistRecordFile){ record()}
+            else{play()}
 
         }
 
@@ -133,7 +129,6 @@ class AddCardActivity : AppCompatActivity() {
                 val imageView = view as ImageView
                 isClicked != isClicked
                 setTTSUI(isClicked, imageView)
-
             }
 
         })

@@ -42,7 +42,7 @@ interface CardDataRepository {
     ): Call<ResCards>
 
 
-    fun deleteCard(token: String, bodyDeleteCard: BodyDeleteCard): Call<ResCards>
+    fun deleteCard(token: String, cardIdx: String): Call<ResCards>
 
     fun downCard(token: String, serialNum: String): Call<ResDownCard>
 

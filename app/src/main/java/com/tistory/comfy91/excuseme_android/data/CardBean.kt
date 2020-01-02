@@ -17,7 +17,7 @@ data class CardBean(
     val imageUrl: String,
 
     @SerializedName("record")
-    val audioUrl: String,
+    var audioUrl: String,
 
     @SerializedName("count")
     val count: Int,

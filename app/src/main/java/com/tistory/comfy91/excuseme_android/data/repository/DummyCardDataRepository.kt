@@ -216,7 +216,7 @@ class DummyCardDataRepository :
 
     }
 
-    override fun deleteCard(token: String, bodyDeleteCard: BodyDeleteCard): Call<ResCards> {
+    override fun deleteCard(token: String, cardIdx:String): Call<ResCards> {
         return Calls.response(
             ResCards(
                 200,
