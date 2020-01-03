@@ -92,7 +92,7 @@
 ## 3. 핵심 기능 구현
 
 
-⭐️Zoom In / Zoom Out
+⭐️Zoom In / Zoom Out - 카드의 사이즈를 변경 할 수 있는 기능.  1-3개로 카드 확대, 축소 가능
 
 ```
 val mScaleGestureDetector = ScaleGestureDetector(
