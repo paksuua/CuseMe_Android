@@ -147,7 +147,7 @@ val mScaleGestureDetector = ScaleGestureDetector(
 ```
 
 
-⭐️Long Click / Drag&Drop
+2️⃣ Long Click / Drag&Drop
 
 ```
 class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDirs: Int, swipeDirs: Int)
@@ -181,7 +181,7 @@ class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDir
 ```
 
 
-⭐️중복 터치 방지
+3️⃣ 중복 터치 방지
 
 ```
 btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
@@ -205,7 +205,7 @@ btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
 ```
 
 
-⭐️TTS
+4️⃣ TTS
 
 ```
 class TTSActivity : AppCompatActivity() {
@@ -232,7 +232,7 @@ class TTSActivity : AppCompatActivity() {
 ```
             
             
-⭐️애니메이션
+5️⃣ 애니메이션
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
@@ -257,7 +257,7 @@ class TTSActivity : AppCompatActivity() {
 ```
 
 
-⭐️Sort(보이는 순, 빈도순, 이름순) - 발달장애인의 보호자가 카드를 정렬하는 기능. 
+6️⃣ Sort(보이는 순, 빈도순, 이름순) - 발달장애인의 보호자가 카드를 정렬하는 기능. 
                                발달장애인에게 보이는 순서, 발달장애인이 자주 사용하는 순서, 카드의 이름 순으로 정렬 가능
 
 ```
@@ -273,7 +273,7 @@ private fun dataSort(sortStandard: Int) {
 
 ```
 
-⭐️Searching - 카드의 Title을 검색 할 수 있는 기능(영문 대소문자 포함)
+7️⃣ Searching - 카드의 Title을 검색 할 수 있는 기능(영문 대소문자 포함)
 
 ```
     override fun getFilter(): Filter {
