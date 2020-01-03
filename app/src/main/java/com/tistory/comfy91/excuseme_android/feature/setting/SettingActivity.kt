@@ -20,7 +20,7 @@ class SettingActivity : AppCompatActivity() {
     private fun initUi(){
         btnSettingBack.setOnClickListener { finish() }
         btnSettingCgpw.setOnClickListener{this.newStartActivity(ChangePasswordActivity::class.java)}
-        btnSettingCgPhoneNum.setOnClickListener { this.newStartActivity(ChangePhoneNumActivity::class.java) }
+//        btnSettingCgPhoneNum.setOnClickListener { this.newStartActivity(ChangePhoneNumActivity::class.java) }
     }
 }
 

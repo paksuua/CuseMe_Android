@@ -3,13 +3,13 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cvHelperSortItemCard"
     android:layout_width="156dp"
-    android:layout_height="180dp"
-    card_view:cardUseCompatPadding="true">
+    android:layout_height="200dp"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black_15">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/imgHelperCard"
@@ -19,37 +19,33 @@
             card_view:layout_constraintTop_toBottomOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <CheckedTextView
             android:id="@+id/btnHelperCheck"
-            android:layout_width="40dp"
+            android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginStart="110dp"
             android:layout_marginTop="6dp"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_btn_onoff"
+            android:background="@drawable/checked_text_check"
             android:fontFamily="@font/notosans_bold"
             android:gravity="center"
             android:lineSpacingExtra="5sp"
-            android:text="ON"
-            android:textColor="@color/seafoam_blue"
-            android:textSize="14sp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvHelperCard"
-            android:layout_width="156dp"
+            android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:background="@color/white"
             android:fontFamily="@font/notosans_light"
             android:lineSpacingExtra="6sp"
             android:text="Default Text"
             android:textAlignment="center"
             android:textColor="@color/greyish_brown"
             android:textSize="16sp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintHorizontal_bias="0.0"
             card_view:layout_constraintStart_toStartOf="@id/imgHelperCard"
             card_view:layout_constraintTop_toBottomOf="@id/imgHelperCard" />
 

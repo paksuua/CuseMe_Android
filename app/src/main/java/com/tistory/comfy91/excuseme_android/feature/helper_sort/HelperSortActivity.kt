@@ -7,9 +7,15 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.tistory.comfy91.excuseme_android.data.CardBean
+import com.tistory.comfy91.excuseme_android.data.ResCards
 import kotlinx.android.synthetic.main.activity_helper_sort.*
-import android.content.Intent
-
+import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeAllCards
+import com.tistory.comfy91.excuseme_android.logDebug
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class HelperSortActivity : AppCompatActivity() {
@@ -17,7 +23,7 @@ class HelperSortActivity : AppCompatActivity() {
         btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
     }
     private val rvHelperSortCardAdapter =
-        RvHelperSortAdapter(
+        RealHelperSortAdapter(
             this,
             onBtnAllClicked,
             HelperSortCardViewHolder.HELPER_SORT_ACTIVITY
@@ -25,6 +31,8 @@ class HelperSortActivity : AppCompatActivity() {
     private val rvLayoutManager = GridLayoutManager(this@HelperSortActivity, 2)
 
     private var cardList: ArrayList<CardBean> = arrayListOf()
+    private val cardDataRepository = ServerCardDataRepository()
+    private var token = SingletoneToken.getInstance().token
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +71,6 @@ class HelperSortActivity : AppCompatActivity() {
         btnHelperSortDeleteCard.setOnClickListener{deleteSelectedCard()}
 
         btnHelperSortBack.setOnClickListener { showDialog()}
-
     }
 
     private fun showDialog(){
@@ -72,7 +79,7 @@ class HelperSortActivity : AppCompatActivity() {
                 this.setMessage("변경 내용을\n저장하시겠습니까?")
                 this.setPositiveButton("저장"
                 ) { _, _ ->
-                    //todo("변경된 카드 서버에 전송")
+                    editAllCards()
                     this@HelperSortActivity.finish()
                 }
 
@@ -80,16 +87,15 @@ class HelperSortActivity : AppCompatActivity() {
                 ) { _, _ -> this@HelperSortActivity.finish() }
             }
             .show()
-
-
     }
 
     private fun getCards(){
         intent.getSerializableExtra("CARD_DATA")
             ?.let{
+                cardList.sortByDescending {vid -> vid.visibility }
                 cardList.addAll(it as ArrayList<CardBean>)
-                rvHelperSortCardAdapter.searchedList.clear()
-                rvHelperSortCardAdapter.searchedList.addAll(cardList)
+                rvHelperSortCardAdapter.data.clear()
+                rvHelperSortCardAdapter.data.addAll(cardList)
                 rvHelperSortCardAdapter.notifyDataSetChanged()
             }
     }
@@ -114,14 +120,52 @@ class HelperSortActivity : AppCompatActivity() {
     }
 
     private fun deleteSelectedCard() {
-        val it: MutableIterator<CardBean> = cardList.iterator()
+        val deletedList = arrayListOf<CardBean>()
+        deletedList.addAll(cardList)
+
+        val it: MutableIterator<CardBean> = deletedList.iterator()
         while(it.hasNext()){
             if(it.next().visibility){
                 it.remove()
             }
         }
+
+        rvHelperSortCardAdapter.data = deletedList
         rvHelperSortCardAdapter.notifyDataSetChanged()
     }
+
+
+    private fun editAllCards(){
+        if(token == null){
+            token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWR4IjozOSwidXVpZCI6ImYzZDViM2E1LTkwYjYtNDVlMy1hOThhLTEyODE5OWNmZTg1MCIsImlhdCI6MTU3NzkwMTA1MywiZXhwIjoxNTc3OTg3NDUzLCJpc3MiOiJnYW5naGVlIn0.QytUhsXf4bJirRR_zF3wdACiNu9ytwUE4mrPSNLCFLk"
+        }
+        cardDataRepository.changeAllCards(
+            token!!,
+            BodyChangeAllCards(
+               rvHelperSortCardAdapter.data as List<CardBean>
+            )
+        ).enqueue(object: Callback<ResCards> {
+            override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                "Fail to Edit All Cards, message : ${t.message}".logDebug(this@HelperSortActivity)
+            }
+
+            override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+                "code : ${response.code()}, message : ${response.message()}".logDebug(this@HelperSortActivity)
+                if(response.isSuccessful){
+                    response.body()?.let{
+                        "status : ${it.status}, success : ${it.success}, message : ${it.message}"
+                        this@HelperSortActivity.finish()
+                    }
+
+                }
+                else{
+                  "resonse is Not Success = Body is Empty".logDebug(this@HelperSortActivity)
+                }
+            }
+
+        })
+    }
+
 
 
 } // end class

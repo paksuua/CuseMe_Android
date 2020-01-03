@@ -1,9 +1,11 @@
 package com.tistory.comfy91.excuseme_android.data.repository
 
+import android.widget.ResourceCursorAdapter
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeAllCards
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
 import okhttp3.MediaType
@@ -44,6 +46,18 @@ import retrofit2.mock.Calls
 
 class DummyCardDataRepository :
     CardDataRepository {
+    override fun changeAllCards(
+        token: String,
+        bodyChangeAllCards: BodyChangeAllCards
+    ): Call<ResCards> {
+        return Calls.response(
+            ResCards(200,
+                true,
+                "카드 수정 성공",
+                listOf()
+            )
+        )
+    }
 
     override fun addCard(
         token: String,

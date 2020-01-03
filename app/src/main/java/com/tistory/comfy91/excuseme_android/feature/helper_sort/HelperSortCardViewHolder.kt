@@ -17,7 +17,7 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
     RecyclerView.ViewHolder(itemView) {
     private val imgCard: ImageView = itemView.findViewById(R.id.imgHelperCard)
     private val tvCard: TextView = itemView.findViewById(R.id.tvHelperCard)
-    private val btnHelperCheck: Button = itemView.findViewById(R.id.btnHelperCheck)
+    private val btnHelperCheck: CheckedTextView = itemView.findViewById(R.id.btnHelperCheck)
     private var isTrueBtnHelperCheck = false
     lateinit var dataVisibilityChange: () -> Unit
 
@@ -27,15 +27,7 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
         Glide.with(itemView).load(data.imageUrl).into(imgCard)
         tvCard.text = data.title
 
-
-        if(data.visibility){
-            btnHelperCheck.text = "ON"
-        }
-        else{
-            btnHelperCheck.text = "OFF"
-        }
-
-
+        btnHelperCheck.isChecked = data.visibility
 
         when(listenerFlag){
             HELPER_SORT_ACTIVITY -> itemView.setOnSingleClickListener{clicked()}

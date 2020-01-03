@@ -54,7 +54,8 @@
         android:layout_marginStart="36dp"
         android:layout_marginBottom="30dp"
         android:layout_marginEnd="36dp"
-        android:background="@drawable/bg_btn_helpersortdeletecard" />
+        android:background="@drawable/bg_btn_helpersortdeletecard"
+        android:visibility="invisible"/>
 
 
 

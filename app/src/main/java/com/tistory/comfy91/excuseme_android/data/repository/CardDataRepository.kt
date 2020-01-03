@@ -5,6 +5,7 @@ import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeAllCards
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
 import okhttp3.MultipartBody
@@ -47,6 +48,8 @@ interface CardDataRepository {
     fun downCard(token: String, serialNum: String): Call<ResDownCard>
 
     fun incCardCount(token: String, cardIdx: String): Call<ResCards>
+
+    fun changeAllCards(token: String, bodyChangeAllCards: BodyChangeAllCards): Call<ResCards>
 
     // endregion 카드
 }

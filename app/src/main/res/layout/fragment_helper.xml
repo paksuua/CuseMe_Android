@@ -43,7 +43,6 @@
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
-            android:text="TextView"
             android:textAlignment="center"
             android:textColor="#5d413f"
             android:textSize="18sp"

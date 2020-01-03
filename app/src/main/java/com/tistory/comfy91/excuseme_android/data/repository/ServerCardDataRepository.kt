@@ -5,6 +5,7 @@ import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeAllCards
 import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetAllCards
 import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
@@ -14,6 +15,18 @@ import retrofit2.Call
 
 class ServerCardDataRepository:
     CardDataRepository{
+
+    /**
+     * cardIdx,
+     * visbile,
+     * sequence
+     */
+    override fun changeAllCards(
+        token: String,
+        bodyChangeAllCards: BodyChangeAllCards
+    ): Call<ResCards> {
+        return ServerService.service.changeAllCards(token, bodyChangeAllCards)
+    }
 
 
     override fun getAllCards(token: String): Call<ResCards> {

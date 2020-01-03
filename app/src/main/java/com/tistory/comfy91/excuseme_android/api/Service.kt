@@ -150,6 +150,14 @@ interface Service{
         @Body bodyChangePhoneNum: BodyChangePhoneNum
     ): Call<ResUser>
 
+    /**
+     * 카드 전체 수정
+     */
+    @PUT("/cards/")
+    fun changeAllCards(
+        @Header("token") token: String,
+        @Body changeAllCards: BodyChangeAllCards
+    ): Call<ResCards>
 
     // endregion
 }
