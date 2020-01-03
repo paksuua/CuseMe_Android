@@ -13,7 +13,6 @@
 <br> 우리와 최소한의 의사소통이 가능하다면, 발달장애인의 세상도 조금은 넓어지지 않을까요?
 
 &nbsp;
-&nbsp;
 
 ```
 💕	약자가 배제되지 않는 세상을 꿈꿉니다.
@@ -32,7 +31,7 @@
 
 # CuseMe_Android :loudspeaker:
 
-### 📚 프로젝트 사용 라이브러리
+### 📚 1.프로젝트 사용 라이브러리
 👉Retrofit - 서버통신
     
 ```       
@@ -62,7 +61,7 @@
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 ```
-### 2. 프로젝트 구조
+### 📚 2.프로젝트 구조
 
 |                  Activity                              |                 Description   |
 | ----------------------------------- | ------------------------------------------- |
@@ -79,7 +78,7 @@
 | Setting Activity   | 보호자의 비밀번호 변경, 전화번호 설정  |
 
 
-### 3. 핵심 기능 구현
+### 📚 3.핵심 기능 구현
 
 
 1️⃣ Zoom In / Zoom Out : 카드의 사이즈를 변경 할 수 있는 기능  
@@ -321,22 +320,22 @@ private fun dataSort(sortStandard: Int) {
 ```
 
 
-## ❤️ Extention Function ❤️
+## ✅ Extention Function ✅
 
-👉 로그 출력
+✔️ 로그 출력
 ```
 fun String.logDebug(any: Any) {
     Log.d(any::class.java.simpleName, this)
 }
 ```
-👉 Activity 생성
+✔️ Activity 생성
 ```
 fun <T>Context.newStartActivity(toClass: Class<T>){
     val intent = Intent(this, toClass)
     startActivity(intent)
 }
 ```
-👉 연속 클릭 방지 리스너
+✔️연속 클릭 방지 리스너
 ```
 fun View.setOnSingleClickListener(debounceTime: Long = 6000L, action: ()->Unit){
     this.setOnClickListener (object: View.OnClickListener{
@@ -355,7 +354,7 @@ fun View.setOnSingleClickListener(debounceTime: Long = 6000L, action: ()->Unit){
     })
 }
 ```
-👉 토스트 출력
+✔️ 토스트 출력
 ```
 fun Context.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
@@ -366,13 +365,13 @@ fun String.toast(context: Context) {
     Toast.makeText(context, this, Toast.LENGTH_LONG).show()
 }
 ```
-👉 권한 체크
+✔️ 권한 체크
 ```
 fun Context.isPermissionNotGranted(permission: String): Boolean {
     return ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED
 }
 ```
-👉 시스템에서 어플리케이션 환경 설정 화면으로 이동
+✔️ 시스템에서 어플리케이션 환경 설정 화면으로 이동
 ```
 fun Context.startSettingActivity() {
     startActivity(Intent().apply {
@@ -382,7 +381,7 @@ fun Context.startSettingActivity() {
 }
 ```
 
-## ❤️ Lamda식 이용 ❤️
+## ✅ Lamda식 이용 ✅ 
 ```
 private fun showSelectVisibility(card: CardBean) {
         dialogBuilder.apply {
@@ -398,7 +397,7 @@ private fun showSelectVisibility(card: CardBean) {
     }
 ```
 
-## ❤️ ConstraintLayout 이용 ❤️
+## ✅ ConstraintLayout 이용 ✅ 
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
