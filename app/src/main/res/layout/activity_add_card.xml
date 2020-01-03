@@ -26,6 +26,7 @@
     <!-- 카드 추가 버튼 -->
 
     <TextView
+        android:id="@+id/btnAddCard"
         android:layout_width="60dp"
         android:layout_height="32dp"
         android:background="@drawable/btn_solid_pink"

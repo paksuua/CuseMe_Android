@@ -303,8 +303,9 @@ class ModCardActivity : AppCompatActivity() {
             card.audioUrl = it
         }
         cardImageUrl?.let{
-//            card.imageUrl = it
+            intent.putExtra("MOD_CARD_IMG_URI", cardImageUrl)
         }
+
 
         intent.putExtra("MOD_CARD", card)
         this@ModCardActivity.setResult(Activity.RESULT_OK, intent)

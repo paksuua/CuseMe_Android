@@ -155,6 +155,12 @@ class AddCardActivity : AppCompatActivity() {
             }
 
         })
+
+
+        // 최종 카드 추가 버튼
+        btnAddCard.setOnClickListener {
+            uploadCard()
+        }
     }
 
     private fun setTTSUI(isClicked: Boolean, imageView: ImageView){

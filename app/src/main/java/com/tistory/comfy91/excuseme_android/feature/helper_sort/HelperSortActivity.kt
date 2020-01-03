@@ -23,7 +23,7 @@ class HelperSortActivity : AppCompatActivity() {
         btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
     }
     private val rvHelperSortCardAdapter =
-        RealHelperSortAdapter(
+        RvHelperSortAdapter(
             this,
             onBtnAllClicked,
             HelperSortCardViewHolder.HELPER_SORT_ACTIVITY
