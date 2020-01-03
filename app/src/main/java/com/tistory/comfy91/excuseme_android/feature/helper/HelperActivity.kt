@@ -101,8 +101,8 @@ class HelperActivity : AppCompatActivity() {
 
             // 카드생성 뷰로 이동
             btnHelperNewCard.setOnClickListener{
-                val intent = Intent(this, AddCardActivity::class.java)
-                startActivity(intent)
+//                val intent = Intent(this, AddCardActivity::class.java)
+//                startActivity(intent)
             }
         }
 
@@ -111,11 +111,7 @@ class HelperActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        btnHelperNewCard.setOnClickListener {
-            Toast.makeText(applicationContext, "Button NewCard Clicked", Toast.LENGTH_LONG)
-                .show()
-            this.newStartActivity(AddCardActivity::class.java)
-        }
+
 
         // 홈미리보기 프래그먼트로 전환
         btnHelperGoDisabled.setOnClickListener {

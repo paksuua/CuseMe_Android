@@ -46,10 +46,10 @@ class ServerCardDataRepository:
         title: RequestBody,
         desc: RequestBody,
         visibility: Boolean,
-        image: MultipartBody.Part,
-        record: MultipartBody.Part
-    ): Call<ResCards> {
-        return ServerService.service.addCard(token, title, desc, visibility, image, record)
+        image: MultipartBody.Part?,
+        record: MultipartBody.Part?
+    ): Call<ResDownCard> {
+        return ServerService.service.addCard(token, title, desc, visibility, image!!, record!!)
     }
 
     override fun editCardDetail(
@@ -58,9 +58,9 @@ class ServerCardDataRepository:
         title: RequestBody,
         desc : RequestBody,
         visibility: Boolean,
-        image: MultipartBody.Part,
-        record: MultipartBody.Part
-    ): Call<ResCards> {
+        image: MultipartBody.Part?,
+        record: MultipartBody.Part?
+    ): Call<ResDownCard> {
         return ServerService.service.editCardDetail(token, cardIdx, title, desc, visibility, image, record)
     }
 

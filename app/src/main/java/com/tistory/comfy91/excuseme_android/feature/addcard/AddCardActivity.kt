@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
@@ -163,6 +164,9 @@ class AddCardActivity : AppCompatActivity() {
         btnAddCard.setOnClickListener {
             uploadCard()
         }
+
+        // 뒤로가기 버튼
+        btnAddcardBack.setOnClickListener {finish()}
     }
 
     private fun setTTSUI(isClicked: Boolean, imageView: ImageView) {
@@ -457,12 +461,12 @@ class AddCardActivity : AppCompatActivity() {
                     picture_rb,
                     audio_rb
                 )
-                .enqueue(object : Callback<ResCards> {
-                    override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                .enqueue(object : Callback<ResDownCard> {
+                    override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
                         "Fail to Add Card, message:${t.message}".logDebug(this@AddCardActivity)
                     }
 
-                    override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+                    override fun onResponse(call: Call<ResDownCard>, response: Response<ResDownCard>) {
                         if (response.isSuccessful) {
                             response.body()
                                 ?.let {
@@ -471,6 +475,7 @@ class AddCardActivity : AppCompatActivity() {
                                     )
                                     if (it.success) {
                                         val intent = Intent(this@AddCardActivity, DetailCardActivity::class.java)
+                                        intent.putExtra("DOWN_CARD",it.data)
                                         startActivity(intent)
 
                                     } else {

@@ -99,8 +99,6 @@ class NewHelperFragment : Fragment() {
     }
 
     private fun initUi() {
-        rvNewHelperCard.adapter = rvAdapter
-        rvNewHelperCard.layoutManager = GridLayoutManager(this@NewHelperFragment.context, 2)
 
         // DisabledAvtivity로 이동
         btnNewHelperUnlock?.setOnClickListener {
@@ -185,9 +183,9 @@ class NewHelperFragment : Fragment() {
                                 true -> {
                                     backgroundIsVisible(res.data.isNullOrEmpty())
                                     disabledCardList.clear()
-                                    disabledCardList.addAll(res.data!!)
-                                    rvAdapter.data.clear()
-                                    rvAdapter.data.addAll(disabledCardList)
+                                    disabledCardList.addAll(res.data as ArrayList<CardBean>)
+//                                    rvAdapter.data.clear()
+//                                    rvAdapter.data.addAll(disabledCardList)
                                     rvAdapter.notifyDataSetChanged()
 
                                 }
@@ -217,7 +215,6 @@ class NewHelperFragment : Fragment() {
         imgNewHelperCard.isVisible = visible
         tvNewHelperCard.isVisible = visible
         imgNewEmpty.isVisible = visible
-        rvNewHelperCard.isVisible = !visible
     }
 
     // 카드 삭제 api 호출

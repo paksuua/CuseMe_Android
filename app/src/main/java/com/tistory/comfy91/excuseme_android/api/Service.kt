@@ -61,7 +61,7 @@ interface Service{
         @Part("visible") visibility: Boolean,
         @Part image: MultipartBody.Part,
         @Part record: MultipartBody.Part
-    ): Call<ResCards>
+    ): Call<ResDownCard>
 
     /**
      * 카드 상세 수정
@@ -75,9 +75,9 @@ interface Service{
         @Part("title") title: RequestBody,
         @Part("content") desc : RequestBody,
         @Part("visible") visibility: Boolean,
-        @Part image: MultipartBody.Part,
-        @Part record: MultipartBody.Part
-    ): Call<ResCards>
+        @Part image: MultipartBody.Part?,
+        @Part record: MultipartBody.Part?
+    ): Call<ResDownCard>
 
     @DELETE("/cards/{cardIdx}")
     fun deleteCard(

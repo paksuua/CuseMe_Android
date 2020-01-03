@@ -120,7 +120,7 @@ class DetailCardActivity : AppCompatActivity() {
     }
 
     private fun readyForRequest(card: CardBean, dialog: DialogInterface) {
-        val imageUri = intent.getSerializableExtra("MOD_CARD_IMG_URI") as Uri
+        val imageUri: Uri? = intent.getSerializableExtra("MOD_CARD_IMG_URI") as Uri?
         val title_rb = RequestBody.create(MediaType.parse("text/plain"), card?.title)
         val content_rb = RequestBody.create(MediaType.parse("text/plain"), card?.desc)
 
@@ -152,14 +152,14 @@ class DetailCardActivity : AppCompatActivity() {
             title_rb,
             content_rb,
             card?.visibility!!,
-            photo_rb!!,
+            photo_rb,
             audio_rb
-        ).enqueue(object : Callback<ResCards> {
-            override fun onFailure(call: Call<ResCards>, t: Throwable) {
+        ).enqueue(object : Callback<ResDownCard> {
+            override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
                 "Fail to Edit Card, message : ${t.message}".logDebug(this@DetailCardActivity)
             }
 
-            override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+            override fun onResponse(call: Call<ResDownCard>, response: Response<ResDownCard>) {
                 "code : ${response.code()}, message : ${response.message()}"
                 if (response.isSuccessful) {
                     response.body()?.let {

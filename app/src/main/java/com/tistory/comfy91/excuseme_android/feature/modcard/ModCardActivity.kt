@@ -141,7 +141,7 @@ class ModCardActivity : AppCompatActivity() {
                 setDataSource(newRecordFileName)
                 prepare()
                 start()
-                ctvAddcardRecordPlay.isChecked = false
+                ctvModcardRecordPlay.isChecked = false
             } catch (e: IOException) {
                 "prepare() failed".logDebug(this@ModCardActivity)
                 Log.e(TAG, "prepare() failed")

@@ -64,18 +64,27 @@ class DummyCardDataRepository :
         title: RequestBody,
         desc: RequestBody,
         visibility: Boolean,
-        image: MultipartBody.Part,
-        record: MultipartBody.Part
-    ): Call<ResCards> {
+        image: MultipartBody.Part?,
+        record: MultipartBody.Part?
+    ): Call<ResDownCard> {
         return Calls.response(
-            ResCards(
+            ResDownCard(
                 200,
                 true,
                 "카드 작성 성공",
-                listOf()
+                CardBean(
+                    0,
+                    "first card",
+                    "desc",
+                    "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                    "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                    0,
+                    false,
+                    "serialNum",
+                    0,
+                    ""
+                )
             )
-
-
 
         )
     }
@@ -216,15 +225,26 @@ class DummyCardDataRepository :
         title: RequestBody,
         desc : RequestBody,
         visibility: Boolean,
-        image: MultipartBody.Part,
-        record: MultipartBody.Part
-    ): Call<ResCards> {
+        image: MultipartBody.Part?,
+        record: MultipartBody.Part?
+    ): Call<ResDownCard> {
         return Calls.response(
-                ResCards(
+                ResDownCard(
                     200,
                     true,
                     "dummy 카드 다운 성공",
-                    listOf()
+                    CardBean(
+                        0,
+                        "first card",
+                        "desc",
+                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        0,
+                        false,
+                        "serialNum",
+                        0,
+                        ""
+                    )
                 )
         )
 
