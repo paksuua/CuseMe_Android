@@ -28,7 +28,7 @@ class HelperActivity : AppCompatActivity() {
 
     var disabledCardList: ArrayList<CardBean> = arrayListOf()
     var allCardList: ArrayList<CardBean> = arrayListOf()
-    private lateinit var helperFragment: HelperFragment
+    private lateinit var helperFragment: NewHelperFragment
     //소연 private lateinit var selectSortFragment: SelectSortFragment
     private lateinit var selectSortFragment: SelectSortFragment
     private var isOpen = false
@@ -130,7 +130,7 @@ class HelperActivity : AppCompatActivity() {
                 .commit()
         }
 
-        helperFragment = HelperFragment.newInstance(disabledCardList)
+        helperFragment = NewHelperFragment.newInstance(disabledCardList)
         selectSortFragment = SelectSortFragment.newInstance(allCardList)
         transction.add(
             R.id.frameHelper,
@@ -149,6 +149,7 @@ class HelperActivity : AppCompatActivity() {
             btnHelperAddCard.isVisible=false
             btnHelperNewCard.isVisible=false
             btnHelperDownCard.isVisible=false
+
         }
     }
 }

@@ -37,24 +37,19 @@ class HelperFragment() : Fragment() {
     lateinit var helperAdapter: RvHelperAdapter
     private var disabledCardList: ArrayList<CardBean> = arrayListOf()
     private var selected_card_num = 0
-    private val changeBottomBar: (Boolean, String) -> Unit = { b: Boolean, s: String ->
-        tvHelper.text = s
-
-        if(b) {
-            selected_card_num ++
+    private val changeBottomBar: (Boolean, String, Int) -> Unit = { isSelected: Boolean, s: String, cardNum: Int ->
+        if(isSelected){
+            tvHelper.text = s
+            selected_card_num = cardNum
+            (activity as HelperActivity).BottomBarChange(true)
         }
-        else selected_card_num --
+        else{
+            tvHelper.text = ""
+            (activity as HelperActivity).BottomBarChange(false)
 
-        if (selected_card_num > 0) (activity as HelperActivity).BottomBarChange(false)
-        else (activity as HelperActivity).BottomBarChange(true)
+        }
 
     }
-    val onBtnClicked: () -> Unit = {
-        btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
-    }
-    private var player: MediaPlayer? = null
-    private var playFlag = true
-    private lateinit var recordFileName: String
 
     private var token: String? = null
     private val cardDataRepository = ServerCardDataRepository()
@@ -122,7 +117,7 @@ class HelperFragment() : Fragment() {
         // 취소
         btnHelperCancleCard.setOnClickListener {
             // TODO: 선택한 카드 취소
-            setAllCardNotChecked()
+            cstHelperSecond.isVisible = false
         }
 
         // HelperAdapter 초기화
@@ -190,21 +185,6 @@ class HelperFragment() : Fragment() {
     }
 
 
-
-    private fun checkAnyCardChecked(): Boolean{
-        /*
-        for(x in 0 until dummyData.size){
-            if(dummyData[x].visibility){
-                result = true
-                break
-            }
-        }
-        */
-        return tvHelper.text != ""
-    }
-
-//
-
     private fun deleteHelperCard() {
         val it: MutableIterator<CardBean> = disabledCardList.iterator()
         while(it.hasNext()){
@@ -236,43 +216,6 @@ class HelperFragment() : Fragment() {
         layoutParams.weight = 10f
         btnPositive.layoutParams = layoutParams
         btnNegative.layoutParams = layoutParams
-    }
-
-    private fun setAllCardNotChecked(){
-        // until : 끝값은 사용하지 않는다.
-        for(x in 0 until disabledCardList.size ){
-            disabledCardList[x].visibility = false
-        }
-        onBtnClicked()
-    }
-    private fun play(){
-        onPlay(playFlag)
-        tvAddCardRecordNotice.text = when (playFlag) {
-            true -> "Stop playing"
-            false -> "Start playing"
-        }
-        playFlag = !playFlag
-    }
-
-    private fun onPlay(start: Boolean) = if (start) startPlaying() else stopPlaying()
-
-    private fun startPlaying() {
-        player = MediaPlayer().apply {
-            try {
-                setDataSource(recordFileName)
-                prepare()
-                start()
-                ctvAddcardRecordPlay.isChecked = false
-            } catch (e: IOException) {
-                "prepare() failed".logDebug(this@HelperFragment)
-                Log.e(TAG, "prepare() failed")
-            }
-        }
-    }
-
-    private fun stopPlaying() {
-        player?.release()
-        player = null
     }
 
     private fun getCarDummy(): ArrayList<CardBean> {
