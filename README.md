@@ -313,49 +313,58 @@ private fun dataSort(sortStandard: Int) {
 
 ❤️ Extention Function ❤️
 
-```
-fun String.logDebug(any: Any) {
-    Log.d(any::class.java.simpleName, this)
-}
+	```
+	fun String.logDebug(any: Any) {
+	    Log.d(any::class.java.simpleName, this)
+	}
+	```
+	```
 
-fun <T>Context.newStartActivity(toClass: Class<T>){
-    val intent = Intent(this, toClass)
-    startActivity(intent)
-}
+	fun <T>Context.newStartActivity(toClass: Class<T>){
+	    val intent = Intent(this, toClass)
+	    startActivity(intent)
+	}
+	```
+	```
 
-fun View.setOnSingleClickListener(debounceTime: Long = 6000L, action: ()->Unit){
-    this.setOnClickListener (object: View.OnClickListener{
-        private var lastClickTime: Long = 0
+	fun View.setOnSingleClickListener(debounceTime: Long = 6000L, action: ()->Unit){
+	    this.setOnClickListener (object: View.OnClickListener{
+		private var lastClickTime: Long = 0
 
-        override fun onClick(p0: View?) {
-            if((SystemClock.elapsedRealtime() - lastClickTime) < debounceTime){
-                Log.d("Single Click", "연속 클릭 발생")
-                return
-            }
-            else {
-                action()
-                lastClickTime = SystemClock.elapsedRealtime()
-            }
-        }
-    })
-}
+		override fun onClick(p0: View?) {
+		    if((SystemClock.elapsedRealtime() - lastClickTime) < debounceTime){
+			Log.d("Single Click", "연속 클릭 발생")
+			return
+		    }
+		    else {
+			action()
+			lastClickTime = SystemClock.elapsedRealtime()
+		    }
+		}
+	    })
+	}
+	```
+	```
 
-fun Context.toast(msg: String) {
-    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-}
-
-fun String.toast(context: Context) {
-    Toast.makeText(context, this, Toast.LENGTH_LONG).show()
-}
-fun Context.isPermissionNotGranted(permission: String): Boolean {
-    return ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED
-}
-
-fun Context.startSettingActivity() {
-    startActivity(Intent().apply {
-        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-        data = Uri.fromParts("package", packageName, null)
-    })
-}
-
-```
+	fun Context.toast(msg: String) {
+	    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+	}
+	```
+	```
+	fun String.toast(context: Context) {
+	    Toast.makeText(context, this, Toast.LENGTH_LONG).show()
+	}
+	```
+	```
+	fun Context.isPermissionNotGranted(permission: String): Boolean {
+	    return ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED
+	}
+	```
+	```
+	fun Context.startSettingActivity() {
+	    startActivity(Intent().apply {
+		action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+		data = Uri.fromParts("package", packageName, null)
+	    })
+	}
+	```
