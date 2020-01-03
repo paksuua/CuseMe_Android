@@ -84,6 +84,7 @@
 
 1️⃣ Zoom In / Zoom Out : 카드의 사이즈를 변경 할 수 있는 기능  
 
+
 터치되는 아이템의 위치를 기준으로 확대, 축소 되도록하며 1줄에 1-3개까지 정렬 가능하도록 제한함.
 
 ```
@@ -173,9 +174,13 @@ class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDir
 ```
 
 
-3️⃣ 중복 터치 방지 - 발달장애인의 경우 기능을 실행하기 위하여 여러번 중복하여 터치하는 경우가 있다. 이럴 경우에 음성재생 등 중요기능의 
+3️⃣ 중복 터치 방지 - 발달장애인의 경우 기능을 실행하기 위하여 여러번 중복하여 터치하는 경우가 있다. 
 
-실행이 정상적으로 되지 않을 수 있기 때문에, setOnClickListener를 사용하여 임의의 시간(5초)동안 중복터치를 막도록 함.
+
+이럴 경우에 음성재생 등 중요기능의 실행이 정상적으로 되지 않을 수 있기 때문에, 
+
+
+setOnClickListener를 사용하여 임의의 시간(5초)동안 중복터치를 막도록 함.
 
 ```
 btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
