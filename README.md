@@ -33,7 +33,7 @@
 # CuseMe_Android :loudspeaker:
 
 ## 1. 프로젝트 사용 라이브러리
-Retrofit - 서버통신
+👉Retrofit - 서버통신
     
 ```       
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
@@ -41,7 +41,7 @@ Retrofit - 서버통신
 ``` 
 
     
-Bottom Navigation Bar
+👉Bottom Navigation Bar - 하단 메뉴바
 ```
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'com.google.android.material:material:1.0.0'
@@ -50,24 +50,24 @@ Bottom Navigation Bar
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.1.1'
 ```
 
-CardView
+👉CardView - 아이템(카드) 디자인 적용
 ```
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
 ```
 
-Fragment 
+👉Fragment - 페이지 전환
 ```
     implementation "androidx.navigation:navigation-fragment-ktx:2.1.0-alpha05"
     implementation "androidx.navigation:navigation-ui-ktx:2.1.0-alpha05"
 ```
     
-RecyclerView
+👉RecyclerView - 아이템 스크롤
 ```
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 ```
     
-Glide
+👉Glide - 이미지 
 ```
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
