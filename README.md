@@ -140,7 +140,10 @@ val mScaleGestureDetector = ScaleGestureDetector(
 ```
 
 
-2️⃣ Long Click / Drag&Drop - DramanageAdapter를 사용하여 사용자의 Long Click, Drag&Drop을 감지하고, 카드의 순서를 swap 가능하도록 함.
+2️⃣ Long Click / Drag&Drop - DramanageAdapter를 사용하여 
+
+
+사용자의 Long Click, Drag&Drop을 감지하고, 카드의 순서를 swap 가능하도록 함.
 
 ```
 class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDirs: Int, swipeDirs: Int)
@@ -172,6 +175,7 @@ class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDir
 }
 
 ```
+
 
 
 3️⃣ 중복 터치 방지 - 발달장애인의 경우 기능을 실행하기 위하여 여러번 중복하여 터치하는 경우가 있다. 
@@ -273,6 +277,7 @@ private fun dataSort(sortStandard: Int) {
 }
 
 ```
+
 
 7️⃣ Searching - 카드의 Title을 검색 할 수 있는 기능(영문 대소문자 포함)
 
