@@ -301,7 +301,7 @@ private fun dataSort(sortStandard: Int) {
 ```
 
 
-❤️ Extention Function ❤️
+## ❤️ Extention Function ❤️
 
 👉 로그 출력
 ```
@@ -362,7 +362,7 @@ fun Context.startSettingActivity() {
 }
 ```
 
-❤️ Ramda식 이용 ❤️
+## ❤️ Ramda식 이용 ❤️
 ```
 private fun showSelectVisibility(card: CardBean) {
         dialogBuilder.apply {
@@ -376,5 +376,50 @@ private fun showSelectVisibility(card: CardBean) {
             show()
         }
     }
+```
+
+## ❤️ ConstraintLayout 이용 ❤️
+```
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.disabled.DisabledActivity">
+
+    <Button
+        android:id="@+id/btnDisabledUnlock"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="38dp"
+        android:background="@drawable/btn_home_lock"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnDisabledChangeSort"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/btn_home_reload"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_home_quote_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/tvDisabledShowCardText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDisabledUnlock"
+        app:srcCompat="@drawable/img_home_quote_left" />
+	... 이하 생략 ...
 ```
 
