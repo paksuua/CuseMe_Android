@@ -40,16 +40,6 @@
     implementation 'com.google.code.gson:gson:2.8.6'
 ``` 
 
-    
-👉Bottom Navigation Bar - 하단 메뉴바
-```
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.1.1'
-```
-
 👉CardView - 아이템(카드) 디자인 적용
 ```
     implementation 'androidx.cardview:cardview:1.0.0'
