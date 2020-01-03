@@ -1,5 +1,5 @@
 <div align="center" style="display:flex;">
-![71553942-423e6f80-2a5b-11ea-972f-364c5b896b60](https://user-images.githubusercontent.com/57262833/71586878-f96fdf00-2b5e-11ea-95f7-0add8389e15b.png)</div>
+	(https://user-images.githubusercontent.com/57262833/71586878-f96fdf00-2b5e-11ea-95f7-0add8389e15b.png)</div>
 <div align="center">
 🗣 CUSE ME_SERVER  💻
 <br>발달장애인을 위한 카드형 의사소통도구, 큐즈미
