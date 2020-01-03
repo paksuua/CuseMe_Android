@@ -20,7 +20,7 @@ class RealHelperSortAdapter(
     var isChanged = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperSortCardViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.helper_sort_item_card, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.helper_item_card, parent, false)
 
         return HelperSortCardViewHolder(
             view,

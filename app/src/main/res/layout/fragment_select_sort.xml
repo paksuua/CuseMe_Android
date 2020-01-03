@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -38,9 +39,9 @@
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:layout_marginEnd="18dp"
-        android:layout_marginBottom="12dp"
         android:background="@drawable/btn_managerhome_setting"
-        app:layout_constraintBottom_toTopOf="@+id/svSelectSortSearch"
+        app:layout_constraintTop_toTopOf="@+id/imgSelectSortConfirm"
+        app:layout_constraintBottom_toBottomOf="@+id/imgSelectSortConfirm"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <SearchView
@@ -49,13 +50,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/searchview_stroke"
         android:searchIcon="@drawable/ic_managerhome_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imgSelectSortConfirm"/>
 
     <ImageView
         android:id="@+id/img_select_sort_clicked"
@@ -95,13 +96,14 @@
         android:layout_width="60dp"
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="14dp"
         android:background="@drawable/bg_btn_pink"
         android:gravity="center"
         android:text="@string/btn_select_sort_name_confirm"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/svSelectSortSearch"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -144,6 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="144dp"
         android:orientation="vertical"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2">
@@ -175,6 +178,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="invisible"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
