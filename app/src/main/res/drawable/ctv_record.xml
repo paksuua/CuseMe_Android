@@ -8,5 +8,4 @@
         android:drawable="@drawable/btn_newcard_play_selected">
     </item>
 
-
 </selector>
