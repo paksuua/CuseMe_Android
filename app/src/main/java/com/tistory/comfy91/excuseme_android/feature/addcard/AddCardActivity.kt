@@ -117,8 +117,16 @@ class AddCardActivity : AppCompatActivity() {
 
         // 확인 버튼
         btnAddcardSaveRecord
-            .apply {isChecked = true}
+            .apply {setSaveBtn(false)}
             .setOnClickListener {(it as CheckedTextView).toggle()}
+
+        btnAddcardSaveRecord.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(view: View?) {
+                setSaveBtn(false)
+                tvAddCardRecordFinish.isVisible = true
+            }
+        })
+
 
 
         // TTS
@@ -244,7 +252,7 @@ class AddCardActivity : AppCompatActivity() {
             start()
             audioTimer =
                 AudioTimer(this@AddCardActivity) {
-                    tvAddCardRecordNotice.text = "${audioTimer.count}초"
+                    record_second_notice.text = "${audioTimer.count}초"
                 }
             audioTimer.start()
         }
@@ -258,6 +266,10 @@ class AddCardActivity : AppCompatActivity() {
         recorder = null
 
         audioTimer.cancel()
+        setSaveBtn(true)
+        tvAddCardRecordFinish.isVisible = false
+        btnAddcardTogRecord.isVisible = false
+
 
         tvAddCardRecordNotice.text = getString(R.string.record_notice)
         ctvAddcardRecordPlay.apply{
@@ -361,6 +373,8 @@ class AddCardActivity : AppCompatActivity() {
                         selectPicUri = data?.data!!
                         imgAddcardCardImg.setImageURI(selectPicUri)
                         isCardImageFilled = true
+                        newcard_photo.isVisible = false
+                        tvAddcardPhotoMessage.isVisible=false
                     }
                     else -> {
                         "Fail Get Image From Gallery".logDebug(this@AddCardActivity)
@@ -445,6 +459,11 @@ class AddCardActivity : AppCompatActivity() {
     private fun goDetailcardActivity(){
         val intent = Intent(this, DetailCardActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun setSaveBtn( isOn : Boolean){
+        btnAddcardSaveRecord.isEnabled = isOn
+        btnAddcardSaveRecord.isSelected = isOn
     }
 
     companion object {

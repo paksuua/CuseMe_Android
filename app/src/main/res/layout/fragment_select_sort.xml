@@ -22,10 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
         android:layout_marginEnd="48dp"
-        android:fontFamily="@font/notosans_regular"
+        android:bufferType="spannable"
+        android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="6sp"
         android:text="@string/tv_select_sort_name_sort"
+        android:textAlignment="center"
         android:textColor="@color/greyish_two"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,11 +61,34 @@
         android:id="@+id/img_select_sort_clicked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="62dp"
         android:layout_marginBottom="3dp"
         android:src="@drawable/bg_btn_select_sort_clicked"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/ctvSelectSortSeeSort"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortSeeSort"
+        app:layout_constraintStart_toStartOf="@+id/ctvSelectSortSeeSort" />
+
+    <ImageView
+        android:id="@+id/img_select_sort_clicked2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:src="@drawable/bg_btn_select_sort_clicked"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/ctvSelectSortCountSort"
+        app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortCountSort"
+        app:layout_constraintStart_toStartOf="@+id/ctvSelectSortCountSort" />
+
+    <ImageView
+        android:id="@+id/img_select_sort_clicked3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:src="@drawable/bg_btn_select_sort_clicked"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/ctvSelectSortNameSort"
+        app:layout_constraintEnd_toEndOf="@+id/ctvSelectSortNameSort"
+        app:layout_constraintStart_toStartOf="@+id/ctvSelectSortNameSort" />
 
     <Button
         android:id="@+id/imgSelectSortConfirm"
@@ -85,7 +110,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
-        android:fontFamily="@font/notosans_regular"
+        android:bufferType="spannable"
+        android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="6sp"
         android:text="@string/tv_select_sort_count_sort"
@@ -102,11 +128,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginTop="27dp"
-        android:fontFamily="@font/notosans_medium"
+        android:bufferType="spannable"
+        android:fontFamily="sans-serif"
         android:lineSpacingExtra="6sp"
         android:text="@string/tv_select_cort_see_sort"
         android:textAlignment="center"
-        android:textColor="@color/mainpink"
+        android:textColor="@color/greyish_two"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/svSelectSortSearch" />
@@ -153,6 +180,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="715dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
