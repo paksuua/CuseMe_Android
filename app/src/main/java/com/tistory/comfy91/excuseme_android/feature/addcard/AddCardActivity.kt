@@ -1,6 +1,7 @@
 package com.tistory.comfy91.excuseme_android.feature.addcard
 
 import android.Manifest
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.ContentProvider
 import android.content.ContentResolver
@@ -20,6 +21,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
@@ -62,6 +65,9 @@ class AddCardActivity : AppCompatActivity() {
 
     private var recordFileName: String? = null
     private lateinit var selectPicUri : Uri
+    private lateinit var circleAnimation: ValueAnimator
+
+
 
     private var token = SingletoneToken.getInstance().token
     private val cardDataRepository =DummyCardDataRepository()
@@ -80,6 +86,15 @@ class AddCardActivity : AppCompatActivity() {
         // Record to the external cache directory for visibility
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
+
+        circleAnimation = ValueAnimator.ofFloat(0f, 360f)
+            .apply{
+                this.setDuration(10000)
+                    .addUpdateListener { animation ->
+                        var value: Float = animation?.getAnimatedValue() as Float
+                        circleCounterView.angle = value
+                    }
+            }
     }
 
     private fun initUI() {
@@ -255,6 +270,7 @@ class AddCardActivity : AppCompatActivity() {
                     record_second_notice.text = "${audioTimer.count}초"
                 }
             audioTimer.start()
+            circleAnimation.start()
         }
     }
 
@@ -266,6 +282,7 @@ class AddCardActivity : AppCompatActivity() {
         recorder = null
 
         audioTimer.cancel()
+        circleAnimation.cancel()
         setSaveBtn(true)
         tvAddCardRecordFinish.isVisible = false
         btnAddcardTogRecord.isVisible = false
