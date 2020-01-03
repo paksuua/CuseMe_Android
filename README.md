@@ -313,56 +313,61 @@ private fun dataSort(sortStandard: Int) {
 
 ❤️ Extention Function ❤️
 
+👉 로그 출력
 ```
-	fun String.logDebug(any: Any) {
-	    Log.d(any::class.java.simpleName, this)
-	}
+fun String.logDebug(any: Any) {
+    Log.d(any::class.java.simpleName, this)
+}
 ```
+👉 Activity 생성
 ```
+fun <T>Context.newStartActivity(toClass: Class<T>){
+    val intent = Intent(this, toClass)
+    startActivity(intent)
+}
+```
+👉 연속 클릭 방지 리스너
+```
+fun View.setOnSingleClickListener(debounceTime: Long = 6000L, action: ()->Unit){
+    this.setOnClickListener (object: View.OnClickListener{
+	private var lastClickTime: Long = 0
 
-	fun <T>Context.newStartActivity(toClass: Class<T>){
-	    val intent = Intent(this, toClass)
-	    startActivity(intent)
+	override fun onClick(p0: View?) {
+	    if((SystemClock.elapsedRealtime() - lastClickTime) < debounceTime){
+		Log.d("Single Click", "연속 클릭 발생")
+		return
+	    }
+	    else {
+		action()
+		lastClickTime = SystemClock.elapsedRealtime()
+	    }
 	}
+    })
+}
+```
+👉 토스트 출력
+```
+fun Context.toast(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+}
 ```
 ```
-	fun View.setOnSingleClickListener(debounceTime: Long = 6000L, action: ()->Unit){
-	    this.setOnClickListener (object: View.OnClickListener{
-		private var lastClickTime: Long = 0
-
-		override fun onClick(p0: View?) {
-		    if((SystemClock.elapsedRealtime() - lastClickTime) < debounceTime){
-			Log.d("Single Click", "연속 클릭 발생")
-			return
-		    }
-		    else {
-			action()
-			lastClickTime = SystemClock.elapsedRealtime()
-		    }
-		}
-	    })
-	}
+fun String.toast(context: Context) {
+    Toast.makeText(context, this, Toast.LENGTH_LONG).show()
+}
 ```
+👉 권한 체크
 ```
-	fun Context.toast(msg: String) {
-	    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-	}
+fun Context.isPermissionNotGranted(permission: String): Boolean {
+    return ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED
+}
 ```
+👉 시스템에서 어플리케이션 환경 설정 화면으로 이동
 ```
-	fun String.toast(context: Context) {
-	    Toast.makeText(context, this, Toast.LENGTH_LONG).show()
-	}
-```
-```
-	fun Context.isPermissionNotGranted(permission: String): Boolean {
-	    return ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED
-	}
-```
-```
-	fun Context.startSettingActivity() {
-	    startActivity(Intent().apply {
-		action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-		data = Uri.fromParts("package", packageName, null)
-	    })
-	}
+fun Context.startSettingActivity() {
+    startActivity(Intent().apply {
+	action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+	data = Uri.fromParts("package", packageName, null)
+    })
+}
 ```
