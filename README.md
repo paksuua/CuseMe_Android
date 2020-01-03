@@ -82,7 +82,9 @@
 ### 3. 핵심 기능 구현
 
 
-1️⃣ Zoom In / Zoom Out : 카드의 사이즈를 변경 할 수 있는 기능, 1-3개로 카드 확대, 축소 가능
+1️⃣ Zoom In / Zoom Out : 카드의 사이즈를 변경 할 수 있는 기능  
+
+터치되는 아이템의 위치를 기준으로 확대, 축소 되도록하며 1줄에 1-3개까지 정렬 가능하도록 제한함.
 
 ```
 val mScaleGestureDetector = ScaleGestureDetector(
@@ -137,7 +139,7 @@ val mScaleGestureDetector = ScaleGestureDetector(
 ```
 
 
-2️⃣ Long Click / Drag&Drop
+2️⃣ Long Click / Drag&Drop - DramanageAdapter를 사용하여 사용자의 Long Click, Drag&Drop을 감지하고, 카드의 순서를 swap 가능하도록 함.
 
 ```
 class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDirs: Int, swipeDirs: Int)
@@ -171,7 +173,9 @@ class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDir
 ```
 
 
-3️⃣ 중복 터치 방지
+3️⃣ 중복 터치 방지 - 발달장애인의 경우 기능을 실행하기 위하여 여러번 중복하여 터치하는 경우가 있다. 이럴 경우에 음성재생 등 중요기능의 
+
+실행이 정상적으로 되지 않을 수 있기 때문에, setOnClickListener를 사용하여 임의의 시간(5초)동안 중복터치를 막도록 함.
 
 ```
 btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
@@ -180,7 +184,7 @@ btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
 
     override fun onClick(v: View) {
 
-        if (SystemClock.elapsedRealtime() - mLastClickTime > 3000) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime > 5000) {
             Log.v("Excuse", "터치")
             mLastClickTime = SystemClock.elapsedRealtime()
             count++
@@ -195,7 +199,7 @@ btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
 ```
 
 
-4️⃣ TTS
+4️⃣ TTS - TextToSpeach 라이브러리를 이용하여 카드의 음성 녹음 데이터가 없을 시, 카드의 description을 음성으로 출력가능 하도록 함.
 
 ```
 class TTSActivity : AppCompatActivity() {
@@ -247,8 +251,10 @@ class TTSActivity : AppCompatActivity() {
 ```
 
 
-6️⃣ Sort(보이는 순, 빈도순, 이름순) - 발달장애인의 보호자가 카드를 정렬하는 기능. 
-                               발달장애인에게 보이는 순서, 발달장애인이 자주 사용하는 순서, 카드의 이름 순으로 정렬 가능
+6️⃣ Sort(보이는 순, 빈도순, 이름순) - 발달장애인의 보호자가 카드를 정렬하는 기능.
+
+
+발달장애인에게 보이는 순서, 발달장애인이 자주 사용하는 순서, 카드의 이름 순으로 정렬 가능
 
 ```
 private fun dataSort(sortStandard: Int) {
@@ -264,6 +270,7 @@ private fun dataSort(sortStandard: Int) {
 ```
 
 7️⃣ Searching - 카드의 Title을 검색 할 수 있는 기능(영문 대소문자 포함)
+
 
 ```
     override fun getFilter(): Filter {
