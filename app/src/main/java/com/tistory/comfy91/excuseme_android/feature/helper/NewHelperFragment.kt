@@ -187,7 +187,7 @@ class NewHelperFragment : Fragment() {
                                     disabledCardList.clear()
                                     disabledCardList.addAll(res.data!!)
                                     rvAdapter.data.clear()
-                                    rvAdapter.data.addAll(res.data!!)
+                                    rvAdapter.data.addAll(disabledCardList)
                                     rvAdapter.notifyDataSetChanged()
 
                                 }
@@ -217,6 +217,7 @@ class NewHelperFragment : Fragment() {
         imgNewHelperCard.isVisible = visible
         tvNewHelperCard.isVisible = visible
         imgNewEmpty.isVisible = visible
+        rvNewHelperCard.isVisible = !visible
     }
 
     // 카드 삭제 api 호출

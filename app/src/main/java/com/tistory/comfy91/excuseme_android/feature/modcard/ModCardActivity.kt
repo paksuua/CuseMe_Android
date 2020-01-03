@@ -305,10 +305,9 @@ class ModCardActivity : AppCompatActivity() {
         cardImageUrl?.let{
             intent.putExtra("MOD_CARD_IMG_URI", cardImageUrl)
         }
-
-
         intent.putExtra("MOD_CARD", card)
         this@ModCardActivity.setResult(Activity.RESULT_OK, intent)
+        finish()
 
     }
 

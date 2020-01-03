@@ -225,6 +225,8 @@ class AddCardActivity : AppCompatActivity() {
         player?.release()
         player = null
         ctvAddcardRecordPlay.isChecked = false
+        circleCounterView.isVisible = false
+        btnAddcardTogRecord.isVisible = true
     }
 
     private fun record() {
@@ -247,10 +249,6 @@ class AddCardActivity : AppCompatActivity() {
                 }
             }
         }
-//        btnAddcardTogRecord.text = when (recordFlag) {
-//            true -> "Stop recording"
-//            false -> "Start recording"
-//        }
         recordFlag = !recordFlag
     }
 

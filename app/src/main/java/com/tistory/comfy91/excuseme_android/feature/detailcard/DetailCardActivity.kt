@@ -93,6 +93,9 @@ class DetailCardActivity : AppCompatActivity() {
             btnDetailEdit.performClick()
             return
         }
+
+
+
     }
 
     private fun showSelectVisibility(card: CardBean) {
@@ -117,26 +120,29 @@ class DetailCardActivity : AppCompatActivity() {
     }
 
     private fun readyForRequest(card: CardBean, dialog: DialogInterface) {
+        val imageUri = intent.getSerializableExtra("MOD_CARD_IMG_URI") as Uri
         val title_rb = RequestBody.create(MediaType.parse("text/plain"), card?.title)
         val content_rb = RequestBody.create(MediaType.parse("text/plain"), card?.desc)
 
-        val options = BitmapFactory.Options()
-        val uri = Uri.fromFile(File(card?.imageUrl))
-        val inputStream: InputStream = contentResolver.openInputStream(uri)!!
-        val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
-        val byteArrayOutPutStream = ByteArrayOutputStream()
-        bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutPutStream)
+        var photo_rb: MultipartBody.Part? = null
+        imageUri?.let{
+            val options = BitmapFactory.Options()
 
-        // photo
-        val photoBody =
-            RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutPutStream.toByteArray())
-        val photo_rb =
-            MultipartBody.Part.createFormData("image", File(uri.toString()).name, photoBody)
+            val inputStream: InputStream = contentResolver.openInputStream(imageUri)!!
+            val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
+            val byteArrayOutPutStream = ByteArrayOutputStream()
+            bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutPutStream)
+
+            // photo
+            val photoBody =
+                RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutPutStream.toByteArray())
+            photo_rb = MultipartBody.Part.createFormData("image", File(it.toString()).name, photoBody)
+        }
+
 
         // audio
         val audioFile = File(card?.audioUrl)
-        val audioUri = Uri.fromFile(audioFile)
-        val audioBody =RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
+        val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
         val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
         "token : $token, title_rb: $title_rb, content_rb: $content_rb".logDebug(this@DetailCardActivity)
 
@@ -146,7 +152,7 @@ class DetailCardActivity : AppCompatActivity() {
             title_rb,
             content_rb,
             card?.visibility!!,
-            photo_rb,
+            photo_rb!!,
             audio_rb
         ).enqueue(object : Callback<ResCards> {
             override fun onFailure(call: Call<ResCards>, t: Throwable) {
@@ -334,6 +340,7 @@ class DetailCardActivity : AppCompatActivity() {
                     Activity.RESULT_OK ->{
                         card = data?.getSerializableExtra("MODE_CARD") as CardBean
                         showSelectVisibility(card!!)
+
                     }
                     Activity.RESULT_CANCELED ->{"카드 수정 취소함".logDebug(this@DetailCardActivity)}
                     else ->"modify card result is not result ok, resultCode: ${resultCode}".logDebug(this@DetailCardActivity)
