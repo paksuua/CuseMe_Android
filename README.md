@@ -208,7 +208,10 @@ btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
 ```
 
 
-4️⃣ TTS - TextToSpeach 라이브러리를 이용하여 카드의 음성 녹음 데이터가 없을 시, 카드의 description을 음성으로 출력가능 하도록 함.
+4️⃣ TTS - TextToSpeach 라이브러리를 이용하여 카드의 음성 녹음 데이터가 없을 시, 
+
+
+카드의 description을 음성으로 출력가능 하도록 함.
 
 ```
 class TTSActivity : AppCompatActivity() {
