@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
@@ -118,6 +119,7 @@ class HelperActivity : AppCompatActivity() {
 
         // 홈미리보기 프래그먼트로 전환
         btnHelperGoDisabled.setOnClickListener {
+            changeNaviBarIcon(true)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frameHelper, helperFragment)
                 .commit()
@@ -125,6 +127,7 @@ class HelperActivity : AppCompatActivity() {
 
         // 카드관리 프래그먼트로 전환
         btnHelperAllCard.setOnClickListener {
+            changeNaviBarIcon(false)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frameHelper,selectSortFragment)
                 .commit()
@@ -137,6 +140,23 @@ class HelperActivity : AppCompatActivity() {
             helperFragment
         )
         transction.commit()
+    }
+
+    private fun changeNaviBarIcon(flag: Boolean){
+        imgHelperGoDisabled.isSelected = flag
+        imgHelperAllCard.isSelected = !flag
+        when(flag){
+            true -> {
+                tvHelperGoDisabled.setTextColor(resources.getColor(R.color.mainpink))
+                tvHelperAllCard.setTextColor(resources.getColor(R.color.greyish_two))
+
+            }
+            false -> {
+                tvHelperGoDisabled.setTextColor(resources.getColor(R.color.greyish_two))
+                tvHelperAllCard.setTextColor(resources.getColor(R.color.mainpink))
+            }
+        }
+
     }
 
 
