@@ -1,5 +1,5 @@
 <div align="center" style="display:flex;">
-![71586878-f96fdf00-2b5e-11ea-95f7-0add8389e15b](https://user-images.githubusercontent.com/57262833/71586878-f96fdf00-2b5e-11ea-95f7-0add8389e15b.png)
+
 </div>
 <div align="center">
 🗣 CUSE ME_SERVER  💻
@@ -33,7 +33,7 @@
 # CuseMe_Android :loudspeaker:
 
 ## 1. 프로젝트 사용 라이브러리
-Retrofit
+Retrofit - 서버통신
     
 ```       
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
