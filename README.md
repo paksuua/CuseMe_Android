@@ -382,7 +382,7 @@ fun Context.startSettingActivity() {
 }
 ```
 
-## ❤️ Ramda식 이용 ❤️
+## ❤️ Lamda식 이용 ❤️
 ```
 private fun showSelectVisibility(card: CardBean) {
         dialogBuilder.apply {
