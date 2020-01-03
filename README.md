@@ -32,7 +32,7 @@
 
 # CuseMe_Android :loudspeaker:
 
-## 1. 프로젝트 사용 라이브러리
+### 📚 프로젝트 사용 라이브러리
 👉Retrofit - 서버통신
     
 ```       
@@ -62,7 +62,7 @@
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 ```
-## 2. 프로젝트 구조
+### 2. 프로젝트 구조
 
 |                  Activity                              |                 Description   |
 | ----------------------------------- | ------------------------------------------- |
@@ -79,7 +79,7 @@
 | Setting Activity   | 보호자의 비밀번호 변경, 전화번호 설정  |
 
 
-## 3. 핵심 기능 구현
+### 3. 핵심 기능 구현
 
 
 1️⃣ Zoom In / Zoom Out : 카드의 사이즈를 변경 할 수 있는 기능, 1-3개로 카드 확대, 축소 가능
@@ -361,3 +361,20 @@ fun Context.startSettingActivity() {
     })
 }
 ```
+
+❤️ Ramda식 이용 ❤️
+```
+private fun showSelectVisibility(card: CardBean) {
+        dialogBuilder.apply {
+            setMessage("보이는 카드 목록에\n바로 추가하시겠습니까?")
+            setPositiveButton("추가") { dialogInterface, _ ->
+                card.visibility = true
+                requestCardEdit(card, dialogInterface)
+            }
+            setNegativeButton("취소") { dialogInterface, _ -> dialogInterface.cancel()}
+            setCancelable(false)
+            show()
+        }
+    }
+```
+
