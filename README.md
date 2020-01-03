@@ -67,7 +67,7 @@
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 ```
     
-👉Glide - 이미지 
+👉Glide - 이미지 사용
 ```
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
@@ -92,7 +92,7 @@
 ## 3. 핵심 기능 구현
 
 
-1)Zoom In / Zoom Out
+⭐️Zoom In / Zoom Out
 
 ```
 val mScaleGestureDetector = ScaleGestureDetector(
@@ -147,7 +147,7 @@ val mScaleGestureDetector = ScaleGestureDetector(
 ```
 
 
-2)Long Click / Drag&Drop
+⭐️Long Click / Drag&Drop
 
 ```
 class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDirs: Int, swipeDirs: Int)
@@ -181,7 +181,7 @@ class DragManageAdapter (adapter: RvHelperSortAdapter, context: Context, dragDir
 ```
 
 
-3)중복 터치 방지
+⭐️중복 터치 방지
 
 ```
 btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
@@ -205,7 +205,7 @@ btnDisabledUnlock.setOnClickListener(object : View.OnClickListener {
 ```
 
 
-4)TTS
+⭐️TTS
 
 ```
 class TTSActivity : AppCompatActivity() {
@@ -232,7 +232,7 @@ class TTSActivity : AppCompatActivity() {
 ```
             
             
-5)애니메이션
+⭐️애니메이션
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
@@ -257,7 +257,8 @@ class TTSActivity : AppCompatActivity() {
 ```
 
 
-6)Sort(보이는 순, 빈도순, 이름순)
+⭐️Sort(보이는 순, 빈도순, 이름순) - 발달장애인의 보호자가 카드를 정렬하는 기능. 
+                               발달장애인에게 보이는 순서, 발달장애인이 자주 사용하는 순서, 카드의 이름 순으로 정렬 가능
 
 ```
 private fun dataSort(sortStandard: Int) {
@@ -272,7 +273,7 @@ private fun dataSort(sortStandard: Int) {
 
 ```
 
-7)Searching
+⭐️Searching - 카드의 Title을 검색 할 수 있는 기능(영문 대소문자 포함)
 
 ```
     override fun getFilter(): Filter {
