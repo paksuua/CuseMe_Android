@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
@@ -28,7 +29,7 @@ class HelperActivity : AppCompatActivity() {
 
     var disabledCardList: ArrayList<CardBean> = arrayListOf()
     var allCardList: ArrayList<CardBean> = arrayListOf()
-    private lateinit var helperFragment: HelperFragment
+    private lateinit var helperFragment: NewHelperFragment
     //소연 private lateinit var selectSortFragment: SelectSortFragment
     private lateinit var selectSortFragment: SelectSortFragment
     private var isOpen = false
@@ -118,6 +119,7 @@ class HelperActivity : AppCompatActivity() {
 
         // 홈미리보기 프래그먼트로 전환
         btnHelperGoDisabled.setOnClickListener {
+            changeNaviBarIcon(true)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frameHelper, helperFragment)
                 .commit()
@@ -125,18 +127,36 @@ class HelperActivity : AppCompatActivity() {
 
         // 카드관리 프래그먼트로 전환
         btnHelperAllCard.setOnClickListener {
+            changeNaviBarIcon(false)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frameHelper,selectSortFragment)
                 .commit()
         }
 
-        helperFragment = HelperFragment.newInstance(disabledCardList)
+        helperFragment = NewHelperFragment.newInstance(disabledCardList)
         selectSortFragment = SelectSortFragment.newInstance(allCardList)
         transction.add(
             R.id.frameHelper,
             helperFragment
         )
         transction.commit()
+    }
+
+    private fun changeNaviBarIcon(flag: Boolean){
+        imgHelperGoDisabled.isSelected = flag
+        imgHelperAllCard.isSelected = !flag
+        when(flag){
+            true -> {
+                tvHelperGoDisabled.setTextColor(resources.getColor(R.color.mainpink))
+                tvHelperAllCard.setTextColor(resources.getColor(R.color.greyish_two))
+
+            }
+            false -> {
+                tvHelperGoDisabled.setTextColor(resources.getColor(R.color.greyish_two))
+                tvHelperAllCard.setTextColor(resources.getColor(R.color.mainpink))
+            }
+        }
+
     }
 
 
@@ -149,6 +169,7 @@ class HelperActivity : AppCompatActivity() {
             btnHelperAddCard.isVisible=false
             btnHelperNewCard.isVisible=false
             btnHelperDownCard.isVisible=false
+
         }
     }
 }

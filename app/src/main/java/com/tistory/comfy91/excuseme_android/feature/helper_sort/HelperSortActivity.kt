@@ -139,6 +139,9 @@ class HelperSortActivity : AppCompatActivity() {
         if(token == null){
             token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWR4IjozOSwidXVpZCI6ImYzZDViM2E1LTkwYjYtNDVlMy1hOThhLTEyODE5OWNmZTg1MCIsImlhdCI6MTU3NzkwMTA1MywiZXhwIjoxNTc3OTg3NDUzLCJpc3MiOiJnYW5naGVlIn0.QytUhsXf4bJirRR_zF3wdACiNu9ytwUE4mrPSNLCFLk"
         }
+
+
+        "Request Edit All Cards Data : ${rvHelperSortCardAdapter.data}".logDebug(this@HelperSortActivity)
         cardDataRepository.changeAllCards(
             token!!,
             BodyChangeAllCards(
@@ -153,7 +156,7 @@ class HelperSortActivity : AppCompatActivity() {
                 "code : ${response.code()}, message : ${response.message()}".logDebug(this@HelperSortActivity)
                 if(response.isSuccessful){
                     response.body()?.let{
-                        "status : ${it.status}, success : ${it.success}, message : ${it.message}"
+                        "status : ${it.status}, success : ${it.success}, message : ${it.message}".logDebug(this@HelperSortActivity)
                         this@HelperSortActivity.finish()
                     }
 

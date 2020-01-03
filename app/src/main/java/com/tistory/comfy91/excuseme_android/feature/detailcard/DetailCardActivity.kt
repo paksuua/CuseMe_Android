@@ -87,6 +87,12 @@ class DetailCardActivity : AppCompatActivity() {
             showSelectVisibility(card!!)
             return
         }
+
+        intent.getSerializableExtra("FROM_NEW_HELPER")?.let {
+            card = it as CardBean
+            btnDetailEdit.performClick()
+            return
+        }
     }
 
     private fun showSelectVisibility(card: CardBean) {

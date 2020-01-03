@@ -51,7 +51,7 @@
     <string name="tv_select_sort_name_sort">이름 순</string>
     <string name="btn_select_sort_name_confirm">완료</string>
 
-\
+    \
     <!-- endregion -->
 
     <!-- region Helper Activity -->
@@ -72,9 +72,7 @@
     <string name="btn_down_new_card">내려받기</string>
 
 
-
     <!-- endregion -->
-
 
 
 </resources>
