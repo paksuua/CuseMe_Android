@@ -1,5 +1,5 @@
 <div align="center" style="display:flex;">
-![71553942-423e6f80-2a5b-11ea-972f-364c5b896b60](https://user-images.githubusercontent.com/57262833/71586878-f96fdf00-2b5e-11ea-95f7-0add8389e15b.png)
+![cume](https://user-images.githubusercontent.com/39257919/71553942-423e6f80-2a5b-11ea-972f-364c5b896b60.png)
 </div>
 <div align="center">
 🗣 CUSE ME_SERVER  💻
