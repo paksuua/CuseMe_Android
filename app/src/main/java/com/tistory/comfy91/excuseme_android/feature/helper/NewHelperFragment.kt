@@ -183,9 +183,11 @@ class NewHelperFragment : Fragment() {
 
                             when (res.success) {
                                 true -> {
-                                    backgroundIsVisible(!(res.data.isNullOrEmpty()))
+                                    backgroundIsVisible(res.data.isNullOrEmpty())
                                     disabledCardList.clear()
                                     disabledCardList.addAll(res.data!!)
+                                    rvAdapter.data.clear()
+                                    rvAdapter.data.addAll(res.data!!)
                                     rvAdapter.notifyDataSetChanged()
 
                                 }

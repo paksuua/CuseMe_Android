@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
@@ -64,13 +65,12 @@ class AddCardActivity : AppCompatActivity() {
     private lateinit var audioTimer: AudioTimer
 
     private var recordFileName: String? = null
-    private lateinit var selectPicUri : Uri
+    private lateinit var selectPicUri: Uri
     private lateinit var circleAnimation: ValueAnimator
 
 
-
     private var token = SingletoneToken.getInstance().token
-    private val cardDataRepository =DummyCardDataRepository()
+    private val cardDataRepository = DummyCardDataRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,13 +82,13 @@ class AddCardActivity : AppCompatActivity() {
         initUI()
     } // end onCrate()
 
-    private fun initData(){
+    private fun initData() {
         // Record to the external cache directory for visibility
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
 
         circleAnimation = ValueAnimator.ofFloat(0f, 360f)
-            .apply{
+            .apply {
                 this.setDuration(10000)
                     .addUpdateListener { animation ->
                         var value: Float = animation?.getAnimatedValue() as Float
@@ -114,16 +114,19 @@ class AddCardActivity : AppCompatActivity() {
         }
 
         // 실행(count) 버튼 리스너 설정
-        ctvAddcardRecordPlay.setOnClickListener{
-            if(!isExistRecordFile){ record()}
-            else{play()}
+        ctvAddcardRecordPlay.setOnClickListener {
+            if (!isExistRecordFile) {
+                record()
+            } else {
+                play()
+            }
 
         }
 
         ctvAddcardRecordPlay.apply {
-            when(isExistRecordFile){
-                true ->  setBackgroundResource(R.drawable.ctv_record)
-                false ->{
+            when (isExistRecordFile) {
+                true -> setBackgroundResource(R.drawable.ctv_record)
+                false -> {
                     setBackgroundResource(R.drawable.btn_newcard_play_unslected)
                     isEnabled = false
                 }
@@ -132,10 +135,10 @@ class AddCardActivity : AppCompatActivity() {
 
         // 확인 버튼
         btnAddcardSaveRecord
-            .apply {setSaveBtn(false)}
-            .setOnClickListener {(it as CheckedTextView).toggle()}
+            .apply { setSaveBtn(false) }
+            .setOnClickListener { (it as CheckedTextView).toggle() }
 
-        btnAddcardSaveRecord.setOnClickListener(object: View.OnClickListener{
+        btnAddcardSaveRecord.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 setSaveBtn(false)
                 tvAddCardRecordFinish.isVisible = true
@@ -143,9 +146,8 @@ class AddCardActivity : AppCompatActivity() {
         })
 
 
-
         // TTS
-        btnAddCardTts.setOnClickListener(object: View.OnClickListener{
+        btnAddCardTts.setOnClickListener(object : View.OnClickListener {
             private val isClicked = false
 
             override fun onClick(view: View?) {
@@ -163,18 +165,17 @@ class AddCardActivity : AppCompatActivity() {
         }
     }
 
-    private fun setTTSUI(isClicked: Boolean, imageView: ImageView){
-        if(isExistRecordFile){
+    private fun setTTSUI(isClicked: Boolean, imageView: ImageView) {
+        if (isExistRecordFile) {
             recordFileName = null
         }
 
-        if(isClicked){
+        if (isClicked) {
             Glide
                 .with(imageView.context)
                 .load(R.drawable.btn_newcard_maketts_selected)
                 .into(imageView)
-        }
-        else{
+        } else {
             Glide
                 .with(imageView.context)
                 .load(R.drawable.btn_newcard_maketts_unselected)
@@ -187,19 +188,18 @@ class AddCardActivity : AppCompatActivity() {
 
     }
 
-    private fun setCompleteUi(){
+    private fun setCompleteUi() {
         ctvAddcardRecordPlay.isChecked = false
     }
 
 
-    private fun play(){
-        if(isExistRecordFile){
+    private fun play() {
+        if (isExistRecordFile) {
             onPlay(playFlag)
             ctvAddcardRecordPlay.isChecked = playFlag
             playFlag = !playFlag
 
-        }
-        else{
+        } else {
             "녹음 파일 없음".logDebug(this@AddCardActivity)
         }
     }
@@ -208,7 +208,7 @@ class AddCardActivity : AppCompatActivity() {
 
     private fun startPlaying() {
         player = MediaPlayer().apply {
-            setOnCompletionListener { setCompleteUi()  }
+            setOnCompletionListener { setCompleteUi() }
             try {
                 setDataSource(recordFileName)
                 prepare()
@@ -218,7 +218,7 @@ class AddCardActivity : AppCompatActivity() {
                 "prepare() failed".logDebug(this@AddCardActivity)
                 Log.e(TAG, "prepare() failed")
             }
-    }
+        }
     }
 
     private fun stopPlaying() {
@@ -227,22 +227,21 @@ class AddCardActivity : AppCompatActivity() {
         ctvAddcardRecordPlay.isChecked = false
     }
 
-    private fun record(){
+    private fun record() {
         onRecord(recordFlag)
-        when(recordFlag){
-            true ->{
+        when (recordFlag) {
+            true -> {
                 ctvAddcardRecordPlay.isEnabled = true
                 ctvAddcardRecordPlay.setBackgroundResource(R.drawable.ctv_record)
                 ctvAddcardRecordPlay.isChecked = true
             }
-            false->{
+            false -> {
                 ctvAddcardRecordPlay.isChecked = false
 
-                if(isExistRecordFile){
+                if (isExistRecordFile) {
                     ctvAddcardRecordPlay.setBackgroundResource(R.drawable.ctv_record)
                     btnAddcardSaveRecord.isChecked = true
-                }
-                else{
+                } else {
                     ctvAddcardRecordPlay.isEnabled = false
                     ctvAddcardRecordPlay.setBackgroundResource(R.drawable.btn_newcard_play_unslected)
                 }
@@ -295,7 +294,7 @@ class AddCardActivity : AppCompatActivity() {
 
 
         tvAddCardRecordNotice.text = getString(R.string.record_notice)
-        ctvAddcardRecordPlay.apply{
+        ctvAddcardRecordPlay.apply {
             isVisible = true
             isEnabled = true
             isExistRecordFile = true
@@ -305,7 +304,8 @@ class AddCardActivity : AppCompatActivity() {
     private fun getImageFromAlbum() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent,
+        startActivityForResult(
+            intent,
             IMAGE_PICK_CODE
         )
     }
@@ -314,14 +314,11 @@ class AddCardActivity : AppCompatActivity() {
         var result = true
         if (edtAddcardTitle.text.isNullOrEmpty()) {
             result = false
-        }
-        else if (edtAddcardDesc.text.isNullOrEmpty()) {
+        } else if (edtAddcardDesc.text.isNullOrEmpty()) {
             result = false
-        }
-        else if(!isCardImageFilled){
+        } else if (!isCardImageFilled) {
             result = false
-        }
-        else if(!isExistRecordFile) {
+        } else if (!isExistRecordFile) {
             result = false
         }
         return result
@@ -375,7 +372,8 @@ class AddCardActivity : AppCompatActivity() {
         when (requestCode) {
             PERMISSION_CODE -> {
                 grantResults.filter { it < 0 }.forEach {
-                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
+                        .show()
                     checkPermission()
                     return
                 }
@@ -389,7 +387,7 @@ class AddCardActivity : AppCompatActivity() {
 
         when (requestCode) {
             IMAGE_PICK_CODE -> {
-                when(resultCode) {
+                when (resultCode) {
                     Activity.RESULT_OK -> {
                         // 정상적으로 이미지를 가져온 경우
                         Log.d(TAG, "Success Get Image from Gallery")
@@ -397,7 +395,7 @@ class AddCardActivity : AppCompatActivity() {
                         imgAddcardCardImg.setImageURI(selectPicUri)
                         isCardImageFilled = true
                         newcard_photo.isVisible = false
-                        tvAddcardPhotoMessage.isVisible=false
+                        tvAddcardPhotoMessage.isVisible = false
                     }
                     else -> {
                         "Fail Get Image From Gallery".logDebug(this@AddCardActivity)
@@ -415,14 +413,14 @@ class AddCardActivity : AppCompatActivity() {
         stopPlaying()
     }
 
-    private fun uploadCard(){
-        if(token==null){
+    private fun uploadCard() {
+        if (token == null) {
             token = "token"
         }
-        else{
+
             // get cardData
             val title = edtAddcardTitle.text.toString()
-            val desc= edtAddcardDesc.text.toString()
+            val desc = edtAddcardDesc.text.toString()
             //todo("visibility 가져와야함")
             val visibility = true
 
@@ -434,57 +432,66 @@ class AddCardActivity : AppCompatActivity() {
             val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
             val byteArrayOutputStream = ByteArrayOutputStream()
             bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
-            val photoBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray())
+            val photoBody = RequestBody.create(
+                MediaType.parse("image/jpg"),
+                byteArrayOutputStream.toByteArray()
+            )
 
-            val picture_rb = MultipartBody.Part.createFormData("image", File(selectPicUri.toString()).name,photoBody)
+            val picture_rb = MultipartBody.Part.createFormData(
+                "image",
+                File(selectPicUri.toString()).name,
+                photoBody
+            )
 
             // region audio file 전송
             val audioFile = File(recordFileName)
             val audioUri = Uri.fromFile(File(recordFileName))
-            val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
-            val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name,audioBody)
+            val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
+            //val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
+            val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
 
             cardDataRepository
                 .addCard(
-                token!!,
-                title_rb,
-                desc_rb,
-                visibility,
-                picture_rb,
-                audio_rb
+                    token!!,
+                    title_rb,
+                    desc_rb,
+                    visibility,
+                    picture_rb,
+                    audio_rb
                 )
-                .enqueue(object: Callback<ResCards> {
+                .enqueue(object : Callback<ResCards> {
                     override fun onFailure(call: Call<ResCards>, t: Throwable) {
                         "Fail to Add Card, message:${t.message}".logDebug(this@AddCardActivity)
                     }
 
                     override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
-                        if(response.isSuccessful){
+                        if (response.isSuccessful) {
                             response.body()
-                                ?.let{
-                                    "status : ${it.status}, success: ${it.success}, data: ${it.data}, message : ${it.message}".logDebug(this@AddCardActivity)
-                                    if(it.success){
-                                        goDetailcardActivity()
+                                ?.let {
+                                    "status : ${it.status}, success: ${it.success}, data: ${it.data}, message : ${it.message}".logDebug(
+                                        this@AddCardActivity
+                                    )
+                                    if (it.success) {
+                                        val intent = Intent(this@AddCardActivity, DetailCardActivity::class.java)
+                                        startActivity(intent)
+
+                                    } else {
+                                        "Add Card Body is not Success".logDebug(this@AddCardActivity)
                                     }
-                                    else{"Add Card Body is not Success".logDebug(this@AddCardActivity)}
                                 }
-                        }
-                        else{
-                            "Add Card Response is not Succes".logDebug(this@AddCardActivity)
+                        } else {
+                            "Add Card Response is not Success".logDebug(this@AddCardActivity)
                         }
                     }
 
                 })
             // endregion
-        }
+
     }
 
-    private fun goDetailcardActivity(){
-        val intent = Intent(this, DetailCardActivity::class.java)
-        startActivity(intent)
-    }
 
-    private fun setSaveBtn( isOn : Boolean){
+
+    private fun setSaveBtn(isOn: Boolean) {
         btnAddcardSaveRecord.isEnabled = isOn
         btnAddcardSaveRecord.isSelected = isOn
     }
