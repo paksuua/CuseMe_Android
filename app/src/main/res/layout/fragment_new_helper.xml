@@ -198,7 +198,7 @@
                 android:layout_width="36dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="13dp"
-                android:src="@drawable/btn_carddetail_cardoff" />
+                android:src="@drawable/btn_managerhome_off" />
 
             <TextView
                 android:layout_width="wrap_content"

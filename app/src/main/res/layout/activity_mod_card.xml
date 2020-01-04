@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".feature.addcard.AddCardActivity">
@@ -105,6 +110,7 @@
         android:lineSpacingExtra="7sp"
         android:maxLines="1"
         android:textColorHint="@color/pinkish_grey_two"
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/cdModcardCardImg"
         app:layout_constraintTop_toBottomOf="@id/cdModcardCardImg" />
@@ -114,7 +120,7 @@
     <EditText
         android:id="@+id/edtModcardDesc"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/notosans_light"
@@ -126,24 +132,24 @@
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical"
         android:scrollHorizontally="false"
-        android:textColor="@color/pinkish_grey_two"
+        android:textColor="#000000"
+        android:textColorHint="@color/pinkish_grey_two"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/lyModCardRecord"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toStartOf="@+id/edtAddcardTitle"
-        app:layout_constraintTop_toBottomOf="@id/edtModcardTitle"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/edtModcardTitle" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lyModCardRecord"
         android:layout_width="match_parent"
         android:layout_height="179dp"
-        android:padding="20dp"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="39dp"
         app:behavior_hideable="true"
         app:behavior_peekHeight="200dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtModcardDesc"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -231,8 +237,28 @@
             app:layout_constraintBottom_toBottomOf="@id/btnModcardTogRecord"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btnModcardTogRecord" />
+
+        <TextView
+            android:id="@+id/tvModCardFinish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="39dp"
+            android:fontFamily="sans-serif-light"
+            android:lineSpacingExtra="5sp"
+            android:text="저장되었습니다."
+            android:textColor="@color/mainpink"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btnModcardSaveRecord"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvModCardRecordNotice" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- endregion -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
+    android:id="@+id/cvHelperSortItemCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shadows"
@@ -10,30 +10,40 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/lyNewHelperCard"
+        android:layout_marginHorizontal="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/card_bg_selector"
-        android:orientation="vertical"
-        android:padding="1dp">
+        android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imgNewHelperCard"
+            android:id="@+id/imgHelperCard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="10:9"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <CheckedTextView
+            android:id="@+id/cktHelperCard"
+            android:layout_width="40dp"
+            android:layout_height="28dp"
+            android:background="@drawable/ckt_onoff"
+            android:checked="false"
+            android:layout_marginEnd="6dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
 
         <TextView
-            android:id="@+id/tvNewHelperCard"
+            android:id="@+id/tvHelperCard"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
             android:text="Text"
             android:textSize="16dp"
-            app:layout_constraintStart_toStartOf="@id/imgNewHelperCard"
-            app:layout_constraintTop_toBottomOf="@id/imgNewHelperCard" />
+            app:layout_constraintStart_toStartOf="@id/imgHelperCard"
+            app:layout_constraintTop_toBottomOf="@id/imgHelperCard" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

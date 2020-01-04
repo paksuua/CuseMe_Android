@@ -73,21 +73,24 @@ class HelperActivity : AppCompatActivity() {
                 backHelperBlur.isVisible=true
                 btnHelperDownCard.startAnimation(fab_open)
                 btnHelperNewCard.startAnimation(fab_open)
+                btnHelperAddCard.isSelected=false////
                 btnHelperAddCard.startAnimation(rotate_forward)
+                btnHelperAddCard.isSelected=true////
                 btnHelperDownCard.isVisible = true
                 btnHelperNewCard.isVisible = true
                 btnHelperDownCard.isClickable = true
                 btnHelperNewCard.isClickable = true
-
                 isOpen = true
             } else {
                 backHelperBlur.isVisible=false
                 btnHelperDownCard.startAnimation(fab_close)
                 btnHelperNewCard.startAnimation(fab_close)
+                btnHelperAddCard.isSelected=true
                 btnHelperAddCard.startAnimation(rotate_backward)
+                btnHelperAddCard.isSelected=false
                 btnHelperDownCard.isVisible = false
                 btnHelperNewCard.isVisible = false
-                btnHelperAddCard.setBackgroundResource(R.drawable.btn_managerhome_plus)
+                //btnHelperAddCard.setBackgroundResource(R.drawable.btn_managerhome_plus)
                 isOpen = false
             }
         }
@@ -148,16 +151,18 @@ class HelperActivity : AppCompatActivity() {
         cktHelperAllCard.isSelected = !flag
         when(flag){
             true -> {
+                cktHelperGoDisabled.isChecked=true
                 tvHelperGoDisabled.setTextColor(resources.getColor(R.color.mainpink))
+                cktHelperAllCard.isChecked=false
                 tvHelperAllCard.setTextColor(resources.getColor(R.color.greyish_two))
-
             }
             false -> {
+                cktHelperGoDisabled.isChecked=false
                 tvHelperGoDisabled.setTextColor(resources.getColor(R.color.greyish_two))
+                cktHelperAllCard.isChecked=true
                 tvHelperAllCard.setTextColor(resources.getColor(R.color.mainpink))
             }
         }
-
     }
 
 

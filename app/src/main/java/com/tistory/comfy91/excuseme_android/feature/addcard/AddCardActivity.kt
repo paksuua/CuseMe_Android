@@ -37,7 +37,6 @@ import com.tistory.comfy91.excuseme_android.isPermissionNotGranted
 import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.startSettingActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
-import kotlinx.android.synthetic.main.activity_mod_card.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -73,6 +72,7 @@ class AddCardActivity : AppCompatActivity() {
 
     private var token = SingletoneToken.getInstance().token
     private val cardDataRepository = ServerCardDataRepository()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,12 +113,9 @@ class AddCardActivity : AppCompatActivity() {
         }
 
         // 실행(count) 버튼 리스너 설정
-        ctvAddcardRecordPlay.setOnClickListener {
-            if (!isExistRecordFile) {
-                record()
-            } else {
-                play()
-            }
+        ctvAddcardRecordPlay.setOnClickListener{
+            if(!isExistRecordFile){ record()}
+            else{play()}
 
         }
 
@@ -300,7 +297,7 @@ class AddCardActivity : AppCompatActivity() {
 
 
         tvAddCardRecordNotice.text = getString(R.string.record_notice)
-        ctvAddcardRecordPlay.apply {
+        ctvAddcardRecordPlay.apply{
             isVisible = true
             isEnabled = true
             isExistRecordFile = true
@@ -442,6 +439,7 @@ class AddCardActivity : AppCompatActivity() {
             byteArrayOutputStream.toByteArray()
         )
 
+
         val picture_rb = MultipartBody.Part.createFormData(
             "image",
             File(selectPicUri.toString()).name,
@@ -505,6 +503,23 @@ class AddCardActivity : AppCompatActivity() {
 
                                 } else {
                                     "Add Card Body is not Success".logDebug(this@AddCardActivity)
+
+                    override fun onResponse(call: Call<ResDownCard>, response: Response<ResDownCard>) {
+                        if(response.isSuccessful){
+                            response.body()
+                                ?.let {
+                                    "status : ${it.status}, success: ${it.success}, data: ${it.data}, message : ${it.message}".logDebug(
+                                        this@AddCardActivity
+                                    )
+                                    if (it.success) {
+                                        val intent = Intent(this@AddCardActivity, DetailCardActivity::class.java)
+                                        intent.putExtra("DOWN_CARD",it.data)
+                                        startActivity(intent)
+
+                                    } else {
+                                        "Add Card Body is not Success".logDebug(this@AddCardActivity)
+                                    }
+
                                 }
                             }
                     } else {
