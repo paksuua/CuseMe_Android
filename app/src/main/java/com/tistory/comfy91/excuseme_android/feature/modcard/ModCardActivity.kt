@@ -10,6 +10,8 @@ import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.CheckedTextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -219,6 +221,18 @@ class ModCardActivity : AppCompatActivity() {
             ctvModcardRecordPlay.isEnabled = true
         }
 
+        //확인 버튼
+        btnModcardSaveRecord
+            .apply {setSaveBtn(false)}
+            .setOnClickListener {(it as CheckedTextView).toggle()}
+
+        btnModcardSaveRecord.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(view: View?) {
+                setSaveBtn(false)
+                tvModCardFinish.isVisible = true
+            }
+        })
+
         // TTS 버튼
         ctvModcardAutoRecord.setOnClickListener {
             ctvModcardAutoRecord.isVisible = !ctvModcardAutoRecord.isVisible
@@ -411,6 +425,13 @@ class ModCardActivity : AppCompatActivity() {
         recorder?.release()
         recorder = null
         stopPlaying()
+    }
+
+
+
+    private fun setSaveBtn( isOn : Boolean){
+        btnModcardSaveRecord.isEnabled = isOn
+        btnModcardSaveRecord.isSelected = isOn
     }
 
     companion object {

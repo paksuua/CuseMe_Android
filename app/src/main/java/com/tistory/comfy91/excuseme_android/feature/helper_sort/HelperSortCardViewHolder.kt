@@ -17,7 +17,7 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
     RecyclerView.ViewHolder(itemView) {
     private val imgCard: ImageView = itemView.findViewById(R.id.imgHelperCard)
     private val tvCard: TextView = itemView.findViewById(R.id.tvHelperCard)
-    private val btnHelperCheck: CheckedTextView = itemView.findViewById(R.id.btnHelperCheck)
+    private val btnHelperCheck: CheckedTextView = itemView.findViewById(R.id.cktHelperCard)
     private var isTrueBtnHelperCheck = false
     lateinit var dataVisibilityChange: () -> Unit
 

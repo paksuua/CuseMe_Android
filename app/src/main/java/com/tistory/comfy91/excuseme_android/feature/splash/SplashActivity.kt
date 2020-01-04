@@ -46,6 +46,7 @@ class SplashActivity : AppCompatActivity() {
         Login.getUUID(this@SplashActivity)
             .let {
                 "(uuid : ${it})".logDebug(this@SplashActivity)
+                "Request Start App".logDebug(this@SplashActivity)
                 requestServer(it)
             }
 
@@ -61,6 +62,7 @@ class SplashActivity : AppCompatActivity() {
                         }
 
                         override fun onResponse(call: Call<ResUser>, response: Response<ResUser>) {
+                            "code : #${response.code()}, message : ${response.message()}".logDebug(this@SplashActivity)
                             if (response.isSuccessful) {
                                 response.body()
                                     ?.let { resUser ->
