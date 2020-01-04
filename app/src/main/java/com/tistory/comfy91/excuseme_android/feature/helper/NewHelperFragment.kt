@@ -31,7 +31,8 @@ import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.toast
 import kotlinx.android.synthetic.main.activity_helper.*
 import kotlinx.android.synthetic.main.fragment_new_helper.*
-import kotlinx.android.synthetic.main.sy_item_card.view.*
+import kotlinx.android.synthetic.main.helper_item_card.view.*
+import kotlinx.android.synthetic.main.helper_item_card.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -328,7 +329,7 @@ class NewHelperFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewViewHolder {
             val view = LayoutInflater.from(this@NewHelperFragment.context)
-                .inflate(R.layout.sy_item_card, parent, false)
+                .inflate(R.layout.helper_item_card, parent, false)
             return NewViewHolder(view)
         }
 
@@ -345,9 +346,9 @@ class NewHelperFragment : Fragment() {
     // end Adapter
 // region ViewHolder
     inner class NewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val lyNewHelperCard: ConstraintLayout = itemView.findViewById(R.id.lyNewHelperCard)
-        private val imgNewHelperCard: ImageView = itemView.findViewById(R.id.imgNewHelperCard)
-        private val tvNewHelperCard: TextView = itemView.findViewById(R.id.tvNewHelperCard)
+        private val lyNewHelperCard: ConstraintLayout = itemView.findViewById(R.id.lyHelper)
+        private val imgNewHelperCard: ImageView = itemView.findViewById(R.id.imgCard)
+        private val tvNewHelperCard: TextView = itemView.findViewById(R.id.tvCard)
 
 
         fun bind(cardBean: CardBean) {
@@ -361,7 +362,7 @@ class NewHelperFragment : Fragment() {
                 clickedCardData = cardBean
                 clickedCardView?.isSelected = false
 
-                if (clickedCardView == it.lyNewHelperCard) {
+                if (clickedCardView == it.lyHelper) {
                     clickedCardData = null
                     clickedCardView = null
                     tvNewHelper.text = ""
@@ -370,9 +371,9 @@ class NewHelperFragment : Fragment() {
                     play()
                     return@setOnClickListener
                 }
-                clickedCardView = it.lyNewHelperCard
+                clickedCardView = it.lyHelper
                 tvNewHelper.text = cardBean.desc
-                it.lyNewHelperCard.isSelected = true
+                it.lyHelper.isSelected = true
                 bottomBarIsVisible(true)
 
                 if (cardBean.audioUrl.isNullOrEmpty()) {

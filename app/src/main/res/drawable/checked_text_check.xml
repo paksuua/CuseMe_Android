@@ -7,6 +7,4 @@
     <item android:state_checked="false"
         android:drawable="@drawable/btn_edit_selectcard_unselected">
     </item>
-
-
 </selector>

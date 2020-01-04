@@ -100,6 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="33dp"
+        android:paddingTop="16dp"
         android:background="@drawable/bg_rvhelper_round"
         android:paddingTop="8dp"
         android:visibility="visible"
@@ -145,120 +146,107 @@
             app:layout_constraintTop_toBottomOf="@+id/imgNewHelperCard" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <LinearLayout
         android:id="@+id/cstNewHelperSecond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mainpink"
         android:orientation="horizontal"
+        android:visibility="visible"
         android:paddingTop="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible">
-
+        app:layout_constraintStart_toStartOf="parent">
         <LinearLayout
-            android:id="@+id/btnNewHelperDeleteCard"
-            android:layout_width="86dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
+            android:id="@+id/btnNewHelperDeleteCard"
             android:paddingTop="1dp"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
             <ImageView
+                android:layout_marginTop="4dp"
                 android:layout_width="20dp"
                 android:layout_height="28dp"
-                android:layout_marginTop="4dp"
-                android:src="@drawable/btn_managerhome_delete" />
-
+                android:src="@drawable/btn_managerhome_delete"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/notosans_bold"
-                android:text="삭제"
                 android:textAlignment="center"
+                android:text="삭제"
                 android:textColor="@color/white_three"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:fontFamily="@font/notosans_bold"/>
         </LinearLayout>
-
         <LinearLayout
-            android:id="@+id/btnNewHelperInvisCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:id="@+id/btnNewHelperInvisCard"
             android:gravity="center"
+            android:layout_weight="1"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
-
             <ImageView
+                android:layout_marginTop="13dp"
                 android:layout_width="36dp"
                 android:layout_height="20dp"
-                android:layout_marginTop="13dp"
-                android:src="@drawable/btn_managerhome_off" />
+                android:src="@drawable/btn_managerhome_off"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/notosans_bold"
-                android:text="숨기기"
                 android:textAlignment="center"
+                android:text="숨기기"
                 android:textColor="@color/white_three"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:fontFamily="@font/notosans_bold"/>
         </LinearLayout>
-
         <LinearLayout
-            android:id="@+id/btnNewHelperModCard"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
+            android:id="@+id/btnNewHelperModCard"
             android:paddingTop="1dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
-
             <ImageView
+                android:layout_marginTop="2dp"
                 android:layout_width="28.1dp"
                 android:layout_height="26dp"
-                android:layout_marginTop="2dp"
-                android:src="@drawable/btn_managerhome_modify" />
-
+                android:src="@drawable/btn_managerhome_modify"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/notosans_bold"
-                android:text="수정"
                 android:textAlignment="center"
+                android:text="수정"
                 android:textColor="@color/white_three"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:fontFamily="@font/notosans_bold"/>
         </LinearLayout>
-
         <LinearLayout
-            android:id="@+id/btnNewHelperCancleCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:id="@+id/btnNewHelperCancleCard"
             android:gravity="center"
-            android:orientation="vertical"
             android:paddingTop="8.8dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
-
             <ImageView
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:src="@drawable/btn_managerhome_cancel" />
-
+                android:src="@drawable/btn_managerhome_cancel"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/notosans_bold"
-                android:text="취소"
                 android:textAlignment="center"
+                android:text="취소"
                 android:textColor="@color/white_three"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:fontFamily="@font/notosans_bold"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,9 +15,10 @@ import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
 
 class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit) :
     RecyclerView.ViewHolder(itemView) {
-    private val imgCard: ImageView = itemView.findViewById(R.id.imgHelperCard)
-    private val tvCard: TextView = itemView.findViewById(R.id.tvHelperCard)
-    private val btnHelperCheck: CheckedTextView = itemView.findViewById(R.id.cktHelperCard)
+    private val imgCard: ImageView = itemView.findViewById(R.id.imgCard)
+    private val tvCard: TextView = itemView.findViewById(R.id.tvCard)
+    private val btnHelperCheck: CheckedTextView = itemView.findViewById(R.id.btnCheck)
+
     private var isTrueBtnHelperCheck = false
     lateinit var dataVisibilityChange: () -> Unit
 
