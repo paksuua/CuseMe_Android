@@ -1,27 +1,20 @@
 package com.tistory.comfy91.excuseme_android.feature.download_card
 
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tistory.comfy91.excuseme_android.R
-import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
-import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
-import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
-import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.helper.HelperActivity
 import com.tistory.comfy91.excuseme_android.logDebug
-import com.tistory.comfy91.excuseme_android.newStartActivity
 import kotlinx.android.synthetic.main.activity_download_card.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlinx.android.synthetic.main.activity_unlock.*
 
 class DownloadCardActivity : AppCompatActivity() {
 

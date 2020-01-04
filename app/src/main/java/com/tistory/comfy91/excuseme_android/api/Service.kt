@@ -60,7 +60,7 @@ interface Service{
         @Part("content") desc : RequestBody,
         @Part("visible") visibility: Boolean,
         @Part image: MultipartBody.Part,
-        @Part record: MultipartBody.Part
+        @Part record: MultipartBody.Part?
     ): Call<ResDownCard>
 
     /**
@@ -68,6 +68,7 @@ interface Service{
      * @param token
      * @param cardBean = 수정할 카드
      */
+    @Multipart
     @PUT("/cards/{cardIdx}")
     fun editCardDetail(
         @Header("token") token: String,

@@ -35,7 +35,10 @@ class DetailCardActivity : AppCompatActivity() {
     private var recordFileName: String? = null
     private var card: CardBean? = null
     private lateinit var dialogBuilder: AlertDialog.Builder
+
+
     private val cardDataRepository = ServerCardDataRepository()
+    private var imageUri: Uri? = null
     private var token = SingletoneToken.getInstance().token
 
     //TTS
@@ -84,6 +87,7 @@ class DetailCardActivity : AppCompatActivity() {
 
         intent.getSerializableExtra("DOWN_CARD")?.let {
             card = it as CardBean
+//            imageUri= Uri.parse(intent.getStringExtra("MOD_CARD_IMG_URI"))
             showSelectVisibility(card!!)
             return
         }
@@ -120,15 +124,16 @@ class DetailCardActivity : AppCompatActivity() {
     }
 
     private fun readyForRequest(card: CardBean, dialog: DialogInterface) {
-        val imageUri: Uri? = intent.getSerializableExtra("MOD_CARD_IMG_URI") as Uri?
+
         val title_rb = RequestBody.create(MediaType.parse("text/plain"), card?.title)
         val content_rb = RequestBody.create(MediaType.parse("text/plain"), card?.desc)
 
         var photo_rb: MultipartBody.Part? = null
-        imageUri?.let{
+        card.imageUrl?.let{
+            val uri = Uri.parse(it)
             val options = BitmapFactory.Options()
 
-            val inputStream: InputStream = contentResolver.openInputStream(imageUri)!!
+            val inputStream: InputStream = contentResolver.openInputStream(uri)!!
             val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
             val byteArrayOutPutStream = ByteArrayOutputStream()
             bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutPutStream)
@@ -141,9 +146,18 @@ class DetailCardActivity : AppCompatActivity() {
 
 
         // audio
-        val audioFile = File(card?.audioUrl)
-        val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
-        val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
+        var audio_rb: MultipartBody.Part? = null
+        card?.audioUrl = null
+        card?.audioUrl?.let{
+            val audioFile = File(it)
+//        val fileOutputStream = audioFile.outputStream()
+            val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
+            audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
+        }
+//        val audioFile = File(card?.audioUrl)
+//        val fileOutputStream = audioFile.outputStream()
+//        val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
+//        val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
         "token : $token, title_rb: $title_rb, content_rb: $content_rb".logDebug(this@DetailCardActivity)
 
         cardDataRepository.editCardDetail(
@@ -338,8 +352,11 @@ class DetailCardActivity : AppCompatActivity() {
             MODIFY_CARD -> {
                 when(resultCode){
                     Activity.RESULT_OK ->{
-                        card = data?.getSerializableExtra("MODE_CARD") as CardBean
-                        showSelectVisibility(card!!)
+                        card = (data?.getSerializableExtra("MOD_CARD")) as CardBean?
+                        card?.let{
+                            showSelectVisibility(it)
+                        }
+
 
                     }
                     Activity.RESULT_CANCELED ->{"카드 수정 취소함".logDebug(this@DetailCardActivity)}

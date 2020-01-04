@@ -101,8 +101,8 @@ class HelperActivity : AppCompatActivity() {
 
             // 카드생성 뷰로 이동
             btnHelperNewCard.setOnClickListener{
-//                val intent = Intent(this, AddCardActivity::class.java)
-//                startActivity(intent)
+                val intent = Intent(this, AddCardActivity::class.java)
+                startActivity(intent)
             }
         }
 
@@ -111,6 +111,11 @@ class HelperActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 카드생성 뷰로 이동
+        btnHelperNewCard.setOnClickListener{
+            val intent = Intent(this, AddCardActivity::class.java)
+            startActivity(intent)
+        }
 
 
         // 홈미리보기 프래그먼트로 전환
@@ -139,8 +144,8 @@ class HelperActivity : AppCompatActivity() {
     }
 
     private fun changeNaviBarIcon(flag: Boolean){
-        imgHelperGoDisabled.isSelected = flag
-        imgHelperAllCard.isSelected = !flag
+        cktHelperGoDisabled.isSelected = flag
+        cktHelperAllCard.isSelected = !flag
         when(flag){
             true -> {
                 tvHelperGoDisabled.setTextColor(resources.getColor(R.color.mainpink))

@@ -183,7 +183,7 @@ class ModCardActivity : AppCompatActivity() {
                 }
             audioTimer.start()
             circleAnimation.start()
-            if (card.audioUrl.isEmpty()) {
+            if (card.audioUrl.isNullOrEmpty()) {
                 ctvModcardRecordPlay.setBackgroundResource(R.drawable.ctv_record)
             }
             cgUiRecroding(true)
@@ -210,7 +210,7 @@ class ModCardActivity : AppCompatActivity() {
     }
 
     private fun setRecordUi() {
-        if (card.audioUrl.isEmpty()) {
+        if (card.audioUrl.isNullOrEmpty()) {
             ctvModcardAutoRecord.isVisible = false
             ctvModcardRecordPlay.isEnabled = false
             ctvModcardRecordPlay.setBackgroundResource(R.drawable.btn_newcard_play_unslected)
@@ -302,8 +302,9 @@ class ModCardActivity : AppCompatActivity() {
         newRecordFileName?.let {
             card.audioUrl = it
         }
+
         cardImageUrl?.let{
-            intent.putExtra("MOD_CARD_IMG_URI", cardImageUrl)
+            card.imageUrl = it.toString()
         }
         intent.putExtra("MOD_CARD", card)
         this@ModCardActivity.setResult(Activity.RESULT_OK, intent)

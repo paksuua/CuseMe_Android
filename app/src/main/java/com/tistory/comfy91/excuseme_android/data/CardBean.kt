@@ -14,10 +14,10 @@ data class CardBean(
     var desc: String,
 
     @SerializedName("image")
-    val imageUrl: String,
+    var imageUrl: String,
 
     @SerializedName("record")
-    var audioUrl: String,
+    var audioUrl: String?,
 
     @SerializedName("count")
     val count: Int,
@@ -29,7 +29,7 @@ data class CardBean(
     val serialNum: String,
 
     @SerializedName("sequence")
-    val sequence: Int,
+    var sequence: Int,
 
     @SerializedName("userIdx")
     val userIdx: String?

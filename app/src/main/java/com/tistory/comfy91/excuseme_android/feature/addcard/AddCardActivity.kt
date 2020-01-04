@@ -48,6 +48,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
+import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -71,7 +72,7 @@ class AddCardActivity : AppCompatActivity() {
 
 
     private var token = SingletoneToken.getInstance().token
-    private val cardDataRepository = DummyCardDataRepository()
+    private val cardDataRepository = ServerCardDataRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +86,6 @@ class AddCardActivity : AppCompatActivity() {
 
     private fun initData() {
         // Record to the external cache directory for visibility
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
-
         circleAnimation = ValueAnimator.ofFloat(0f, 360f)
             .apply {
                 this.setDuration(10000)
@@ -162,11 +160,14 @@ class AddCardActivity : AppCompatActivity() {
 
         // 최종 카드 추가 버튼
         btnAddCard.setOnClickListener {
-            uploadCard()
+            if(isAllCardInfoFilled()){
+                uploadCard()
+            }
+
         }
 
         // 뒤로가기 버튼
-        btnAddcardBack.setOnClickListener {finish()}
+        btnAddcardBack.setOnClickListener { finish() }
     }
 
     private fun setTTSUI(isClicked: Boolean, imageView: ImageView) {
@@ -259,6 +260,9 @@ class AddCardActivity : AppCompatActivity() {
     private fun onRecord(start: Boolean) = if (start) startRecording() else stopRecording()
 
     private fun startRecording() {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
+
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
@@ -319,8 +323,6 @@ class AddCardActivity : AppCompatActivity() {
         } else if (edtAddcardDesc.text.isNullOrEmpty()) {
             result = false
         } else if (!isCardImageFilled) {
-            result = false
-        } else if (!isExistRecordFile) {
             result = false
         }
         return result
@@ -420,78 +422,100 @@ class AddCardActivity : AppCompatActivity() {
             token = "token"
         }
 
-            // get cardData
-            val title = edtAddcardTitle.text.toString()
-            val desc = edtAddcardDesc.text.toString()
-            //todo("visibility 가져와야함")
-            val visibility = true
+        // get cardData
+        val title = edtAddcardTitle.text.toString()
+        val desc = edtAddcardDesc.text.toString()
+        //todo("visibility 가져와야함")
+        val visibility = false
 
-            val title_rb = RequestBody.create(MediaType.parse("text/plain"), title)
-            val desc_rb = RequestBody.create(MediaType.parse("text/plain"), desc)
+        val title_rb = RequestBody.create(MediaType.parse("text/plain"), title)
+        val desc_rb = RequestBody.create(MediaType.parse("text/plain"), desc)
 
-            val options = BitmapFactory.Options()
-            val inputStream: InputStream = contentResolver.openInputStream(selectPicUri)!!
-            val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
-            val photoBody = RequestBody.create(
-                MediaType.parse("image/jpg"),
-                byteArrayOutputStream.toByteArray()
+        val options = BitmapFactory.Options()
+        val inputStream: InputStream = contentResolver.openInputStream(selectPicUri)!!
+        val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+
+        val photoBody = RequestBody.create(
+            MediaType.parse("image/jpg"),
+            byteArrayOutputStream.toByteArray()
+        )
+
+        val picture_rb = MultipartBody.Part.createFormData(
+            "image",
+            File(selectPicUri.toString()).name,
+            photoBody
+        )
+
+
+        var audioFile: File? = null
+        var audioUrl: Uri? = null
+        var audioBody: RequestBody? = null
+        var audio_rb: MultipartBody.Part? = null
+        recordFileName?.let{
+            audioFile = File(recordFileName)
+            audioUrl = Uri.fromFile(File(recordFileName))
+            audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
+            audio_rb = MultipartBody.Part.createFormData("audio", audioFile?.name, audioBody)
+        }
+
+
+
+        // region audio file 전송
+//        val optionsA = BitmapFactory.Options()
+//        val inputStreamA: InputStream = contentResolver.openInputStream(audioUri)!!
+//        val bitmapA = BitmapFactory.decodeStream(inputStreamA, null, options)
+//        val byteArrayOutputStreamA = ByteArrayOutputStream()
+//
+//        val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
+//        val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
+//        val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
+
+        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $picture_rb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}   audio_rb : $audio_rb".logDebug(this@AddCardActivity)
+
+        cardDataRepository
+            .addCard(
+                token!!,
+                title_rb,
+                desc_rb,
+                visibility,
+                picture_rb,
+                audio_rb
             )
+            .enqueue(object : Callback<ResDownCard> {
+                override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
+                    "Fail to Add Card, message:${t.message}".logDebug(this@AddCardActivity)
+                }
 
-            val picture_rb = MultipartBody.Part.createFormData(
-                "image",
-                File(selectPicUri.toString()).name,
-                photoBody
-            )
+                override fun onResponse(call: Call<ResDownCard>, response: Response<ResDownCard>) {
+                    if (response.isSuccessful) {
+                        response.body()
+                            ?.let {
+                                "status : ${it.status}, success: ${it.success}, data: ${it.data}, message : ${it.message}".logDebug(
+                                    this@AddCardActivity
+                                )
+                                if (it.success) {
+                                    var card = it.data
+                                    card?.imageUrl = selectPicUri.toString()
+                                    val intent = Intent(this@AddCardActivity, DetailCardActivity::class.java)
 
-            // region audio file 전송
-            val audioFile = File(recordFileName)
-            val audioUri = Uri.fromFile(File(recordFileName))
-            val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
-            //val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
-            val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
+                                    intent.putExtra("DOWN_CARD", it.data)
+                                    startActivity(intent)
 
-            cardDataRepository
-                .addCard(
-                    token!!,
-                    title_rb,
-                    desc_rb,
-                    visibility,
-                    picture_rb,
-                    audio_rb
-                )
-                .enqueue(object : Callback<ResDownCard> {
-                    override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
-                        "Fail to Add Card, message:${t.message}".logDebug(this@AddCardActivity)
-                    }
-
-                    override fun onResponse(call: Call<ResDownCard>, response: Response<ResDownCard>) {
-                        if (response.isSuccessful) {
-                            response.body()
-                                ?.let {
-                                    "status : ${it.status}, success: ${it.success}, data: ${it.data}, message : ${it.message}".logDebug(
-                                        this@AddCardActivity
-                                    )
-                                    if (it.success) {
-                                        val intent = Intent(this@AddCardActivity, DetailCardActivity::class.java)
-                                        intent.putExtra("DOWN_CARD",it.data)
-                                        startActivity(intent)
-
-                                    } else {
-                                        "Add Card Body is not Success".logDebug(this@AddCardActivity)
-                                    }
+                                } else {
+                                    "Add Card Body is not Success".logDebug(this@AddCardActivity)
                                 }
-                        } else {
-                            "Add Card Response is not Success".logDebug(this@AddCardActivity)
-                        }
+                            }
+                    } else {
+                        "Add Card Response is not Success".logDebug(this@AddCardActivity)
                     }
+                }
 
-                })
-            // endregion
+            })
+        // endregion
 
     }
-
 
 
     private fun setSaveBtn(isOn: Boolean) {

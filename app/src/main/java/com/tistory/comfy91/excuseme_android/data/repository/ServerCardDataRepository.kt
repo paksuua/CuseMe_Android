@@ -46,10 +46,10 @@ class ServerCardDataRepository:
         title: RequestBody,
         desc: RequestBody,
         visibility: Boolean,
-        image: MultipartBody.Part?,
+        image: MultipartBody.Part,
         record: MultipartBody.Part?
     ): Call<ResDownCard> {
-        return ServerService.service.addCard(token, title, desc, visibility, image!!, record!!)
+        return ServerService.service.addCard(token, title, desc, visibility, image!!, record)
     }
 
     override fun editCardDetail(

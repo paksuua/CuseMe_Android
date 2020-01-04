@@ -23,7 +23,7 @@ class HelperSortActivity : AppCompatActivity() {
         btnHelperSortDeleteCard.isVisible = checkAnyCardChecked()
     }
     private val rvHelperSortCardAdapter =
-        RvHelperSortAdapter(
+        RealHelperSortAdapter(
             this,
             onBtnAllClicked,
             HelperSortCardViewHolder.HELPER_SORT_ACTIVITY
@@ -37,10 +37,15 @@ class HelperSortActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.tistory.comfy91.excuseme_android.R.layout.activity_helper_sort)
-        getCards()
+
         uiInit()
 
     } // end onCreate()
+
+    override fun onResume() {
+        super.onResume()
+        getCards()
+    }
 
     private fun uiInit(){
         // 리사이클러뷰 어댑터 생성 및 설정
@@ -94,8 +99,8 @@ class HelperSortActivity : AppCompatActivity() {
             ?.let{
                 cardList.sortByDescending {vid -> vid.visibility }
                 cardList.addAll(it as ArrayList<CardBean>)
-                rvHelperSortCardAdapter.data.clear()
-                rvHelperSortCardAdapter.data.addAll(cardList)
+//                rvHelperSortCardAdapter.data.clear()
+//                rvHelperSortCardAdapter.data.addAll(cardList)
                 rvHelperSortCardAdapter.notifyDataSetChanged()
             }
     }
@@ -140,12 +145,29 @@ class HelperSortActivity : AppCompatActivity() {
             token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWR4IjozOSwidXVpZCI6ImYzZDViM2E1LTkwYjYtNDVlMy1hOThhLTEyODE5OWNmZTg1MCIsImlhdCI6MTU3NzkwMTA1MywiZXhwIjoxNTc3OTg3NDUzLCJpc3MiOiJnYW5naGVlIn0.QytUhsXf4bJirRR_zF3wdACiNu9ytwUE4mrPSNLCFLk"
         }
 
+        var changeAllCards  = arrayListOf<CardBean>()
+        changeAllCards.addAll(cardList)
+        for(i in 0 until changeAllCards.size){
+            changeAllCards[i].sequence = i
+        }
 
-        "Request Edit All Cards Data : ${rvHelperSortCardAdapter.data}".logDebug(this@HelperSortActivity)
+        var forSendCard = arrayListOf<CardBean>()
+        changeAllCards.sortedBy { it.sequence }
+            .forEach { forSendCard.add(it) }
+
+
+
+        for(i in 0 until changeAllCards.size){
+            "changeAllCards.data index : $i: card : ${forSendCard[i]}".logDebug(this@HelperSortActivity)
+        }
+
+
+
+        "Request Edit All Cards Data : ${changeAllCards}".logDebug(this@HelperSortActivity)
         cardDataRepository.changeAllCards(
             token!!,
             BodyChangeAllCards(
-               rvHelperSortCardAdapter.data as List<CardBean>
+                  forSendCard as List<CardBean>
             )
         ).enqueue(object: Callback<ResCards> {
             override fun onFailure(call: Call<ResCards>, t: Throwable) {
