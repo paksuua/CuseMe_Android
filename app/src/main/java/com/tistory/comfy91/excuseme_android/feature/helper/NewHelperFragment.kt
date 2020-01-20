@@ -110,11 +110,11 @@ class NewHelperFragment : Fragment() {
 
         // HelperSortActivity로 이동
         btnNewHelperGoSort.setOnClickListener {
-            activity?.let {
+            /*activity?.let {
                 val intent = Intent(it.baseContext, HelperSortActivity::class.java)
                 intent.putExtra("CARD_DATA", disabledCardList)
                 it.startActivity(intent)
-            }
+            }*/
         }
 
         // 하단바 카드삭제
