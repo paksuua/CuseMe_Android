@@ -102,7 +102,6 @@
         android:layout_marginTop="33dp"
         android:paddingTop="16dp"
         android:background="@drawable/bg_rvhelper_round"
-        android:paddingTop="8dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/cstNewHelperSecond"
         app:layout_constraintEnd_toEndOf="parent"
