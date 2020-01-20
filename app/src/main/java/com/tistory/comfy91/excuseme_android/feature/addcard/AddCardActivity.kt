@@ -25,7 +25,7 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
-import com.tistory.comfy91.excuseme_android.R
+import com.tistory.comfy91.excuseme_android.*
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.ResDownCard
@@ -33,9 +33,6 @@ import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
-import com.tistory.comfy91.excuseme_android.isPermissionNotGranted
-import com.tistory.comfy91.excuseme_android.logDebug
-import com.tistory.comfy91.excuseme_android.startSettingActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -113,9 +110,12 @@ class AddCardActivity : AppCompatActivity() {
         }
 
         // 실행(count) 버튼 리스너 설정
-        ctvAddcardRecordPlay.setOnClickListener{
-            if(!isExistRecordFile){ record()}
-            else{play()}
+        ctvAddcardRecordPlay.setOnClickListener {
+            if (!isExistRecordFile) {
+                record()
+            } else {
+                play()
+            }
 
         }
 
@@ -157,8 +157,11 @@ class AddCardActivity : AppCompatActivity() {
 
         // 최종 카드 추가 버튼
         btnAddCard.setOnClickListener {
-            if(isAllCardInfoFilled()){
+            if (isAllCardInfoFilled()) {
                 uploadCard()
+            }
+            else{
+                "카드 만들기에 필요한 정보가 충분하지 않습니다".toast(this@AddCardActivity)
             }
 
         }
@@ -297,7 +300,7 @@ class AddCardActivity : AppCompatActivity() {
 
 
         tvAddCardRecordNotice.text = getString(R.string.record_notice)
-        ctvAddcardRecordPlay.apply{
+        ctvAddcardRecordPlay.apply {
             isVisible = true
             isEnabled = true
             isExistRecordFile = true
@@ -451,13 +454,12 @@ class AddCardActivity : AppCompatActivity() {
         var audioUrl: Uri? = null
         var audioBody: RequestBody? = null
         var audio_rb: MultipartBody.Part? = null
-        recordFileName?.let{
+        recordFileName?.let {
             audioFile = File(recordFileName)
             audioUrl = Uri.fromFile(File(recordFileName))
             audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
             audio_rb = MultipartBody.Part.createFormData("audio", audioFile?.name, audioBody)
         }
-
 
 
         // region audio file 전송
@@ -470,7 +472,9 @@ class AddCardActivity : AppCompatActivity() {
 //        val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
 //        val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
 
-        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $picture_rb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}   audio_rb : $audio_rb".logDebug(this@AddCardActivity)
+        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $picture_rb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}   audio_rb : $audio_rb".logDebug(
+            this@AddCardActivity
+        )
 
         cardDataRepository
             .addCard(
@@ -496,42 +500,28 @@ class AddCardActivity : AppCompatActivity() {
                                 if (it.success) {
                                     var card = it.data
                                     card?.imageUrl = selectPicUri.toString()
-                                    val intent = Intent(this@AddCardActivity, DetailCardActivity::class.java)
+                                    val intent =
+                                        Intent(this@AddCardActivity, DetailCardActivity::class.java)
 
                                     intent.putExtra("DOWN_CARD", it.data)
                                     startActivity(intent)
+                                    isCardImageFilled = true
 
                                 } else {
                                     "Add Card Body is not Success".logDebug(this@AddCardActivity)
-
-                    override fun onResponse(call: Call<ResDownCard>, response: Response<ResDownCard>) {
-                        if(response.isSuccessful){
-                            response.body()
-                                ?.let {
-                                    "status : ${it.status}, success: ${it.success}, data: ${it.data}, message : ${it.message}".logDebug(
-                                        this@AddCardActivity
-                                    )
-                                    if (it.success) {
-                                        val intent = Intent(this@AddCardActivity, DetailCardActivity::class.java)
-                                        intent.putExtra("DOWN_CARD",it.data)
-                                        startActivity(intent)
-
-                                    } else {
-                                        "Add Card Body is not Success".logDebug(this@AddCardActivity)
-                                    }
-
                                 }
+
                             }
-                    } else {
-                        "Add Card Response is not Success".logDebug(this@AddCardActivity)
+
                     }
+                    // endregion
+
                 }
 
             })
-        // endregion
+
 
     }
-
 
     private fun setSaveBtn(isOn: Boolean) {
         btnAddcardSaveRecord.isEnabled = isOn
@@ -543,4 +533,7 @@ class AddCardActivity : AppCompatActivity() {
         private const val PERMISSION_CODE = 1111
 
     }
+
 }
+
+

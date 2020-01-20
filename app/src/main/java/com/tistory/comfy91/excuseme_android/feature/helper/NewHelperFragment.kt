@@ -176,10 +176,11 @@ class NewHelperFragment : Fragment() {
                 ) {
                     if (response.isSuccessful) {
                         response.body()!!.let { res ->
-                            "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(
-                                this@NewHelperFragment
-                            )
+                            "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@NewHelperFragment)
 
+                            for(i in 0 until res.data?.size!!){
+                                "for recieved.data index : $i: card : ${res?.data[i]}".logDebug(this@NewHelperFragment)
+                            }
                             when (res.success) {
                                 true -> {
                                     backgroundIsVisible(res.data.isNullOrEmpty())
@@ -187,6 +188,9 @@ class NewHelperFragment : Fragment() {
                                     disabledCardList.addAll(res.data as ArrayList<CardBean>)
 //                                    rvAdapter.data.clear()
 //                                    rvAdapter.data.addAll(disabledCardList)
+//                                    var forSendCard = arrayListOf<CardBean>()
+//                                    res.data.sortedBy { it.sequence }
+//                                        .forEach { disabledCardList.add(it) }
                                     rvAdapter.notifyDataSetChanged()
 
                                 }

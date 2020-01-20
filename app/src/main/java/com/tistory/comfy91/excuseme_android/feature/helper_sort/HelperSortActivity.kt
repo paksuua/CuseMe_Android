@@ -130,7 +130,7 @@ class HelperSortActivity : AppCompatActivity() {
 
         val it: MutableIterator<CardBean> = deletedList.iterator()
         while(it.hasNext()){
-            if(it.next().visibility){
+            if(!it.next().visibility){
                 it.remove()
             }
         }
@@ -146,28 +146,33 @@ class HelperSortActivity : AppCompatActivity() {
         }
 
         var changeAllCards  = arrayListOf<CardBean>()
-        changeAllCards.addAll(cardList)
+        changeAllCards.addAll(rvHelperSortCardAdapter.data)
         for(i in 0 until changeAllCards.size){
             changeAllCards[i].sequence = i
         }
+
+
 
         var forSendCard = arrayListOf<CardBean>()
         changeAllCards.sortedBy { it.sequence }
             .forEach { forSendCard.add(it) }
 
 
-
         for(i in 0 until changeAllCards.size){
-            "changeAllCards.data index : $i: card : ${forSendCard[i]}".logDebug(this@HelperSortActivity)
+            "changeAllCards.data index : $i: card : ${changeAllCards[i]}".logDebug(this@HelperSortActivity)
+        }
+
+        for(i in 0 until forSendCard.size){
+            "forSendCard.data index : $i: card : ${forSendCard[i]}".logDebug(this@HelperSortActivity)
         }
 
 
-
-        "Request Edit All Cards Data : ${changeAllCards}".logDebug(this@HelperSortActivity)
+        "Request Edit All Cards Data forSendCard : ${forSendCard}".logDebug(this@HelperSortActivity)
+        "Request Edit All Cards Data changeAllCards : ${changeAllCards}".logDebug(this@HelperSortActivity)
         cardDataRepository.changeAllCards(
             token!!,
             BodyChangeAllCards(
-                  forSendCard as List<CardBean>
+                  changeAllCards as List<CardBean>
             )
         ).enqueue(object: Callback<ResCards> {
             override fun onFailure(call: Call<ResCards>, t: Throwable) {
