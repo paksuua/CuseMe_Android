@@ -10,7 +10,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.addcard.AddCardActivity">
+    tools:context=".feature.modcard.ModCardActivity">
 
     <TextView
         android:id="@+id/btnModcardBack"
@@ -137,7 +137,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintTop_toBottomOf="@+id/edtModcardTitle"
-        app:layout_constraintStart_toStartOf="@+id/edtAddcardTitle"
+        app:layout_constraintStart_toStartOf="@+id/edtModcardTitle"
         app:layout_constraintVertical_bias="0.0" />
 
 
@@ -173,9 +173,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/btn_make_tts"
-            app:layout_constraintBottom_toBottomOf="@+id/tvAddCardRecordNotice"
+            app:layout_constraintBottom_toBottomOf="@+id/tvModCardRecordNotice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvAddCardRecordNotice" />
+            app:layout_constraintTop_toTopOf="@+id/tvModCardRecordNotice" />
 
         <TextView
             android:id="@+id/tvModCardRecordNotice"
