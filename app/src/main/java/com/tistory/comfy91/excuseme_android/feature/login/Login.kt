@@ -55,8 +55,8 @@ object Login {
     }
 
     private fun makeUUID(context: Context): String {
-        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID)
-//        return UUID.randomUUID().toString()
+        return Secure.getString(context.getContentResolver(), Secure.ANDROID_ID)
+
     }
 
 
