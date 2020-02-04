@@ -71,6 +71,8 @@ class HelperActivity : AppCompatActivity() {
         btnHelperAddCard.setOnClickListener {
             if (!isOpen) {
                 backHelperBlur.isVisible=true
+                backHelperBlur.isClickable=false
+                backHelperBlur.isContextClickable=false
                 btnHelperDownCard.startAnimation(fab_open)
                 btnHelperNewCard.startAnimation(fab_open)
                 btnHelperAddCard.isSelected=false////
