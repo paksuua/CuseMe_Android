@@ -14,6 +14,7 @@ import com.tistory.comfy91.excuseme_android.feature.disabled.DisabledActivity
 import com.tistory.comfy91.excuseme_android.feature.login.Login
 import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.newStartActivity
+import com.tistory.comfy91.excuseme_android.toast
 import kotlinx.android.synthetic.main.activity_splash.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,6 +23,8 @@ import retrofit2.Response
 class SplashActivity : AppCompatActivity() {
 
     private val userDataRespository = ServerUserDataRepository()
+    private var requestTime = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
         lottieAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {}
 
-            override fun onAnimationEnd(p0: Animator?) {this@SplashActivity.newStartActivity(DisabledActivity::class.java)}
+            override fun onAnimationEnd(p0: Animator?) {}
 
             override fun onAnimationCancel(p0: Animator?) {}
 
@@ -59,6 +62,12 @@ class SplashActivity : AppCompatActivity() {
                     .enqueue(object : Callback<ResUser> {
                         override fun onFailure(call: Call<ResUser>, t: Throwable) {
                             "Fail Start App message : ${t.message}"
+                            while(requestTime <= 2){
+                                requestTime++
+                                requestServer(uuid)
+                                return
+                            }
+                            "네트워크 연결이 불안정하여 어플리케이션을 시작할 수 없습니다.".toast(this@SplashActivity)
                         }
 
                         override fun onResponse(call: Call<ResUser>, response: Response<ResUser>) {
@@ -76,11 +85,8 @@ class SplashActivity : AppCompatActivity() {
                             } else {
                                 "Get Response Start App but Response is Fail".logDebug(SplashActivity::class.java)
                             }
-
                         }
-
                     })
-
             }
     }
 

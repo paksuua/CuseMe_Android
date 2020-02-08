@@ -28,8 +28,6 @@ class SelectSortAdapter(private val context: Context, private val onBtnAllClicke
     }
 
     override fun getItemCount(): Int {
-        Log.d("ziwon","searchedList!!.size : " + searchedList!!.size)
-        Log.d("ziwon","data!!.size : " + data.size)
         return searchedList!!.size
     }
 
@@ -58,7 +56,6 @@ class SelectSortAdapter(private val context: Context, private val onBtnAllClicke
 
     // init
     init {
-        Log.d("ziwon","init")
         this.searchedList = data
     }
 

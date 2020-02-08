@@ -1,7 +1,11 @@
 package com.tistory.comfy91.excuseme_android.feature.login
 
 import android.content.Context
+import android.provider.Settings
 import java.util.*
+import android.provider.Settings.Secure
+
+
 
 object Login {
     private const val LOGIN_KEY = "login"
@@ -50,8 +54,9 @@ object Login {
 
     }
 
-    private fun makeUUID(): String {
-        return UUID.randomUUID().toString()
+    private fun makeUUID(context: Context): String {
+        return Secure.getString(context.getContentResolver(), Secure.ANDROID_ID)
+
     }
 
 
@@ -59,7 +64,7 @@ object Login {
         getUser(context).let {
             when (it) {
                 "" -> {
-                    makeUUID().let { uuid ->
+                    makeUUID(context).let { uuid ->
                         saveUser(
                             context,
                             uuid

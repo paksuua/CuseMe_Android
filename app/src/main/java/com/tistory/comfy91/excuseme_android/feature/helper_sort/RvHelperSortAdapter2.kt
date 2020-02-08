@@ -11,14 +11,14 @@ import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
 
-class RvHelperSortAdapter(private val context: Context, private val onBtnAllClicked: ()-> Unit, private val bind: Int): RecyclerView.Adapter<HelperSortCardViewHolder>(),
+class RvHelperSortAdapter2(private val context: Context, private val onBtnAllClicked: ()-> Unit, private val bind: Int): RecyclerView.Adapter<HelperSortCardViewHolder>(),
     Filterable {
     var data = arrayListOf<CardBean>()
     var isChanged = false
     var searchedList: ArrayList<CardBean> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperSortCardViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.helper_sort_item_card, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.helper_sort_item_card2, parent, false)
 
         return HelperSortCardViewHolder(
             view,
@@ -27,6 +27,7 @@ class RvHelperSortAdapter(private val context: Context, private val onBtnAllClic
     }
 
     override fun getItemCount(): Int {
+
         return searchedList!!.size
     }
 
@@ -55,6 +56,7 @@ class RvHelperSortAdapter(private val context: Context, private val onBtnAllClic
 
     // init
     init {
+
         this.searchedList = data
     }
 
