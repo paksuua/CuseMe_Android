@@ -86,7 +86,6 @@ class HelperSortActivity : AppCompatActivity() {
                 this.setPositiveButton("저장"
                 ) { _, _ ->
                     editAllCards()
-                    this@HelperSortActivity.finish()
                 }
 
                 this.setNegativeButton("저장 안함"
@@ -108,7 +107,7 @@ class HelperSortActivity : AppCompatActivity() {
     private fun setAllCardisChecked(){
         // until : 끝값은 사용하지 않는다.
         for(x in 0 until cardList.size ){
-            cardList[x].visibility = true
+            cardList[x].visibility = false
         }
         onBtnAllClicked()
     }

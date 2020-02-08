@@ -175,12 +175,8 @@ class NewHelperFragment : Fragment() {
                                 true -> {
                                     backgroundIsVisible(res.data.isNullOrEmpty())
                                     disabledCardList.clear()
+                                    res.data.sortedBy { card -> card.visibility }
                                     disabledCardList.addAll(res.data as ArrayList<CardBean>)
-//                                    rvAdapter.data.clear()
-//                                    rvAdapter.data.addAll(disabledCardList)
-//                                    var forSendCard = arrayListOf<CardBean>()
-//                                    res.data.sortedBy { it.sequence }
-//                                        .forEach { disabledCardList.add(it) }
                                     rvAdapter.notifyDataSetChanged()
 
                                 }
@@ -344,7 +340,6 @@ class NewHelperFragment : Fragment() {
         private val imgNewHelperCard: ImageView = itemView.findViewById(R.id.imgCard)
         private val tvNewHelperCard: TextView = itemView.findViewById(R.id.tvCard)
 
-
         fun bind(cardBean: CardBean) {
             lyNewHelperCard.setBackgroundResource(R.drawable.card_bg_selector)
             Glide.with(itemView)
@@ -376,10 +371,7 @@ class NewHelperFragment : Fragment() {
                     tts.speak(cardBean.desc, TextToSpeech.QUEUE_FLUSH, null, null)
                 }
             }
-
-            itemView.isVisible = cardBean.visibility
         }
-
     }
 
 
