@@ -33,10 +33,7 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
         when(listenerFlag){
             HELPER_SORT_ACTIVITY -> itemView.setOnSingleClickListener{clicked()}
             SELECT_SORT_FRAGMENT -> {
-                btnHelperCheck.setOnSingleClickListener{
-                    btnHelperCheck.isChecked=!btnHelperCheck.isChecked
-                    clicked()
-                }
+                btnHelperCheck.setOnSingleClickListener{clicked()}
                 itemView.setOnSingleClickListener{
                     val intent = Intent(itemView.context, DetailCardActivity::class.java)
                     intent.putExtra("CARD_DATA", data)

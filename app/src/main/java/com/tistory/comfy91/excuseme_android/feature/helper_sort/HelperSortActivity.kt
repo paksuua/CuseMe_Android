@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.google.gson.Gson
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import kotlinx.android.synthetic.main.activity_helper_sort.*
@@ -116,7 +117,7 @@ class HelperSortActivity : AppCompatActivity() {
         var result = false
 
         for(x in 0 until cardList.size){
-            if(cardList[x].visibility){
+            if(!cardList[x].visibility){
                 result = true
                 break
             }
@@ -130,7 +131,7 @@ class HelperSortActivity : AppCompatActivity() {
 
         val it: MutableIterator<CardBean> = deletedList.iterator()
         while(it.hasNext()){
-            if(it.next().visibility){
+            if(!it.next().visibility){
                 it.remove()
             }
         }
@@ -145,29 +146,24 @@ class HelperSortActivity : AppCompatActivity() {
             token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWR4IjozOSwidXVpZCI6ImYzZDViM2E1LTkwYjYtNDVlMy1hOThhLTEyODE5OWNmZTg1MCIsImlhdCI6MTU3NzkwMTA1MywiZXhwIjoxNTc3OTg3NDUzLCJpc3MiOiJnYW5naGVlIn0.QytUhsXf4bJirRR_zF3wdACiNu9ytwUE4mrPSNLCFLk"
         }
 
-        var changeAllCards  = arrayListOf<CardBean>()
-        changeAllCards.addAll(cardList)
-        for(i in 0 until changeAllCards.size){
-            changeAllCards[i].sequence = i
+        for(i in 0 until cardList.size){
+            cardList[i].sequence = i
         }
 
-        var forSendCard = arrayListOf<CardBean>()
-        changeAllCards.sortedBy { it.sequence }
-            .forEach { forSendCard.add(it) }
-
-
-
-        for(i in 0 until changeAllCards.size){
-            "changeAllCards.data index : $i: card : ${forSendCard[i]}".logDebug(this@HelperSortActivity)
+        for(i in 0 until cardList.size){
+            "CardIdx: ${cardList[i].cardIdx}, card.toString():${cardList[i].toString()} ".logDebug(this@HelperSortActivity)
         }
 
+        "Token: $token".logDebug(this@HelperSortActivity)
 
+        Gson().toJson(BodyChangeAllCards(
+            cardList as List<CardBean>
+        )).logDebug(this@HelperSortActivity)
 
-        "Request Edit All Cards Data : ${changeAllCards}".logDebug(this@HelperSortActivity)
         cardDataRepository.changeAllCards(
             token!!,
             BodyChangeAllCards(
-                  forSendCard as List<CardBean>
+                cardList as List<CardBean>
             )
         ).enqueue(object: Callback<ResCards> {
             override fun onFailure(call: Call<ResCards>, t: Throwable) {
@@ -184,7 +180,7 @@ class HelperSortActivity : AppCompatActivity() {
 
                 }
                 else{
-                  "resonse is Not Success = Body is Empty".logDebug(this@HelperSortActivity)
+                    "resonse is Not Success = Body is Empty".logDebug(this@HelperSortActivity)
                 }
             }
 

@@ -201,7 +201,7 @@ class DetailCardActivity : AppCompatActivity() {
         btnDetailDelete.setOnSingleClickListener {
             dialogBuilder
                 .setMessage("카드를 완젼히\n삭제하시겠습니까?")
-                .setPositiveButton("삭제") { _, _ -> deleteCard() }
+                .setPositiveButton("삭제") { dialog, _ -> deleteCard(dialog) }
                 .setNegativeButton("취소") { _, _ -> finish() }
                 .setCancelable(false)
                 .show()
@@ -224,14 +224,14 @@ class DetailCardActivity : AppCompatActivity() {
     }
 
 
-    private fun deleteCard() {
+    private fun deleteCard(dialog: DialogInterface) {
         if (token == null) {
             token = "token"
         }
-        requestDeleteCard(token!!)
+        requestDeleteCard(token!!, dialog)
     }
 
-    private fun requestDeleteCard(token: String) {
+    private fun requestDeleteCard(token: String,dialog: DialogInterface) {
         cardDataRepository
             .deleteCard(token, card!!.cardIdx.toString())
             .enqueue(object : Callback<ResCards> {
@@ -246,7 +246,9 @@ class DetailCardActivity : AppCompatActivity() {
                             .let { res ->
                                 "request delete card is success".logDebug(this@DetailCardActivity)
                                 if (res.success) {
+                                    dialog.dismiss()
                                     this@DetailCardActivity.finish()
+
                                 } else {
                                 }
                             }

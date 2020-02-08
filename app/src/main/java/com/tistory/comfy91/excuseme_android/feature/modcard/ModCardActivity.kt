@@ -110,7 +110,14 @@ class ModCardActivity : AppCompatActivity() {
             }
         }
 
-        imgModCardImg.setOnClickListener { getImageFromAlbum()}
+        imgModCardImg.setOnClickListener {
+            if(!checkPermission(IMAGE_PERMISSON)) {
+                showBanPermissionAlert()
+            }
+            else{
+                getImageFromAlbum()
+            }
+        }
     }
 
     // 모든 데이터 채워졌는지 확인
@@ -241,7 +248,14 @@ class ModCardActivity : AppCompatActivity() {
         // 녹음 버튼 리스너 설정
         btnModcardTogRecord.setOnClickListener {
             it.requestFocus()
-            record()
+            if(!checkPermission(AUDIO_PERMISSON))
+            {
+                showBanPermissionAlert()
+            }
+            else{
+                record()
+            }
+
         }
 
         // 실행(count) 버튼 리스너 설정
@@ -346,7 +360,7 @@ class ModCardActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermission(switch: Int) {
+    private fun checkPermission(switch: Int): Boolean{
         when (switch) {
             AUDIO_PERMISSON -> {
                 if (isPermissionNotGranted(Manifest.permission.RECORD_AUDIO)
@@ -360,7 +374,8 @@ class ModCardActivity : AppCompatActivity() {
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                         )
                     ) {
-                        showBanPermissionAlert()
+                        return false
+
                     } else {
                         ActivityCompat.requestPermissions(
                             this,
@@ -370,8 +385,10 @@ class ModCardActivity : AppCompatActivity() {
                             ),
                             PERMISSION_CODE
                         )
+                        return false
                     }
                 }
+                else{return true}
             }
             IMAGE_PERMISSON -> {
                 if (isPermissionNotGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -381,6 +398,7 @@ class ModCardActivity : AppCompatActivity() {
                             Manifest.permission.READ_EXTERNAL_STORAGE
                         )
                     ) {
+                        return false
                         showBanPermissionAlert()
                     } else {
                         ActivityCompat.requestPermissions(
@@ -388,11 +406,16 @@ class ModCardActivity : AppCompatActivity() {
                             arrayOf(Manifest.permission.RECORD_AUDIO),
                             PERMISSION_CODE
                         )
+                        return false
                     }
+                }
+                else{
+                    return true
                 }
             }
             else -> {
                 "없는 코드".logDebug(this@ModCardActivity)
+                return false
             }
         }
     } // end checkPermission()

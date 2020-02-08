@@ -75,7 +75,6 @@ class AddCardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_card)
 
-        checkPermission()
 
         initData()
         initUI()
@@ -96,13 +95,18 @@ class AddCardActivity : AppCompatActivity() {
     private fun initUI() {
         dialogBuilder = AlertDialog.Builder(this)
 
-        // 이미지 가져오기 리스너 설정
+
+        //이미지 가져오기 리스너 설정
         imgAddcardCardImg.setOnClickListener {
-            getImageFromAlbum()
+            if(checkPermission(PERMISSION_READ_EXTERNAL_STORAGE)){
+                getImageFromAlbum()
+            }
         }
 
-        // 녹음 버튼 리스너 설정
+        //녹음 버튼 리스너 설정
         btnAddcardTogRecord.setOnClickListener {
+            checkPermission(PERMISSION_RECORD_AUDIO)
+            checkPermission(PERMISSION_WRITE_EXTERNAL_STORAGE)
             it.requestFocus()
 
             btnAddcardTogRecord.isVisible = false
@@ -305,6 +309,10 @@ class AddCardActivity : AppCompatActivity() {
             isEnabled = true
             isExistRecordFile = true
         }
+
+        recorder?.release()
+        recorder = null
+        stopPlaying()
     }
 
     private fun getImageFromAlbum() {
@@ -328,43 +336,87 @@ class AddCardActivity : AppCompatActivity() {
         return result
     }
 
+    private fun showSettingActivity(){
+        dialogBuilder
+            .setMessage("권한이 거부 되었습니다. 직접 권한을 허용하세요.")
+            .setPositiveButton("상세") { _, _ -> this.startSettingActivity() }
+            .setNegativeButton("취소") { _, _ -> finish() }
+            .setCancelable(false)
+            .show()
+    }
 
-    private fun checkPermission() {
-        if (this.isPermissionNotGranted(Manifest.permission.RECORD_AUDIO)
-            || this.isPermissionNotGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
-            || this.isPermissionNotGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.RECORD_AUDIO
-                )
-                || ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-                || ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            ) {
-                dialogBuilder
-                    .setMessage("권한이 거부 되었습니다. 직접 권한을 허용하세요.")
-                    .setPositiveButton("상세") { _, _ -> this.startSettingActivity() }
-                    .setNegativeButton("취소") { _, _ -> finish() }
-                    .setCancelable(false)
-                    .show()
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(
-                        (Manifest.permission.READ_EXTERNAL_STORAGE),
-                        (Manifest.permission.RECORD_AUDIO)
-                    ),
-                    PERMISSION_CODE
-                )
-            } // end if...else
+
+    private fun checkPermission(permissionFlag: Int): Boolean{
+        when(permissionFlag){
+            PERMISSION_RECORD_AUDIO -> {
+                if (this.isPermissionNotGranted(Manifest.permission.RECORD_AUDIO)){
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.RECORD_AUDIO)
+                    ){ showSettingActivity() }
+                    else{
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(
+                                Manifest.permission.RECORD_AUDIO
+                            ),
+                            PERMISSION_RECORD_AUDIO
+                        )
+                    }
+                    return false
+                }
+                else{
+                    return true
+                }
+            }
+            PERMISSION_READ_EXTERNAL_STORAGE ->{
+                if (this.isPermissionNotGranted(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                    ){ showSettingActivity() }
+                    else{
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            ),
+                            PERMISSION_READ_EXTERNAL_STORAGE
+                        )
+                    }
+                    return false
+                }
+                else{
+                    return true
+                }
+            }
+            PERMISSION_WRITE_EXTERNAL_STORAGE ->{
+                if (this.isPermissionNotGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ){ showSettingActivity() }
+                    else{
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            ),
+                            PERMISSION_WRITE_EXTERNAL_STORAGE
+                        )
+                    }
+                    return false
+                }
+                else{
+                    return true
+                }
+            }
+            else ->{
+                "There is no such permission flag".logDebug(this@AddCardActivity)
+                return false
+            }
         }
-    } // end checkPermission()
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -374,14 +426,30 @@ class AddCardActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            PERMISSION_CODE -> {
-                grantResults.filter { it < 0 }.forEach {
+            PERMISSION_RECORD_AUDIO -> {
+                grantResults.filter { it < 0 }.forEach {_ ->
                     Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
                         .show()
-                    checkPermission()
+                    checkPermission(PERMISSION_RECORD_AUDIO)
                     return
                 }
             } // end 1111
+            PERMISSION_WRITE_EXTERNAL_STORAGE->{
+                grantResults.filter { it < 0 }.forEach {_ ->
+                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
+                        .show()
+                    checkPermission(PERMISSION_WRITE_EXTERNAL_STORAGE)
+                    return
+                }
+            }
+            PERMISSION_READ_EXTERNAL_STORAGE->{
+                grantResults.filter { it < 0 }.forEach {_ ->
+                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
+                        .show()
+                    checkPermission(PERMISSION_READ_EXTERNAL_STORAGE)
+                    return
+                }
+            }
         }
     } // end onRequestPermissionResult()
 
@@ -409,6 +477,11 @@ class AddCardActivity : AppCompatActivity() {
             }
         }
     } // end onActivityResult()
+
+
+
+
+
 
     override fun onStop() {
         super.onStop()
@@ -532,6 +605,12 @@ class AddCardActivity : AppCompatActivity() {
         private const val IMAGE_PICK_CODE = 1000
         private const val PERMISSION_CODE = 1111
 
+        private const val PERMISSION_RECORD_AUDIO = 2222
+        private const val PERMISSION_READ_EXTERNAL_STORAGE = 3333
+        private const val PERMISSION_WRITE_EXTERNAL_STORAGE = 4444
+
     }
 
 }
+
+

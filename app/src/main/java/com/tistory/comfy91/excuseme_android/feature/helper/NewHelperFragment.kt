@@ -25,6 +25,7 @@ import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
+import com.tistory.comfy91.excuseme_android.feature.TTS
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortActivity
 import com.tistory.comfy91.excuseme_android.logDebug
@@ -84,19 +85,8 @@ class NewHelperFragment : Fragment() {
     }
 
     private fun initData() {
-        tts = TextToSpeech(this@NewHelperFragment.context?.applicationContext,
-            TextToSpeech.OnInitListener { status ->
-                if (status == TextToSpeech.SUCCESS) {
-                    tts.setLanguage(Locale.KOREA).let {
-                        if (it == TextToSpeech.LANG_MISSING_DATA
-                            || it == TextToSpeech.LANG_MISSING_DATA
-                            || it == TextToSpeech.LANG_NOT_SUPPORTED
-                        ) {
-                            "현재 지원되지 않습니다.".toast(this@NewHelperFragment.context as HelperActivity)
-                        }
-                    }
-                }
-            })
+        tts = TTS.getInstance(activity!!.applicationContext)
+
     }
 
     private fun initUi() {
@@ -176,10 +166,11 @@ class NewHelperFragment : Fragment() {
                 ) {
                     if (response.isSuccessful) {
                         response.body()!!.let { res ->
-                            "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(
-                                this@NewHelperFragment
-                            )
+                            "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@NewHelperFragment)
 
+                            for(i in 0 until res.data?.size!!){
+                                "for recieved.data index : $i: card : ${res?.data[i]}".logDebug(this@NewHelperFragment)
+                            }
                             when (res.success) {
                                 true -> {
                                     backgroundIsVisible(res.data.isNullOrEmpty())
@@ -187,6 +178,9 @@ class NewHelperFragment : Fragment() {
                                     disabledCardList.addAll(res.data as ArrayList<CardBean>)
 //                                    rvAdapter.data.clear()
 //                                    rvAdapter.data.addAll(disabledCardList)
+//                                    var forSendCard = arrayListOf<CardBean>()
+//                                    res.data.sortedBy { it.sequence }
+//                                        .forEach { disabledCardList.add(it) }
                                     rvAdapter.notifyDataSetChanged()
 
                                 }
@@ -382,6 +376,8 @@ class NewHelperFragment : Fragment() {
                     tts.speak(cardBean.desc, TextToSpeech.QUEUE_FLUSH, null, null)
                 }
             }
+
+            itemView.isVisible = cardBean.visibility
         }
 
     }
