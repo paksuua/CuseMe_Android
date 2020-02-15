@@ -29,6 +29,9 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
         tvCard.text = data.title
 
         btnHelperCheck.isChecked = data.visibility
+        /*btnHelperCheck.setOnClickListener{
+
+        }*/
 
         when(listenerFlag){
             HELPER_SORT_ACTIVITY -> itemView.setOnSingleClickListener{clicked()}
