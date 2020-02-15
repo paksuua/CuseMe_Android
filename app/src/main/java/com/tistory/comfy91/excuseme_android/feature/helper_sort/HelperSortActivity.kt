@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.gson.Gson
 import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import kotlinx.android.synthetic.main.activity_helper_sort.*
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
-import com.tistory.comfy91.excuseme_android.data.server.BodyChangeAllCards
+import com.tistory.comfy91.excuseme_android.data.request.BodyChangeAllCards
+import com.tistory.comfy91.excuseme_android.data.request.ChangeAllCards
 import com.tistory.comfy91.excuseme_android.logDebug
 import retrofit2.Call
 import retrofit2.Callback
@@ -145,9 +146,7 @@ class HelperSortActivity : AppCompatActivity() {
             token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWR4IjozOSwidXVpZCI6ImYzZDViM2E1LTkwYjYtNDVlMy1hOThhLTEyODE5OWNmZTg1MCIsImlhdCI6MTU3NzkwMTA1MywiZXhwIjoxNTc3OTg3NDUzLCJpc3MiOiJnYW5naGVlIn0.QytUhsXf4bJirRR_zF3wdACiNu9ytwUE4mrPSNLCFLk"
         }
 
-        for(i in 0 until cardList.size){
-            cardList[i].sequence = i
-        }
+        val changeAllCards = changeIntoChangeAllCards(cardList)
 
         for(i in 0 until cardList.size){
             "CardIdx: ${cardList[i].cardIdx}, card.toString():${cardList[i].toString()} ".logDebug(this@HelperSortActivity)
@@ -156,13 +155,13 @@ class HelperSortActivity : AppCompatActivity() {
         "Token: $token".logDebug(this@HelperSortActivity)
 
         Gson().toJson(BodyChangeAllCards(
-            cardList as List<CardBean>
+            changeAllCards
         )).logDebug(this@HelperSortActivity)
 
         cardDataRepository.changeAllCards(
             token!!,
             BodyChangeAllCards(
-                cardList as List<CardBean>
+                changeAllCards
             )
         ).enqueue(object: Callback<ResCards> {
             override fun onFailure(call: Call<ResCards>, t: Throwable) {
@@ -185,6 +184,23 @@ class HelperSortActivity : AppCompatActivity() {
 
         })
     }
+
+
+    private fun changeIntoChangeAllCards(cardList: List<CardBean>): List<ChangeAllCards>{
+        var  changeAllCardsList: ArrayList<ChangeAllCards> = arrayListOf()
+            for(i in 0 until cardList.size){
+                changeAllCardsList.add(
+                    ChangeAllCards(
+                        cardList[i].cardIdx,
+                        cardList[i].visibility,
+                        i
+                    )
+                )
+            }
+        return changeAllCardsList
+    }
+
+
 
 
 

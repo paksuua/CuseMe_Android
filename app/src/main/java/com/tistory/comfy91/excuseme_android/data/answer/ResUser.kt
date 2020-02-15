@@ -1,4 +1,6 @@
-package com.tistory.comfy91.excuseme_android.data
+package com.tistory.comfy91.excuseme_android.data.answer
+
+import com.tistory.comfy91.excuseme_android.data.UserBean
 
 data class ResUser(
     val status: Int,

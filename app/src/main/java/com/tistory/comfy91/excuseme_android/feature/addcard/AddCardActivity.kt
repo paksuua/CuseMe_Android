@@ -3,8 +3,6 @@ package com.tistory.comfy91.excuseme_android.feature.addcard
 import android.Manifest
 import android.animation.ValueAnimator
 import android.app.Activity
-import android.content.ContentProvider
-import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,23 +12,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.CheckedTextView
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.*
-import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCards
-import com.tistory.comfy91.excuseme_android.data.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
-import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
@@ -44,7 +36,6 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -99,6 +90,9 @@ class AddCardActivity : AppCompatActivity() {
         //이미지 가져오기 리스너 설정
         imgAddcardCardImg.setOnClickListener {
             if(checkPermission(PERMISSION_READ_EXTERNAL_STORAGE)){
+                requestPermission(PERMISSION_RECORD_AUDIO)
+            }
+            else{
                 getImageFromAlbum()
             }
         }
@@ -350,19 +344,7 @@ class AddCardActivity : AppCompatActivity() {
         when(permissionFlag){
             PERMISSION_RECORD_AUDIO -> {
                 if (this.isPermissionNotGranted(Manifest.permission.RECORD_AUDIO)){
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            Manifest.permission.RECORD_AUDIO)
-                    ){ showSettingActivity() }
-                    else{
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(
-                                Manifest.permission.RECORD_AUDIO
-                            ),
-                            PERMISSION_RECORD_AUDIO
-                        )
-                    }
+                    requestPermission(PERMISSION_RECORD_AUDIO)
                     return false
                 }
                 else{
@@ -371,19 +353,6 @@ class AddCardActivity : AppCompatActivity() {
             }
             PERMISSION_READ_EXTERNAL_STORAGE ->{
                 if (this.isPermissionNotGranted(Manifest.permission.READ_EXTERNAL_STORAGE)){
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)
-                    ){ showSettingActivity() }
-                    else{
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(
-                                Manifest.permission.READ_EXTERNAL_STORAGE
-                            ),
-                            PERMISSION_READ_EXTERNAL_STORAGE
-                        )
-                    }
                     return false
                 }
                 else{
@@ -418,6 +387,35 @@ class AddCardActivity : AppCompatActivity() {
         }
     }
 
+    private fun requestPermission(permissionFlag: Int){
+        when(permissionFlag){
+            PERMISSION_RECORD_AUDIO->{
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        this,
+                        Manifest.permission.RECORD_AUDIO)
+                ){ showSettingActivity() }
+                else{
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(
+                            Manifest.permission.RECORD_AUDIO
+                        ),
+                        PERMISSION_RECORD_AUDIO
+                    )
+                }
+            }
+            PERMISSION_WRITE_EXTERNAL_STORAGE->{
+
+            }
+            PERMISSION_READ_EXTERNAL_STORAGE->{
+
+            }
+            else->{
+                 throw Exception("존재하지 않는 permission Flag")
+            }
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -427,28 +425,49 @@ class AddCardActivity : AppCompatActivity() {
 
         when (requestCode) {
             PERMISSION_RECORD_AUDIO -> {
-                grantResults.filter { it < 0 }.forEach {_ ->
+                if(grantResults[0] < 0){
                     Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
                         .show()
                     checkPermission(PERMISSION_RECORD_AUDIO)
-                    return
                 }
+                else{
+                    //todo 녹음시작하기
+                }
+                //todo 위에 코드 동작하면 아래 코드 학제하기, 위에 코드 동작안하면 아래 코드 복원하기
+//                grantResults.filter { it < 0 }.forEach {_ ->
+//                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
+//                        .show()
+//                    checkPermission(PERMISSION_RECORD_AUDIO)
+//                    return
+//                }
             } // end 1111
             PERMISSION_WRITE_EXTERNAL_STORAGE->{
-                grantResults.filter { it < 0 }.forEach {_ ->
-                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
-                        .show()
-                    checkPermission(PERMISSION_WRITE_EXTERNAL_STORAGE)
-                    return
-                }
+
+                //todo 위에 코드 동작하면 아래 코드 학제하기, 위에 코드 동작안하면 아래 코드 복원하기
+//                grantResults.filter { it < 0 }.forEach {_ ->
+//                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
+//                        .show()
+//                    checkPermission(PERMISSION_WRITE_EXTERNAL_STORAGE)
+//                    return
+//                }
             }
             PERMISSION_READ_EXTERNAL_STORAGE->{
-                grantResults.filter { it < 0 }.forEach {_ ->
+                if(grantResults[0] >= 0){
+                    getImageFromAlbum()
+                }
+                else{
                     Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
-                        .show()
+                    .show()
                     checkPermission(PERMISSION_READ_EXTERNAL_STORAGE)
                     return
                 }
+                //todo 위에 코드 동작하면 아래 코드 학제하기, 위에 코드 동작안하면 아래 코드 복원하기
+//                grantResults.filter { it < 0 }.forEach {_ ->
+//                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
+//                        .show()
+//                    checkPermission(PERMISSION_READ_EXTERNAL_STORAGE)
+//                    return
+//                }
             }
         }
     } // end onRequestPermissionResult()
@@ -477,11 +496,6 @@ class AddCardActivity : AppCompatActivity() {
             }
         }
     } // end onActivityResult()
-
-
-
-
-
 
     override fun onStop() {
         super.onStop()
@@ -579,21 +593,14 @@ class AddCardActivity : AppCompatActivity() {
                                     intent.putExtra("DOWN_CARD", it.data)
                                     startActivity(intent)
                                     isCardImageFilled = true
-
                                 } else {
                                     "Add Card Body is not Success".logDebug(this@AddCardActivity)
                                 }
-
                             }
-
                     }
                     // endregion
-
                 }
-
             })
-
-
     }
 
     private fun setSaveBtn(isOn: Boolean) {
@@ -610,7 +617,6 @@ class AddCardActivity : AppCompatActivity() {
         private const val PERMISSION_WRITE_EXTERNAL_STORAGE = 4444
 
     }
-
 }
 
 

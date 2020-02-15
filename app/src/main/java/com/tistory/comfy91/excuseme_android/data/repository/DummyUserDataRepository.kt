@@ -1,13 +1,14 @@
 package com.tistory.comfy91.excuseme_android.data.repository
 
 import retrofit2.Call
-import com.tistory.comfy91.excuseme_android.api.Service
 import com.tistory.comfy91.excuseme_android.data.*
-import com.tistory.comfy91.excuseme_android.data.server.BodyChangePhoneNum
-import com.tistory.comfy91.excuseme_android.data.server.BodyHelperSignIn
-import com.tistory.comfy91.excuseme_android.data.server.BodyStartApp
+import com.tistory.comfy91.excuseme_android.data.answer.ResUser
+import com.tistory.comfy91.excuseme_android.data.answer.ResponseLogin
+import com.tistory.comfy91.excuseme_android.data.request.BodyChangePhoneNum
+import com.tistory.comfy91.excuseme_android.data.request.BodyHelperSignIn
+import com.tistory.comfy91.excuseme_android.data.request.BodyStartApp
 import retrofit2.mock.Calls
-import com.tistory.comfy91.excuseme_android.data.server.BodyChangePw as BodyChangePw1
+import com.tistory.comfy91.excuseme_android.data.request.BodyChangePw as BodyChangePw1
 
 class DummyUserDataRepository :
     UserDataRepository {

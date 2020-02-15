@@ -1,7 +1,8 @@
-package com.tistory.comfy91.excuseme_android.data
+package com.tistory.comfy91.excuseme_android.data.answer
 
 
 import com.google.gson.annotations.SerializedName
+import com.tistory.comfy91.excuseme_android.data.Token
 
 data class ResponseLogin(
     @SerializedName("data")

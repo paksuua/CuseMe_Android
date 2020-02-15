@@ -22,10 +22,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
-import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
 import com.tistory.comfy91.excuseme_android.feature.TTS
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortActivity

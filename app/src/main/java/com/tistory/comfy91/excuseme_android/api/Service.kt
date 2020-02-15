@@ -1,15 +1,13 @@
 package com.tistory.comfy91.excuseme_android.api
 
 
-import android.opengl.Visibility
-import com.tistory.comfy91.excuseme_android.data.*
-import com.tistory.comfy91.excuseme_android.data.server.*
+import com.tistory.comfy91.excuseme_android.data.answer.*
+import com.tistory.comfy91.excuseme_android.data.request.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
-import com.tistory.comfy91.excuseme_android.data.server.BodyChangePw as BodyChangePw1
-import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard as BodyDeleteCard1
+import com.tistory.comfy91.excuseme_android.data.request.BodyChangePw as BodyChangePw1
 
 interface Service{
 
