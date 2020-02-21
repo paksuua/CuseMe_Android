@@ -41,7 +41,7 @@ class HelperSortActivity : AppCompatActivity() {
 
         uiInit()
 
-    } // end onCreate()
+    }
 
     override fun onResume() {
         super.onResume()
@@ -49,14 +49,11 @@ class HelperSortActivity : AppCompatActivity() {
     }
 
     private fun uiInit(){
-        // 리사이클러뷰 어댑터 생성 및 설정
         rvHelperSortCard.adapter = rvHelperSortCardAdapter
         rvHelperSortCard.layoutManager = rvLayoutManager
         rvHelperSortCardAdapter.data = cardList
         rvHelperSortCardAdapter.notifyDataSetChanged()
 
-        // ItemTouchHelper 설정 - 사용자의
-        // 터치에 따라 호출되는 콜백메소드를 담고 있음
         val callback = DragManageAdapter(
             rvHelperSortCardAdapter,
             this,
@@ -67,13 +64,12 @@ class HelperSortActivity : AppCompatActivity() {
         touchHelper.attachToRecyclerView(rvHelperSortCard)
 
 
-        // 전체 선택 버튼 설정
         btnHelperSortSelectAll.setOnClickListener {
             setAllCardisChecked()
             rvHelperSortCardAdapter.notifyDataSetChanged()
         }
 
-        // 선택한 카드 삭제 버튼 설정
+
         btnHelperSortDeleteCard.setOnClickListener{deleteSelectedCard()}
 
         btnHelperSortBack.setOnClickListener { showDialog()}
@@ -100,13 +96,11 @@ class HelperSortActivity : AppCompatActivity() {
             ?.let{
                 cardList.sortByDescending {vid -> vid.visibility }
                 cardList.addAll(it as ArrayList<CardBean>)
-//                rvHelperSortCardAdapter.data.clear()
-//                rvHelperSortCardAdapter.data.addAll(cardList)
                 rvHelperSortCardAdapter.notifyDataSetChanged()
             }
     }
     private fun setAllCardisChecked(){
-        // until : 끝값은 사용하지 않는다.
+
         for(x in 0 until cardList.size ){
             cardList[x].visibility = true
         }
@@ -151,7 +145,7 @@ class HelperSortActivity : AppCompatActivity() {
         }
 
         for(i in 0 until cardList.size){
-            "CardIdx: ${cardList[i].cardIdx}, card.toString():${cardList[i].toString()} ".logDebug(this@HelperSortActivity)
+            "CardIdx: ${cardList[i].cardIdx}, card.toString():${cardList[i]} ".logDebug(this@HelperSortActivity)
         }
 
         "Token: $token".logDebug(this@HelperSortActivity)
@@ -186,7 +180,4 @@ class HelperSortActivity : AppCompatActivity() {
 
         })
     }
-
-
-
-} // end class
+}

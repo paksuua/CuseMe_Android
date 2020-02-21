@@ -16,12 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_fileName="homeLock.json"
-        />
-
-<!--    <ImageView-->
-<!--        android:layout_width=""-->
-<!--        android:layout_height=""-->
+        app:lottie_fileName="homeLock.json" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@ object CMPreference {
         }
     }
 
-    private operator inline fun <reified T : Any> get(key: String, defaultValue: T? = null): T? {
+    private inline operator fun <reified T : Any> get(key: String, defaultValue: T? = null): T? {
         return when (T::class) {
             String::class -> preference.getString(key, defaultValue as? String) as T?
             Int::class -> preference.getInt(key, defaultValue as? Int ?: -1) as T?

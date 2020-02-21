@@ -29,21 +29,16 @@ import com.tistory.comfy91.excuseme_android.feature.TTS
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortActivity
 import com.tistory.comfy91.excuseme_android.logDebug
-import com.tistory.comfy91.excuseme_android.toast
 import kotlinx.android.synthetic.main.activity_helper.*
 import kotlinx.android.synthetic.main.fragment_new_helper.*
-import kotlinx.android.synthetic.main.helper_item_card.view.*
 import kotlinx.android.synthetic.main.helper_item_card.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-import java.util.*
 import kotlin.collections.ArrayList
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class NewHelperFragment : Fragment() {
     private var disabledCardList: ArrayList<CardBean> = arrayListOf()
     private var rvAdapter = NewHelperAdapter()
@@ -52,7 +47,6 @@ class NewHelperFragment : Fragment() {
     private var clickedCardData: CardBean? = null
     private var token = SingletoneToken.getInstance().token
 
-    // audio
     private lateinit var tts: TextToSpeech
     private var player: MediaPlayer? = null
     private var playFlag = false
@@ -90,15 +84,13 @@ class NewHelperFragment : Fragment() {
     }
 
     private fun initUi() {
-
-        // DisabledAvtivity로 이동
         btnNewHelperUnlock?.setOnClickListener {
             activity?.let {
                 it.finish()
             }
         }
 
-        // HelperSortActivity로 이동
+
         btnNewHelperGoSort.setOnClickListener {
             activity?.let {
                 val intent = Intent(it.baseContext, HelperSortActivity::class.java)
@@ -107,18 +99,17 @@ class NewHelperFragment : Fragment() {
             }
         }
 
-        // 하단바 카드삭제
+
         btnNewHelperDeleteCard.setOnClickListener {
-            // 삭제를 물어보는 다이얼로그 띄움
             showDeleteDialog()
         }
 
-        // 하단바 카드 숨기기
-        btnNewHelperInvisCard.setOnClickListener {}
 
-        // 하단바 수정
+        btnNewHelperInvisCard.setOnClickListener {
+            //TODO: 선택한 카드 숨기기
+        }
+
         btnNewHelperModCard.setOnClickListener {
-            //TODO: DetailCardActivity로 이동
             activity?.let {
                 val intent = Intent(it, DetailCardActivity::class.java)
                 intent.putExtra("FROM_NEW_HELPER", clickedCardData)
@@ -126,9 +117,8 @@ class NewHelperFragment : Fragment() {
             }
         }
 
-        // 하단바 취소
+
         btnNewHelperCancleCard.setOnClickListener {
-            // TODO: 선택한 카드 취소
             cstNewHelperSecond.isVisible = false
             clickedCardData = null
             clickedCardView?.isSelected = false
@@ -136,8 +126,6 @@ class NewHelperFragment : Fragment() {
             tvNewHelper.text = ""
             bottomBarIsVisible(false)
         }
-
-        // HelperAdapter 초기화
 
         rvNewHelperCard.apply {
             adapter = rvAdapter
@@ -169,18 +157,13 @@ class NewHelperFragment : Fragment() {
                             "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@NewHelperFragment)
 
                             for(i in 0 until res.data?.size!!){
-                                "for recieved.data index : $i: card : ${res?.data[i]}".logDebug(this@NewHelperFragment)
+                                "for recieved.data index : $i: card : ${res.data[i]}".logDebug(this@NewHelperFragment)
                             }
                             when (res.success) {
                                 true -> {
                                     backgroundIsVisible(res.data.isNullOrEmpty())
                                     disabledCardList.clear()
                                     disabledCardList.addAll(res.data as ArrayList<CardBean>)
-//                                    rvAdapter.data.clear()
-//                                    rvAdapter.data.addAll(disabledCardList)
-//                                    var forSendCard = arrayListOf<CardBean>()
-//                                    res.data.sortedBy { it.sequence }
-//                                        .forEach { disabledCardList.add(it) }
                                     rvAdapter.notifyDataSetChanged()
 
                                 }
@@ -212,7 +195,7 @@ class NewHelperFragment : Fragment() {
         imgNewEmpty.isVisible = visible
     }
 
-    // 카드 삭제 api 호출
+
     private fun deleteCard(dialog: DialogInterface) {
         SingletoneToken
             .getInstance()
@@ -317,7 +300,6 @@ class NewHelperFragment : Fragment() {
     }
 
 
-    // region RecyclerView Adapter
     inner class NewHelperAdapter : RecyclerView.Adapter<NewViewHolder>() {
         var data = arrayListOf<CardBean>()
 
@@ -337,8 +319,7 @@ class NewHelperFragment : Fragment() {
 
     }
 
-    // end Adapter
-// region ViewHolder
+
     inner class NewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val lyNewHelperCard: ConstraintLayout = itemView.findViewById(R.id.lyHelper)
         private val imgNewHelperCard: ImageView = itemView.findViewById(R.id.imgCard)
@@ -376,12 +357,7 @@ class NewHelperFragment : Fragment() {
                     tts.speak(cardBean.desc, TextToSpeech.QUEUE_FLUSH, null, null)
                 }
             }
-
             itemView.isVisible = cardBean.visibility
         }
-
     }
-
-
-//endregion
 }

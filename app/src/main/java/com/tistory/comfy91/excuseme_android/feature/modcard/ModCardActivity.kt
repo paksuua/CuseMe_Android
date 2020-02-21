@@ -80,7 +80,7 @@ class ModCardActivity : AppCompatActivity() {
             .apply {
                 this.setDuration(10000)
                     .addUpdateListener { animation ->
-                        var value: Float = animation?.getAnimatedValue() as Float
+                        var value: Float = animation?.animatedValue as Float
                         ccModCount.angle = value
                     }
             }

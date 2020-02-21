@@ -160,5 +160,17 @@ interface Service{
         @Body changeAllCards: BodyChangeAllCards
     ): Call<ResCards>
 
+    /**
+     * 카드 개별 숨김
+     */
+    @PUT("/cards/{cardIdx}/hide")
+    fun changeVisibility(
+        @Header("token") token: String,
+        @Body changeVisibility: BodyChangeVisibility
+    ): Call<ResCards>
+
+
+
+
     // endregion
 }

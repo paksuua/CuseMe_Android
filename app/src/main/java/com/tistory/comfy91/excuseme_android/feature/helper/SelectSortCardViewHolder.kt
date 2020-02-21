@@ -1,8 +1,7 @@
-package com.tistory.comfy91.excuseme_android.feature.helper_sort
+package com.tistory.comfy91.excuseme_android.feature.helper
 
 import android.content.Intent
 import android.view.View
-import android.widget.Button
 import android.widget.CheckedTextView
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,11 +12,13 @@ import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
 
-class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit) :
+class SelectSortCardViewHolder(itemView: View, private val onClicked: () -> Unit) :
     RecyclerView.ViewHolder(itemView) {
     private val imgCard: ImageView = itemView.findViewById(R.id.imgCard)
     private val tvCard: TextView = itemView.findViewById(R.id.tvCard)
     private val btnHelperCheck: CheckedTextView = itemView.findViewById(R.id.btnCheck)
+
+    private var isTrueBtnHelperCheck = false
     lateinit var dataVisibilityChange: () -> Unit
 
 
@@ -27,9 +28,9 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
         tvCard.text = data.title
 
         btnHelperCheck.isChecked = data.visibility
-        btnHelperCheck.setOnClickListener{
-            //TODO: visibility 변경 서버 통신
-        }
+        /*btnHelperCheck.setOnClickListener{
+
+        }*/
 
         when(listenerFlag){
             HELPER_SORT_ACTIVITY -> itemView.setOnSingleClickListener{clicked()}

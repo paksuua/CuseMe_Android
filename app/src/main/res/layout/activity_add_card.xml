@@ -20,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 카드 추가 버튼 -->
 
     <TextView
         android:id="@+id/btnAddCard"
@@ -38,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btnAddcardBack" />
 
-    <!--region 카드 이미지 -->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cdAddcardCardImg"
         android:layout_width="match_parent"
@@ -92,7 +91,7 @@
                 app:layout_constraintStart_toStartOf="@id/newcard_photo" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-    <!-- endregion -->
+
 
 
     <EditText
@@ -112,7 +111,6 @@
         app:layout_constraintTop_toBottomOf="@id/cdAddcardCardImg" />
 
 
-    <!-- region 녹음부분 -->
     <EditText
         android:id="@+id/edtAddcardDesc"
         android:layout_width="match_parent"
@@ -262,9 +260,5 @@
             app:layout_constraintStart_toStartOf="@+id/btnAddcardTogRecord"
             app:layout_constraintTop_toTopOf="@+id/btnAddcardTogRecord" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!-- endregion -->
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
