@@ -151,7 +151,7 @@ class HelperSortActivity : AppCompatActivity() {
         }
 
         for(i in 0 until cardList.size){
-            "CardIdx: ${cardList[i].cardIdx}, card.toString():${cardList[i].toString()} ".logDebug(this@HelperSortActivity)
+            "CardIdx: ${cardList[i].cardIdx}, card.toString():${cardList[i]} ".logDebug(this@HelperSortActivity)
         }
 
         "Token: $token".logDebug(this@HelperSortActivity)

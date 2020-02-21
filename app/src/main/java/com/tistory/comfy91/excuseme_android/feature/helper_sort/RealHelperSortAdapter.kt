@@ -35,9 +35,9 @@ class RealHelperSortAdapter(
     }
 
     override fun onBindViewHolder(holder: HelperSortCardViewHolder, position: Int) {
-        holder.bind(data!![position], position, bind)
+        holder.bind(data[position], position, bind)
         holder.dataVisibilityChange = {
-            data!![position].visibility = !(data!![position].visibility)
+            data[position].visibility = !(data[position].visibility)
             this.notifyDataSetChanged()
         }
     }
@@ -46,11 +46,11 @@ class RealHelperSortAdapter(
     fun swapItems(fromPosition: Int, toPosition: Int){
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
-                data!![i] = data!!.set(i+1, data!![i])
+                data[i] = data.set(i+1, data[i])
             }
         } else {
             for (i in fromPosition..toPosition + 1) {
-                data!![i] = data!!.set(i-1, data!![i])
+                data[i] = data.set(i-1, data[i])
             }
         }
         notifyItemMoved(fromPosition, toPosition)

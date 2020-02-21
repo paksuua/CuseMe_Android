@@ -125,11 +125,11 @@ class DetailCardActivity : AppCompatActivity() {
 
     private fun readyForRequest(card: CardBean, dialog: DialogInterface) {
 
-        val title_rb = RequestBody.create(MediaType.parse("text/plain"), card?.title)
-        val content_rb = RequestBody.create(MediaType.parse("text/plain"), card?.desc)
+        val title_rb = RequestBody.create(MediaType.parse("text/plain"), card.title)
+        val content_rb = RequestBody.create(MediaType.parse("text/plain"), card.desc)
 
         var photo_rb: MultipartBody.Part? = null
-        card.imageUrl?.let{
+        card.imageUrl.let{
             val uri = Uri.parse(it)
             val options = BitmapFactory.Options()
 
@@ -147,8 +147,8 @@ class DetailCardActivity : AppCompatActivity() {
 
         // audio
         var audio_rb: MultipartBody.Part? = null
-        card?.audioUrl = null
-        card?.audioUrl?.let{
+        card.audioUrl = null
+        card.audioUrl?.let{
             val audioFile = File(it)
 //        val fileOutputStream = audioFile.outputStream()
             val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
@@ -162,10 +162,10 @@ class DetailCardActivity : AppCompatActivity() {
 
         cardDataRepository.editCardDetail(
             token!!,
-            card?.cardIdx.toString(),
+            card.cardIdx.toString(),
             title_rb,
             content_rb,
-            card?.visibility!!,
+            card.visibility,
             photo_rb,
             audio_rb
         ).enqueue(object : Callback<ResDownCard> {
@@ -301,8 +301,8 @@ class DetailCardActivity : AppCompatActivity() {
                     )
                     if (response.isSuccessful) {
                         response.body().let { body ->
-                            "status: ${body!!.status} data : ${body!!.data}".logDebug(this@DetailCardActivity)
-                            if (body!!.success) {
+                            "status: ${body!!.status} data : ${body.data}".logDebug(this@DetailCardActivity)
+                            if (body.success) {
                                 when (body.data?.audioUrl.isNullOrEmpty()) {
                                     true -> {
                                         card?.desc.let {

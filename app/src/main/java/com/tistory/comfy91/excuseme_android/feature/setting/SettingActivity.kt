@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.feature.cg_password.ChangePasswordActivity
-import com.tistory.comfy91.excuseme_android.feature.cg_phonenum.ChangePhoneNumActivity
 import com.tistory.comfy91.excuseme_android.newStartActivity
 import kotlinx.android.synthetic.main.activity_setting.*
 
@@ -16,10 +15,9 @@ class SettingActivity : AppCompatActivity() {
         initUi()
     }
 
-    private fun initUi(){
+    private fun initUi() {
         btnSettingBack.setOnClickListener { finish() }
-        cstSettingPw.setOnClickListener{this.newStartActivity(ChangePasswordActivity::class.java)}
-//        btnSettingCgPhoneNum.setOnClickListener { this.newStartActivity(ChangePhoneNumActivity::class.java) }
+        cstSettingPw.setOnClickListener { this.newStartActivity(ChangePasswordActivity::class.java) }
     }
 }
 

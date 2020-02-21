@@ -45,39 +45,37 @@ class DownloadCardActivity : AppCompatActivity() {
             if(token == null){
                 token = "token"
             }
-            edtDownkInputCardNum.text.toString()
-                ?.let{
-                    cardDataRepository
-                        .downCard(token!!,it)
-                        .enqueue( object: Callback<ResDownCard> {
-                            override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
-                                "Fail to Down Card, message : ${t.message}".logDebug(this@DownloadCardActivity)
-                            }
+            edtDownkInputCardNum.text.toString().let{
+                cardDataRepository
+                    .downCard(token!!,it)
+                    .enqueue( object: Callback<ResDownCard> {
+                        override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
+                            "Fail to Down Card, message : ${t.message}".logDebug(this@DownloadCardActivity)
+                        }
 
-                            override fun onResponse(
-                                call: Call<ResDownCard>,
-                                response: Response<ResDownCard>
-                            ) {
-                                if(response.isSuccessful){
-                                    response.body()
-                                        ?.let {res ->
-                                            "Down Card is Success, status : ${res.status}, success: ${res.success}, message : ${res.message}, data: ${res.data}".logDebug(this@DownloadCardActivity)
-                                            if(res.success){
-                                                val card = res.data!!
-                                                val intent = Intent(this@DownloadCardActivity, HelperActivity::class.java)
-                                                intent.putExtra("DOWN_CARD", card)
-                                                startActivity(intent)
-                                                this@DownloadCardActivity.finish()
-                                            }
+                        override fun onResponse(
+                            call: Call<ResDownCard>,
+                            response: Response<ResDownCard>
+                        ) {
+                            if(response.isSuccessful){
+                                response.body()
+                                    ?.let {res ->
+                                        "Down Card is Success, status : ${res.status}, success: ${res.success}, message : ${res.message}, data: ${res.data}".logDebug(this@DownloadCardActivity)
+                                        if(res.success){
+                                            val card = res.data!!
+                                            val intent = Intent(this@DownloadCardActivity, HelperActivity::class.java)
+                                            intent.putExtra("DOWN_CARD", card)
+                                            startActivity(intent)
+                                            this@DownloadCardActivity.finish()
                                         }
-                                }
-                                else{
-                                    "Down Card is not success,  message : ${response.message()}, code : ${response.code()} "
-                                }
+                                    }
+                            } else{
+                                "Down Card is not success,  message : ${response.message()}, code : ${response.code()} "
                             }
-                        })
+                        }
+                    })
 
-                }
+            }
 
         }
 

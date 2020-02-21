@@ -28,13 +28,13 @@ class SelectSortAdapter(private val context: Context, private val onBtnAllClicke
     }
 
     override fun getItemCount(): Int {
-        return searchedList!!.size
+        return searchedList.size
     }
 
     override fun onBindViewHolder(holder: HelperSortCardViewHolder, position: Int) {
-        holder.bind(searchedList!![position], position, bind)
+        holder.bind(searchedList[position], position, bind)
         holder.dataVisibilityChange = {
-            searchedList!![position].visibility = !(searchedList!![position].visibility)
+            searchedList[position].visibility = !(searchedList[position].visibility)
             this.notifyDataSetChanged()
         }
     }
@@ -43,11 +43,11 @@ class SelectSortAdapter(private val context: Context, private val onBtnAllClicke
     fun swapItems(fromPosition: Int, toPosition: Int){
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
-                searchedList!![i] = searchedList!!.set(i+1, searchedList!![i])
+                searchedList[i] = searchedList.set(i+1, searchedList[i])
             }
         } else {
             for (i in fromPosition..toPosition + 1) {
-                searchedList!![i] = searchedList!!.set(i-1, searchedList!![i])
+                searchedList[i] = searchedList.set(i-1, searchedList[i])
             }
         }
         notifyItemMoved(fromPosition, toPosition)

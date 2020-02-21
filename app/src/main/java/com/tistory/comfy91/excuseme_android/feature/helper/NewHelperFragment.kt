@@ -169,7 +169,7 @@ class NewHelperFragment : Fragment() {
                             "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@NewHelperFragment)
 
                             for(i in 0 until res.data?.size!!){
-                                "for recieved.data index : $i: card : ${res?.data[i]}".logDebug(this@NewHelperFragment)
+                                "for recieved.data index : $i: card : ${res.data[i]}".logDebug(this@NewHelperFragment)
                             }
                             when (res.success) {
                                 true -> {

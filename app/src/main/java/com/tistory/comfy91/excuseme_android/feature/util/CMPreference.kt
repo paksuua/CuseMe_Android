@@ -6,8 +6,8 @@ import com.tistory.comfy91.excuseme_android.feature.util.BaseApplication.Compani
 
 object CMPreference {
 
-    //Preference 간편 사용을 위한 클래스
-    private val preference: SharedPreferences = app.applicationContext.getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
+    private val preference: SharedPreferences =
+        app.applicationContext.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
 
     private val IS_FIRST_LOGIN = "IS_FIRST_LOGIN"
 
@@ -22,7 +22,7 @@ object CMPreference {
         }
     }
 
-    private operator inline fun <reified T : Any> get(key: String, defaultValue: T? = null): T? {
+    private inline operator fun <reified T : Any> get(key: String, defaultValue: T? = null): T? {
         return when (T::class) {
             String::class -> preference.getString(key, defaultValue as? String) as T?
             Int::class -> preference.getInt(key, defaultValue as? Int ?: -1) as T?
