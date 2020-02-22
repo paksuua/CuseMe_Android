@@ -2,20 +2,20 @@ package com.tistory.comfy91.excuseme_android.feature.helper
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.feature.addcard.AddCardActivity
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.download_card.DownloadCardActivity
-import com.tistory.comfy91.excuseme_android.newStartActivity
 import kotlinx.android.synthetic.main.activity_helper.*
+
 
 class HelperActivity : AppCompatActivity() {
 
@@ -24,9 +24,7 @@ class HelperActivity : AppCompatActivity() {
     private lateinit var rotate_forward: Animation
     lateinit var rotate_backward: Animation
     private val transction = supportFragmentManager.beginTransaction()
-
     private lateinit var dialogBuilder: AlertDialog.Builder
-
     var disabledCardList: ArrayList<CardBean> = arrayListOf()
     var allCardList: ArrayList<CardBean> = arrayListOf()
     private lateinit var helperFragment: NewHelperFragment
@@ -69,7 +67,11 @@ class HelperActivity : AppCompatActivity() {
 
     private fun initUI(){
         btnHelperAddCard.setOnClickListener {
-            if (!isOpen) {
+            if (!isOpen) { // FAB open
+                // 배경 뷰 터치 방지
+                enableDisableView(backHelperBlur,false )
+                enableDisableView(frameHelper,false )
+
                 backHelperBlur.isVisible=true
                 btnHelperDownCard.startAnimation(fab_open)
                 btnHelperNewCard.startAnimation(fab_open)
@@ -82,6 +84,10 @@ class HelperActivity : AppCompatActivity() {
                 btnHelperNewCard.isClickable = true
                 isOpen = true
             } else {
+                // 배경 뷰 터치 가능으로 변경
+                enableDisableView(backHelperBlur,true )
+                enableDisableView(frameHelper,true )
+
                 backHelperBlur.isVisible=false
                 btnHelperDownCard.startAnimation(fab_close)
                 btnHelperNewCard.startAnimation(fab_close)
@@ -171,11 +177,22 @@ class HelperActivity : AppCompatActivity() {
             cstHelperBottom.isVisible=true
             btnHelperAddCard.isVisible=true
         }else{
+
             cstHelperBottom.isVisible=false
             btnHelperAddCard.isVisible=false
             btnHelperNewCard.isVisible=false
             btnHelperDownCard.isVisible=false
 
+        }
+    }
+
+    private fun enableDisableView(view: View, boolean: Boolean){
+        view.setEnabled(boolean)
+        if (view is ViewGroup) {
+            val group = view as ViewGroup
+            for (idx in 0 until group.childCount) {
+                enableDisableView(group.getChildAt(idx), boolean)
+            }
         }
     }
 }
