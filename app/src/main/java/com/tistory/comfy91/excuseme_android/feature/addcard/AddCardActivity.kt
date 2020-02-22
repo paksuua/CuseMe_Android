@@ -3,8 +3,6 @@ package com.tistory.comfy91.excuseme_android.feature.addcard
 import android.Manifest
 import android.animation.ValueAnimator
 import android.app.Activity
-import android.content.ContentProvider
-import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,23 +12,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.CheckedTextView
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.*
-import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCards
 import com.tistory.comfy91.excuseme_android.data.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
-import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
@@ -44,7 +36,6 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -78,10 +69,9 @@ class AddCardActivity : AppCompatActivity() {
 
         initData()
         initUI()
-    } // end onCrate()
+    }
 
     private fun initData() {
-        // Record to the external cache directory for visibility
         circleAnimation = ValueAnimator.ofFloat(0f, 360f)
             .apply {
                 this.setDuration(10000)
@@ -96,14 +86,12 @@ class AddCardActivity : AppCompatActivity() {
         dialogBuilder = AlertDialog.Builder(this)
 
 
-        //이미지 가져오기 리스너 설정
         imgAddcardCardImg.setOnClickListener {
             if(checkPermission(PERMISSION_READ_EXTERNAL_STORAGE)){
                 getImageFromAlbum()
             }
         }
 
-        //녹음 버튼 리스너 설정
         btnAddcardTogRecord.setOnClickListener {
             checkPermission(PERMISSION_RECORD_AUDIO)
             checkPermission(PERMISSION_WRITE_EXTERNAL_STORAGE)
@@ -113,7 +101,7 @@ class AddCardActivity : AppCompatActivity() {
             record()
         }
 
-        // 실행(count) 버튼 리스너 설정
+
         ctvAddcardRecordPlay.setOnClickListener {
             if (!isExistRecordFile) {
                 record()
@@ -133,7 +121,7 @@ class AddCardActivity : AppCompatActivity() {
             }
         }
 
-        // 확인 버튼
+
         btnAddcardSaveRecord
             .apply { setSaveBtn(false) }
             .setOnClickListener { (it as CheckedTextView).toggle() }
@@ -146,7 +134,7 @@ class AddCardActivity : AppCompatActivity() {
         })
 
 
-        // TTS
+
         btnAddCardTts.setOnClickListener(object : View.OnClickListener {
             private val isClicked = false
 
@@ -159,7 +147,7 @@ class AddCardActivity : AppCompatActivity() {
         })
 
 
-        // 최종 카드 추가 버튼
+
         btnAddCard.setOnClickListener {
             if (isAllCardInfoFilled()) {
                 uploadCard()
@@ -170,7 +158,7 @@ class AddCardActivity : AppCompatActivity() {
 
         }
 
-        // 뒤로가기 버튼
+
         btnAddcardBack.setOnClickListener { finish() }
     }
 
@@ -451,7 +439,7 @@ class AddCardActivity : AppCompatActivity() {
                 }
             }
         }
-    } // end onRequestPermissionResult()
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -476,11 +464,7 @@ class AddCardActivity : AppCompatActivity() {
                 }
             }
         }
-    } // end onActivityResult()
-
-
-
-
+    }
 
 
     override fun onStop() {
@@ -495,7 +479,7 @@ class AddCardActivity : AppCompatActivity() {
             token = "token"
         }
 
-        // get cardData
+
         val title = edtAddcardTitle.text.toString()
         val desc = edtAddcardDesc.text.toString()
         //todo("visibility 가져와야함")

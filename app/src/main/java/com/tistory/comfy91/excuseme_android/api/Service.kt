@@ -161,7 +161,7 @@ interface Service{
     ): Call<ResCards>
 
     /**
-     * 카드 개별 숨김
+     * TODO: 카드 개별 숨김
      */
     @PUT("/cards/{cardIdx}/hide")
     fun changeVisibility(

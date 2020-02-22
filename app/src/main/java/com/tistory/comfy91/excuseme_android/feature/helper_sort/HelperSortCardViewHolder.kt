@@ -28,7 +28,6 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
 
         btnHelperCheck.isChecked = data.visibility
         btnHelperCheck.setOnClickListener{
-            //TODO: visibility 변경 서버 통신
         }
 
         when(listenerFlag){
