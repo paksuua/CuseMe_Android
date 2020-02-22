@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.*
 import com.tistory.comfy91.excuseme_android.data.*
+import com.tistory.comfy91.excuseme_android.data.answer.ResCardDetail
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
+import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.disabled.DisabledActivity
 import com.tistory.comfy91.excuseme_android.feature.modcard.ModCardActivity

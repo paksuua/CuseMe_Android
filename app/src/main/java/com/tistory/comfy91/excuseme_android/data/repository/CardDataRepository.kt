@@ -1,19 +1,13 @@
 package com.tistory.comfy91.excuseme_android.data.repository
 
-import com.tistory.comfy91.excuseme_android.api.Service
-import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCardDetail
-import com.tistory.comfy91.excuseme_android.data.ResCards
-import com.tistory.comfy91.excuseme_android.data.ResDownCard
-import com.tistory.comfy91.excuseme_android.data.server.BodyChangeAllCards
-import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
-import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.data.answer.ResCardDetail
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
+import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.request.BodyChangeAllCards
+import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Header
-import retrofit2.http.Part
-import retrofit2.http.Path
 
 interface CardDataRepository {
     fun getAllCards(token: String): Call<ResCards>
