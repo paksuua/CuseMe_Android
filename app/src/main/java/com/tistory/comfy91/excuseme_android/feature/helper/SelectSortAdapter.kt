@@ -31,10 +31,6 @@ class SelectSortAdapter(private val context: Context, private val onBtnAllClicke
 
     override fun onBindViewHolder(holder: SelectSortCardViewHolder, position: Int) {
         holder.bind(searchedList[position], position, bind)
-        holder.dataVisibilityChange = {
-            searchedList[position].visibility = !(searchedList[position].visibility)
-            this.notifyDataSetChanged()
-        }
     }
 
     fun swapItems(fromPosition: Int, toPosition: Int){

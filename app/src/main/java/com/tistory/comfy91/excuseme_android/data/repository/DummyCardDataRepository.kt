@@ -1,14 +1,12 @@
 package com.tistory.comfy91.excuseme_android.data.repository
 
-import android.widget.ResourceCursorAdapter
 import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCardDetail
-import com.tistory.comfy91.excuseme_android.data.ResCards
-import com.tistory.comfy91.excuseme_android.data.ResDownCard
-import com.tistory.comfy91.excuseme_android.data.server.BodyChangeAllCards
-import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
-import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
-import okhttp3.MediaType
+import com.tistory.comfy91.excuseme_android.data.answer.ResCardDetail
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
+import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.request.BodyChangeAllCards
+import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -51,10 +49,77 @@ class DummyCardDataRepository :
         bodyChangeAllCards: BodyChangeAllCards
     ): Call<ResCards> {
         return Calls.response(
-            ResCards(200,
+            ResCards(
+                200,
                 true,
                 "카드 수정 성공",
                 listOf()
+            )
+        )
+    }
+
+    override fun changeVisibilty(
+        token: String,
+        bodyChangeVisibility: BodyChangeVisibility,
+        cardIdx: String
+    ): Call<ResCards> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Calls.response(
+            ResCards(
+                status = 200,
+                success = true,
+                message = "dummy card data",
+                data = listOf(
+                    CardBean(
+                        0,
+                        "first card",
+                        "desc",
+                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        0,
+                        false,
+                        "serialNum",
+                        0,
+                        ""
+                    ),
+                    CardBean(
+                        0,
+                        "second card",
+                        "desc",
+                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        0,
+                        false,
+                        "serialNum",
+                        0,
+                        ""
+
+                    ),
+                    CardBean(
+                        0,
+                        "third card",
+                        "desc",
+                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        0,
+                        false,
+                        "serialNum",
+                        0,
+                        ""
+                    ),
+                    CardBean(
+                        0,
+                        "fourth card",
+                        "desc",
+                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        0,
+                        false,
+                        "serialNum",
+                        0,
+                        ""
+                    )
+                )
             )
         )
     }
@@ -229,23 +294,23 @@ class DummyCardDataRepository :
         record: MultipartBody.Part?
     ): Call<ResDownCard> {
         return Calls.response(
-                ResDownCard(
-                    200,
-                    true,
-                    "dummy 카드 다운 성공",
-                    CardBean(
-                        0,
-                        "first card",
-                        "desc",
-                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-                        0,
-                        false,
-                        "serialNum",
-                        0,
-                        ""
-                    )
+            ResDownCard(
+                200,
+                true,
+                "dummy 카드 다운 성공",
+                CardBean(
+                    0,
+                    "first card",
+                    "desc",
+                    "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                    "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                    0,
+                    false,
+                    "serialNum",
+                    0,
+                    ""
                 )
+            )
         )
 
     }

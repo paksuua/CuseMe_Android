@@ -3,13 +3,10 @@ package com.tistory.comfy91.excuseme_android.feature.splash
 import android.animation.Animator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.airbnb.lottie.LottieAnimationView
 import com.tistory.comfy91.excuseme_android.R
-import com.tistory.comfy91.excuseme_android.api.Service
-import com.tistory.comfy91.excuseme_android.data.repository.DummyUserDataRepository
-import com.tistory.comfy91.excuseme_android.data.ResUser
+import com.tistory.comfy91.excuseme_android.data.answer.ResUser
 import com.tistory.comfy91.excuseme_android.data.repository.ServerUserDataRepository
-import com.tistory.comfy91.excuseme_android.data.server.BodyStartApp
+import com.tistory.comfy91.excuseme_android.data.request.BodyStartApp
 import com.tistory.comfy91.excuseme_android.feature.disabled.DisabledActivity
 import com.tistory.comfy91.excuseme_android.feature.login.Login
 import com.tistory.comfy91.excuseme_android.logDebug

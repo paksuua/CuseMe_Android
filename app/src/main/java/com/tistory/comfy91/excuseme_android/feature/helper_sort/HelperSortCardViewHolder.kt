@@ -8,10 +8,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
+import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
+import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
+import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit) :
     RecyclerView.ViewHolder(itemView) {

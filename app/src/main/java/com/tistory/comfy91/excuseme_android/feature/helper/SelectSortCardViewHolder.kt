@@ -12,17 +12,24 @@ import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivit
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
+import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
 import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SelectSortCardViewHolder(itemView: View, private val onClicked: () -> Unit) :
     RecyclerView.ViewHolder(itemView) {
-    private val imgCard: ImageView = itemView.findViewById(R.id.imgCard)
-    private val tvCard: TextView = itemView.findViewById(R.id.tvCard)
-    private val btnHelperCheck: CheckedTextView = itemView.findViewById(R.id.btnCheck)
+    private val imgCard: ImageView = itemView.findViewById(R.id.imgCardSelect)
+    private val tvCard: TextView = itemView.findViewById(R.id.tvCardSelect)
+    private val btnHelperCheck: CheckedTextView = itemView.findViewById(R.id.btnCheckSelect)
+    private var cardList: ArrayList<CardBean> = arrayListOf()
     private var token = SingletoneToken.getInstance().token
     private var isTrueBtnHelperCheck = false
+    private val cardDataRepository= ServerCardDataRepository()
     lateinit var dataVisibilityChange: () -> Unit
 
 
@@ -32,14 +39,16 @@ class SelectSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
         tvCard.text = data.title
 
         btnHelperCheck.isChecked = data.visibility
-        btnHelperCheck.setOnClickListener{
-            changeCardVisibility()
-        }
 
         when(listenerFlag){
             HELPER_SORT_ACTIVITY -> itemView.setOnSingleClickListener{clicked()}
             SELECT_SORT_FRAGMENT -> {
-                btnHelperCheck.setOnSingleClickListener{clicked()}
+                btnHelperCheck.setOnClickListener{
+                    "셀렉트 시작".logDebug(this@SelectSortCardViewHolder)
+                    changeCardVisibility(data.visibility, data.cardIdx.toString())
+                    //(it as CheckedTextView).toggle()
+                    "셀렉트 끝".logDebug(this@SelectSortCardViewHolder)
+                }
                 itemView.setOnSingleClickListener{
                     val intent = Intent(itemView.context, DetailCardActivity::class.java)
                     intent.putExtra("CARD_DATA", data)
@@ -47,7 +56,6 @@ class SelectSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
                 }
             }
         }
-
     }
 
     private fun clicked(){
@@ -56,16 +64,26 @@ class SelectSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
         onClicked()
     }
 
-    private fun changeCardVisibility(){
+    private fun changeCardVisibility(visibility: Boolean, cardIdx:String){
         if(token==null){
             token=""
         }
         "Token: $token".logDebug(this@SelectSortCardViewHolder)
 
-       /* Gson().toJson(BodyChangeVisibility(
-            cardList as Boolean
-        )).logDebug(this@SelectSortCardViewHolder)*/
+        cardDataRepository.changeVisibilty(token!!, BodyChangeVisibility(visibility), cardIdx).enqueue(object :
+            Callback<ResCards>{
+            override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                "Fail to Edit Card Visibility, message : ${t.message}".logDebug(this@SelectSortCardViewHolder)
+            }
 
+            override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+                if(response.isSuccessful){
+                    val res=response.body()
+                    //TODO: 토글함수써서 Checked 버튼바꾸기
+                    "status: ${res!!.status} success: ${res!!.success} message: ${res!!.message}".logDebug(this@SelectSortCardViewHolder)
+                }
+            }
+        })
     }
 
     companion object{

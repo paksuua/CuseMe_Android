@@ -1,7 +1,7 @@
 package com.tistory.comfy91.excuseme_android.feature.helper
 
 
-import android.content.DialogInterface
+import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -22,12 +22,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCards
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
 import com.tistory.comfy91.excuseme_android.feature.TTS
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortActivity
+import com.tistory.comfy91.excuseme_android.feature.login.Login
 import com.tistory.comfy91.excuseme_android.logDebug
 import kotlinx.android.synthetic.main.activity_helper.*
 import kotlinx.android.synthetic.main.fragment_new_helper.*
@@ -38,7 +40,6 @@ import retrofit2.Response
 import java.io.IOException
 import kotlin.collections.ArrayList
 
-
 class NewHelperFragment : Fragment() {
     private var disabledCardList: ArrayList<CardBean> = arrayListOf()
     private var rvAdapter = NewHelperAdapter()
@@ -46,7 +47,9 @@ class NewHelperFragment : Fragment() {
     var clickedCardView: ConstraintLayout? = null
     private var clickedCardData: CardBean? = null
     private var token = SingletoneToken.getInstance().token
+    private var fragmentContext: Context? = null
 
+    // audio
     private lateinit var tts: TextToSpeech
     private var player: MediaPlayer? = null
     private var playFlag = false
@@ -64,17 +67,21 @@ class NewHelperFragment : Fragment() {
         initUi()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        fragmentContext = activity?.baseContext
+
+    }
+
     override fun onResume() {
         super.onResume()
-        getAllCardData()
+        getDisabledCards()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (tts != null) {
             tts.stop()
             tts.shutdown()
-        }
         stopPlaying()
     }
 
@@ -84,13 +91,13 @@ class NewHelperFragment : Fragment() {
     }
 
     private fun initUi() {
+
+        // DisabledAvtivity로 이동
         btnNewHelperUnlock?.setOnClickListener {
-            activity?.let {
-                it.finish()
-            }
+            activity?.finish()
         }
 
-
+        // HelperSortActivity로 이동
         btnNewHelperGoSort.setOnClickListener {
             activity?.let {
                 val intent = Intent(it.baseContext, HelperSortActivity::class.java)
@@ -99,17 +106,18 @@ class NewHelperFragment : Fragment() {
             }
         }
 
-
+        // 하단바 카드삭제
         btnNewHelperDeleteCard.setOnClickListener {
+            // 삭제를 물어보는 다이얼로그 띄움
             showDeleteDialog()
         }
 
+        // 하단바 카드 숨기기
+        btnNewHelperInvisCard.setOnClickListener {}
 
-        btnNewHelperInvisCard.setOnClickListener {
-            //TODO: 선택한 카드 숨기기
-        }
-
+        // 하단바 수정
         btnNewHelperModCard.setOnClickListener {
+            //TODO: DetailCardActivity로 이동
             activity?.let {
                 val intent = Intent(it, DetailCardActivity::class.java)
                 intent.putExtra("FROM_NEW_HELPER", clickedCardData)
@@ -117,8 +125,9 @@ class NewHelperFragment : Fragment() {
             }
         }
 
-
+        // 하단바 취소
         btnNewHelperCancleCard.setOnClickListener {
+            // TODO: 선택한 카드 취소
             cstNewHelperSecond.isVisible = false
             clickedCardData = null
             clickedCardView?.isSelected = false
@@ -126,6 +135,8 @@ class NewHelperFragment : Fragment() {
             tvNewHelper.text = ""
             bottomBarIsVisible(false)
         }
+
+        // HelperAdapter 초기화
 
         rvNewHelperCard.apply {
             adapter = rvAdapter
@@ -136,13 +147,17 @@ class NewHelperFragment : Fragment() {
         rvAdapter.notifyDataSetChanged()
     }
 
-    private fun getAllCardData() {
+    private fun getDisabledCards() {
         if (token == null) {
             token =
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWR4IjozOSwidXVpZCI6ImYzZDViM2E1LTkwYjYtNDVlMy1hOThhLTEyODE5OWNmZTg1MCIsImlhdCI6MTU3NzkwMTA1MywiZXhwIjoxNTc3OTg3NDUzLCJpc3MiOiJnYW5naGVlIn0.QytUhsXf4bJirRR_zF3wdACiNu9ytwUE4mrPSNLCFLk"
         }
         cardDataRepository
-            .getAllCards(token!!)
+            .getDisabledCards(
+                BodyGetDisabledCard(
+                    Login.getUUID(fragmentContext)
+                )
+            )
             .enqueue(object : Callback<ResCards> {
                 override fun onFailure(call: Call<ResCards>, t: Throwable) {
                     "Fail to Get All Card Data message:${t.message}".logDebug(this@NewHelperFragment)
@@ -163,6 +178,7 @@ class NewHelperFragment : Fragment() {
                                 true -> {
                                     backgroundIsVisible(res.data.isNullOrEmpty())
                                     disabledCardList.clear()
+                                    res.data.sortedBy { card -> card.visibility }
                                     disabledCardList.addAll(res.data as ArrayList<CardBean>)
                                     rvAdapter.notifyDataSetChanged()
 
@@ -195,8 +211,8 @@ class NewHelperFragment : Fragment() {
         imgNewEmpty.isVisible = visible
     }
 
-
-    private fun deleteCard(dialog: DialogInterface) {
+    // 카드 삭제 api 호출
+    private fun deleteCard() {
         SingletoneToken
             .getInstance()
             .token?.let { token ->
@@ -240,7 +256,7 @@ class NewHelperFragment : Fragment() {
                         this.setPositiveButton(
                             "삭제"
                         ) { dialogue, _ ->
-                            deleteCard(dialogue)
+                            deleteCard()
                         }
 
                         this.setNegativeButton(
@@ -300,6 +316,7 @@ class NewHelperFragment : Fragment() {
     }
 
 
+    // region RecyclerView Adapter
     inner class NewHelperAdapter : RecyclerView.Adapter<NewViewHolder>() {
         var data = arrayListOf<CardBean>()
 
@@ -319,12 +336,12 @@ class NewHelperFragment : Fragment() {
 
     }
 
-
+    // end Adapter
+// region ViewHolder
     inner class NewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val lyNewHelperCard: ConstraintLayout = itemView.findViewById(R.id.lyHelper)
         private val imgNewHelperCard: ImageView = itemView.findViewById(R.id.imgCard)
         private val tvNewHelperCard: TextView = itemView.findViewById(R.id.tvCard)
-
 
         fun bind(cardBean: CardBean) {
             lyNewHelperCard.setBackgroundResource(R.drawable.card_bg_selector)
@@ -357,7 +374,7 @@ class NewHelperFragment : Fragment() {
                     tts.speak(cardBean.desc, TextToSpeech.QUEUE_FLUSH, null, null)
                 }
             }
-            itemView.isVisible = cardBean.visibility
         }
     }
+//endregion
 }

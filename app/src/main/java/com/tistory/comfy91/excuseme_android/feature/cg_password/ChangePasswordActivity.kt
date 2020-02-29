@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tistory.comfy91.excuseme_android.R
-import com.tistory.comfy91.excuseme_android.data.ResUser
+import com.tistory.comfy91.excuseme_android.data.answer.ResUser
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerUserDataRepository
-import com.tistory.comfy91.excuseme_android.data.server.BodyChangePw
+import com.tistory.comfy91.excuseme_android.data.request.BodyChangePw
 import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.toast
 import kotlinx.android.synthetic.main.activity_change_password.*

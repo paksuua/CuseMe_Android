@@ -1,14 +1,12 @@
 package com.tistory.comfy91.excuseme_android.data.repository
 
 import com.tistory.comfy91.excuseme_android.api.ServerService
-import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.ResCardDetail
-import com.tistory.comfy91.excuseme_android.data.ResCards
-import com.tistory.comfy91.excuseme_android.data.ResDownCard
-import com.tistory.comfy91.excuseme_android.data.server.BodyChangeAllCards
-import com.tistory.comfy91.excuseme_android.data.server.BodyDeleteCard
-import com.tistory.comfy91.excuseme_android.data.server.BodyGetAllCards
-import com.tistory.comfy91.excuseme_android.data.server.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.data.answer.ResCardDetail
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
+import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.request.BodyChangeAllCards
+import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -26,6 +24,14 @@ class ServerCardDataRepository:
         bodyChangeAllCards: BodyChangeAllCards
     ): Call<ResCards> {
         return ServerService.service.changeAllCards(token, bodyChangeAllCards)
+    }
+
+    override fun changeVisibilty(
+        token: String,
+        bodyChangeVisibility: BodyChangeVisibility,
+        cardIdx: String
+    ): Call<ResCards> {
+        return ServerService.service.changeVisibility(token, bodyChangeVisibility, cardIdx)
     }
 
 

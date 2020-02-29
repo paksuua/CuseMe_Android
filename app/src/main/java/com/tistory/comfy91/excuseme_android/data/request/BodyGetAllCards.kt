@@ -1,4 +1,4 @@
-package com.tistory.comfy91.excuseme_android.data.server
+package com.tistory.comfy91.excuseme_android.data.request
 
 data class BodyGetAllCards (
     val cardIdx: String,
