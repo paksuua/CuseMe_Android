@@ -70,7 +70,7 @@ class SelectSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
         }
         "Token: $token".logDebug(this@SelectSortCardViewHolder)
 
-        cardDataRepository.changeVisibilty(token!!, BodyChangeVisibility(visibility), cardIdx).enqueue(object :
+        cardDataRepository.changeVisibilty(token!!, BodyChangeVisibility(!visibility), cardIdx).enqueue(object :
             Callback<ResCards>{
             override fun onFailure(call: Call<ResCards>, t: Throwable) {
                 "Fail to Edit Card Visibility, message : ${t.message}".logDebug(this@SelectSortCardViewHolder)
@@ -79,8 +79,8 @@ class SelectSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
             override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
                 if(response.isSuccessful){
                     val res=response.body()
-                    //TODO: 토글함수써서 Checked 버튼바꾸기
-                    "status: ${res!!.status} success: ${res!!.success} message: ${res!!.message}".logDebug(this@SelectSortCardViewHolder)
+                    btnHelperCheck.isChecked=!btnHelperCheck.isChecked
+                    "status2: ${res!!.status} success: ${res!!.success} message: ${res!!.message}".logDebug(this@SelectSortCardViewHolder)
                 }
             }
         })
