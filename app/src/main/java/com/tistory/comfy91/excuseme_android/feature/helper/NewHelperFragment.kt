@@ -182,8 +182,8 @@ class NewHelperFragment : Fragment() {
                                 true -> {
                                     backgroundIsVisible(res.data.isNullOrEmpty())
                                     disabledCardList.clear()
-                                    res.data.sortedBy { card -> card.visibility }
-                                    disabledCardList.addAll(res.data as ArrayList<CardBean>)
+                                    val sortedCards = res.data.sortedBy { card -> card.sequence }
+                                    disabledCardList.addAll(sortedCards)
                                     rvAdapter.notifyDataSetChanged()
 
                                 }
