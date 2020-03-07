@@ -26,6 +26,7 @@ import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
 import com.tistory.comfy91.excuseme_android.feature.TTS
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortActivity
@@ -112,12 +113,17 @@ class NewHelperFragment : Fragment() {
             showDeleteDialog()
         }
 
-        // 하단바 카드 숨기기
-        btnNewHelperInvisCard.setOnClickListener {}
+        // 하단바 카드숨기기
+        btnNewHelperInvisCard.setOnClickListener {
+            // 카드 숨기기 api
+            hideCard()
+
+            // 카드 리스트
+            getDisabledCards()
+        }
 
         // 하단바 수정
         btnNewHelperModCard.setOnClickListener {
-            //TODO: DetailCardActivity로 이동
             activity?.let {
                 val intent = Intent(it, DetailCardActivity::class.java)
                 intent.putExtra("FROM_NEW_HELPER", clickedCardData)
@@ -137,7 +143,6 @@ class NewHelperFragment : Fragment() {
         }
 
         // HelperAdapter 초기화
-
         rvNewHelperCard.apply {
             adapter = rvAdapter
             layoutManager = GridLayoutManager(this@NewHelperFragment.context, 2)
@@ -238,6 +243,41 @@ class NewHelperFragment : Fragment() {
                             }
                     } else {
                         "resonse is Not Success = Body is Empty".logDebug(this@NewHelperFragment)
+                    }
+                }
+
+            })
+        }
+    }
+
+    // 카드 숨김 api 호출
+    private fun hideCard() {
+        SingletoneToken
+            .getInstance()
+            .token?.let { token ->
+            cardDataRepository.changeVisibilty(
+                token,
+                BodyChangeVisibility(!(clickedCardData!!.visibility)),
+                clickedCardData?.cardIdx.toString()
+            ).enqueue(object : Callback<ResCards> {
+                override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                    "Fail Delete Card, message : ${t.message}".logDebug(this@NewHelperFragment)
+                }
+
+                override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+                    "response code : ${response.code()}, message: ${response.message()}".logDebug(
+                        this@NewHelperFragment
+                    )
+                    if (response.isSuccessful) {
+                        response.body()
+                            ?.let {
+                                "status : ${it.status}, success : ${it.success}, message : ${it.message}".logDebug(
+                                    this@NewHelperFragment
+                                )
+                                onResume()
+                            }
+                    } else {
+                        "hide response is Not Success = Body is Empty".logDebug(this@NewHelperFragment)
                     }
                 }
 

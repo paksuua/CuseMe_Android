@@ -38,8 +38,6 @@ class DetailCardActivity : AppCompatActivity() {
     private var recordFileName: String? = null
     private var card: CardBean? = null
     private lateinit var dialogBuilder: AlertDialog.Builder
-
-
     private val cardDataRepository = ServerCardDataRepository()
     private var imageUri: Uri? = null
     private var token = SingletoneToken.getInstance().token
@@ -55,8 +53,6 @@ class DetailCardActivity : AppCompatActivity() {
         initData()
         getCard()
         initUi()
-
-
     }
 
     private fun initData() {
@@ -79,7 +75,6 @@ class DetailCardActivity : AppCompatActivity() {
                 }
             }
         )
-
     }
 
     private fun getCard() {
@@ -197,6 +192,8 @@ class DetailCardActivity : AppCompatActivity() {
             Glide.with(this).load(it.imageUrl).into(imgDetailCardImg)
             tvDetailCardTitle.text = it.title
             tvDetailCardDesc.text = it.desc
+            ctvDetailTog.isChecked=it.visibility
+            tvCardNum.text="일렬번호 | "+it.serialNum
         }
 
         ctvDetaliRecordPlay.setOnClickListener {play()}

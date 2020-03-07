@@ -226,7 +226,6 @@
             android:layout_width="81dp"
             android:layout_height="34dp"
             android:background="@drawable/ckt_add_card_confirm"
-            android:fontFamily="@font/notosans_regular"
             android:lineSpacingExtra="6sp"
             android:text="확인"
             android:textAlignment="center"
