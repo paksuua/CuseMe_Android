@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recordPlayLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <CheckedTextView
+        android:id="@+id/recordPlay_LeftBtn"
+        android:layout_width="28dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="28dp"
+        android:background="@drawable/btn_newcard_stop"
+        android:enabled="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/recordPlay_CenterCircle"/>
+
+    <com.tistory.comfy91.excuseme_android.CircleCounterView
+        android:id="@+id/recordPlay_CenterCircle"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="@color/white_three"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/recordPlay_CenterTv"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginHorizontal="52dp"
+        android:layout_marginVertical="52dp"
+        android:lineSpacingExtra="3sp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:text="0초"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <CheckedTextView
+        android:id="@+id/recordPlay_RightBtn"
+        android:layout_width="81dp"
+        android:layout_height="34dp"
+        android:background="@drawable/btn_solid_palepink"
+        android:lineSpacingExtra="6sp"
+        android:text="확인"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/white_three"
+        android:textSize="17sp"
+        android:enabled="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/recordPlay_CenterCircle"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
