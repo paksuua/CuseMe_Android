@@ -335,6 +335,7 @@ class DetailCardActivity : AppCompatActivity() {
     private fun startPlaying() {
         player = MediaPlayer().apply {
             try {
+                
                 setDataSource(card?.audioUrl)
                 prepare()
                 start()
