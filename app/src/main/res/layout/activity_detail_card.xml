@@ -114,17 +114,7 @@
         app:layout_constraintStart_toStartOf="@+id/tvDetailCardTitle"
         app:layout_constraintTop_toBottomOf="@id/tvDetailCardTitle" />
 
-    <ImageView
-        android:id="@+id/imgDetailAlert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/btn_send_message"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDetailCardTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvDetailCardTitle" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lyDetailRecord"
         android:layout_width="match_parent"
