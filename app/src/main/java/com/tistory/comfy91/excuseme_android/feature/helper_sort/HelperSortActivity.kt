@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.answer.ResCards
@@ -30,7 +31,7 @@ class HelperSortActivity : AppCompatActivity() {
             onBtnAllClicked,
             HelperSortCardViewHolder.HELPER_SORT_ACTIVITY
         )
-    private val rvLayoutManager = GridLayoutManager(this@HelperSortActivity, 2)
+    private val rvLayoutManager = HelperSortGridLayoutManager(this@HelperSortActivity, 2)
 
     private var cardList: ArrayList<CardBean> = arrayListOf()
     private val cardDataRepository = ServerCardDataRepository()
@@ -52,6 +53,8 @@ class HelperSortActivity : AppCompatActivity() {
     private fun uiInit(){
         // 리사이클러뷰 어댑터 생성 및 설정
         "GridLayoutManager Animation Support ${rvLayoutManager.supportsPredictiveItemAnimations()}".logDebug(this@HelperSortActivity)
+//        rvHelperSortCard.itemAnimator =
+
         rvHelperSortCard.layoutManager = rvLayoutManager
         rvHelperSortCard.adapter = rvHelperSortCardAdapter
         rvHelperSortCardAdapter.data = cardList
@@ -61,12 +64,10 @@ class HelperSortActivity : AppCompatActivity() {
         val callback = DragManageAdapter(
             rvHelperSortCardAdapter,
             ItemTouchHelper.UP.or(ItemTouchHelper.DOWN).or(ItemTouchHelper.LEFT).or(ItemTouchHelper.RIGHT),
-
-            ItemTouchHelper.UP.or(ItemTouchHelper.DOWN).or(ItemTouchHelper.LEFT).or(ItemTouchHelper.RIGHT)
+            0
         )
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(rvHelperSortCard)
-
 
         // 전체 선택 버튼 설정
         btnHelperSortSelectAll.setOnClickListener {
