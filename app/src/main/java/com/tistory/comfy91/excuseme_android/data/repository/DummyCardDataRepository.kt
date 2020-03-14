@@ -6,6 +6,7 @@ import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.request.BodyChangeAllCards
 import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -53,6 +54,72 @@ class DummyCardDataRepository :
                 true,
                 "카드 수정 성공",
                 listOf()
+            )
+        )
+    }
+
+    override fun changeVisibilty(
+        token: String,
+        bodyChangeVisibility: BodyChangeVisibility,
+        cardIdx: String
+    ): Call<ResCards> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Calls.response(
+            ResCards(
+                status = 200,
+                success = true,
+                message = "dummy card data",
+                data = listOf(
+                    CardBean(
+                        0,
+                        "first card",
+                        "desc",
+                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        0,
+                        false,
+                        "serialNum",
+                        0,
+                        ""
+                    ),
+                    CardBean(
+                        0,
+                        "second card",
+                        "desc",
+                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        0,
+                        false,
+                        "serialNum",
+                        0,
+                        ""
+
+                    ),
+                    CardBean(
+                        0,
+                        "third card",
+                        "desc",
+                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        0,
+                        false,
+                        "serialNum",
+                        0,
+                        ""
+                    ),
+                    CardBean(
+                        0,
+                        "fourth card",
+                        "desc",
+                        "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
+                        0,
+                        false,
+                        "serialNum",
+                        0,
+                        ""
+                    )
+                )
             )
         )
     }

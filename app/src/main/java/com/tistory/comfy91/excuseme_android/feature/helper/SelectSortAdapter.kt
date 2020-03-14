@@ -9,57 +9,48 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.DataHelperSortCard
-import com.tistory.comfy91.excuseme_android.feature.helper_sort.HelperSortCardViewHolder
 
-class SelectSortAdapter(private val context: Context, private val onBtnAllClicked: ()-> Unit, private val bind: Int): RecyclerView.Adapter<HelperSortCardViewHolder>(),
+class SelectSortAdapter(private val context: Context, private val onBtnAllClicked: ()-> Unit, private val bind: Int): RecyclerView.Adapter<SelectSortCardViewHolder>(),
     Filterable {
     var data = arrayListOf<CardBean>()
     var isChanged = false
     var searchedList: ArrayList<CardBean> = arrayListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelperSortCardViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectSortCardViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.select_sort_item_card, parent, false)
 
-        return HelperSortCardViewHolder(
+        return SelectSortCardViewHolder(
             view,
             onBtnAllClicked
         )
     }
 
     override fun getItemCount(): Int {
-        return searchedList!!.size
+        return searchedList.size
     }
 
-    override fun onBindViewHolder(holder: HelperSortCardViewHolder, position: Int) {
-        holder.bind(searchedList!![position], position, bind)
-        holder.dataVisibilityChange = {
-            searchedList!![position].visibility = !(searchedList!![position].visibility)
-            this.notifyDataSetChanged()
-        }
+    override fun onBindViewHolder(holder: SelectSortCardViewHolder, position: Int) {
+        holder.bind(searchedList[position], position, bind)
     }
 
-    // 리사이클러뷰의 아이템의 위치를 사용자가 지정한 곳으로 바꿈
     fun swapItems(fromPosition: Int, toPosition: Int){
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
-                searchedList!![i] = searchedList!!.set(i+1, searchedList!![i])
+                searchedList[i] = searchedList.set(i+1, searchedList[i])
             }
         } else {
             for (i in fromPosition..toPosition + 1) {
-                searchedList!![i] = searchedList!!.set(i-1, searchedList!![i])
+                searchedList[i] = searchedList.set(i-1, searchedList[i])
             }
         }
         notifyItemMoved(fromPosition, toPosition)
         isChanged = true
     }
 
-    // init
     init {
         this.searchedList = data
     }
 
-    //for filter
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
@@ -68,7 +59,7 @@ class SelectSortAdapter(private val context: Context, private val onBtnAllClicke
                     searchedList = data
                 } else {
                     val filteredList = ArrayList<CardBean>()
-                    //이부분에서 원하는 데이터를 검색할 수 있음
+
                     for (row in data) {
 
                         Log.d("search1","search data :  " + row.title.toLowerCase())

@@ -8,18 +8,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
+import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
+import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
+import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit) :
     RecyclerView.ViewHolder(itemView) {
     private val imgCard: ImageView = itemView.findViewById(R.id.imgCard)
     private val tvCard: TextView = itemView.findViewById(R.id.tvCard)
     private val btnHelperCheck: CheckedTextView = itemView.findViewById(R.id.btnCheck)
-
-    private var isTrueBtnHelperCheck = false
     lateinit var dataVisibilityChange: () -> Unit
 
 
@@ -29,9 +36,8 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
         tvCard.text = data.title
 
         btnHelperCheck.isChecked = data.visibility
-        /*btnHelperCheck.setOnClickListener{
-
-        }*/
+        btnHelperCheck.setOnClickListener{
+        }
 
         when(listenerFlag){
             HELPER_SORT_ACTIVITY -> itemView.setOnSingleClickListener{clicked()}
@@ -49,7 +55,7 @@ class HelperSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
 
     private fun clicked(){
         //todo("btn 글씨 바꿔야함")
-        dataVisibilityChange() // 데이터 변경
+        dataVisibilityChange()
         onClicked()
     }
 

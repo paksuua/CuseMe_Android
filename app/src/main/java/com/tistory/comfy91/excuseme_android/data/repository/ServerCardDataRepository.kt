@@ -6,6 +6,7 @@ import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.request.BodyChangeAllCards
 import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -23,6 +24,14 @@ class ServerCardDataRepository:
         bodyChangeAllCards: BodyChangeAllCards
     ): Call<ResCards> {
         return ServerService.service.changeAllCards(token, bodyChangeAllCards)
+    }
+
+    override fun changeVisibilty(
+        token: String,
+        bodyChangeVisibility: BodyChangeVisibility,
+        cardIdx: String
+    ): Call<ResCards> {
+        return ServerService.service.changeVisibility(token, bodyChangeVisibility, cardIdx)
     }
 
 
@@ -46,7 +55,7 @@ class ServerCardDataRepository:
         image: MultipartBody.Part,
         record: MultipartBody.Part?
     ): Call<ResDownCard> {
-        return ServerService.service.addCard(token, title, desc, visibility, image!!, record)
+        return ServerService.service.addCard(token, title, desc, visibility, image, record)
     }
 
     override fun editCardDetail(

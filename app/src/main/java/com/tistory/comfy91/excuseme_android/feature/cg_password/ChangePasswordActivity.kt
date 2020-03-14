@@ -34,7 +34,7 @@ class ChangePasswordActivity : AppCompatActivity() {
 
 
     private fun initUi() {
-        tvChangepwNotice.setVisibility(View.INVISIBLE)
+        tvChangepwNotice.visibility = View.INVISIBLE
 
         et_password_exist.doOnTextChanged { text1, start, count, after ->
             Log.d("ssss", et_password_new.text.toString())
@@ -44,19 +44,19 @@ class ChangePasswordActivity : AppCompatActivity() {
 
             } else {
                 button.background = ContextCompat.getDrawable(this, R.drawable.bg_btn_gray)
-                tvChangepwNotice.setVisibility(View.VISIBLE)
+                tvChangepwNotice.visibility = View.VISIBLE
                 button.isEnabled = false
             }
         }
         et_password_new.doOnTextChanged { text2, start, count, after ->
             if (!et_password_exist.text.toString().isNullOrBlank() && !text2.isNullOrBlank() && !et_password_new_confirm.text.toString().isNullOrBlank()) {
                 button.background = ContextCompat.getDrawable(this, R.drawable.bg_btn_pink)
-                tvChangepwNotice.setVisibility(View.INVISIBLE)
+                tvChangepwNotice.visibility = View.INVISIBLE
                 button.isEnabled = true
 
             } else {
                 button.background = ContextCompat.getDrawable(this, R.drawable.bg_btn_gray)
-                tvChangepwNotice.setVisibility(View.VISIBLE)
+                tvChangepwNotice.visibility = View.VISIBLE
                 button.isEnabled = false
 
             }
@@ -64,12 +64,12 @@ class ChangePasswordActivity : AppCompatActivity() {
         et_password_new_confirm.doOnTextChanged { text3, start, count, after ->
             if (!et_password_exist.text.toString().isNullOrBlank() && !et_password_new.text.toString().isNullOrBlank() && !text3.isNullOrBlank()) {
                 button.background = ContextCompat.getDrawable(this, R.drawable.bg_btn_pink)
-                tvChangepwNotice.setVisibility(View.INVISIBLE)
+                tvChangepwNotice.visibility = View.INVISIBLE
                 button.isEnabled = true
 
             } else {
                 button.background = ContextCompat.getDrawable(this, R.drawable.bg_btn_gray)
-                tvChangepwNotice.setVisibility(View.VISIBLE)
+                tvChangepwNotice.visibility = View.VISIBLE
                 button.isEnabled = false
             }
         }

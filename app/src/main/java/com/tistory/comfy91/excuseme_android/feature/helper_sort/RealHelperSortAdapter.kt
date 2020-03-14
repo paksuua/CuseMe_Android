@@ -34,15 +34,16 @@ class RealHelperSortAdapter(
     }
 
     override fun onBindViewHolder(holder: HelperSortCardViewHolder, position: Int) {
-        holder.bind(data!![position], position, bind)
+        holder.bind(data[position], position, bind)
         holder.dataVisibilityChange = {
-            data!![position].visibility = !(data!![position].visibility)
+            data[position].visibility = !(data[position].visibility)
             this.notifyDataSetChanged()
         }
     }
 
-    // 리사이클러뷰의 아이템의 위치를 사용자가 지정한 곳으로 바꿈
+
     fun swapItems(fromPosition: Int, toPosition: Int){
+
 
         notifyItemMoved(fromPosition, toPosition)
         isChanged = true

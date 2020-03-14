@@ -9,9 +9,7 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.CheckedTextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,8 +21,10 @@ import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.addcard.AudioTimer
-import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_mod_card.*
+import kotlinx.android.synthetic.main.addcard_recored_finish_layout.*
+import kotlinx.android.synthetic.main.addcard_recored_init_layout.*
+import kotlinx.android.synthetic.main.addcard_recored_play_layout.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -44,18 +44,24 @@ class ModCardActivity : AppCompatActivity() {
     private var newRecordFileName: String? = null
     private var cardImageUrl: Uri? = null
 
-    private var recorder: MediaRecorder? = null
-    private var player: MediaPlayer? = null
-    private var recordFlag = true
-    private var playFlag = true
+    //record
+    val SECTION_INIT = 1
+    val SECTION_PLAY = 2
+    val SECTION_FINISH = 3
 
+    private var recordFileName: String? = null
+    private var recorder: MediaRecorder? = null
     private lateinit var audioTimer: AudioTimer
+    private var state: Boolean = false
+    private var mediaPlayer: MediaPlayer? = null
     private lateinit var circleAnimation: ValueAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mod_card)
 
+        // btm record view init
+        setRecordView(SECTION_INIT)
         initData()
         initUi()
     }
@@ -76,12 +82,37 @@ class ModCardActivity : AppCompatActivity() {
                 ""
             )
         }
+
+        mediaPlayer = MediaPlayer()
+
+        recordInit_CenterBtn.setOnClickListener{
+            // start record
+//            if(!checkPermission()){
+//                requestPermission()
+//            }else{
+            startRecording()
+//            }
+        }
+        recordPlay_LeftBtn.setOnClickListener {
+            stopRecording()
+        }
+        recordFinish_LeftBtn.setOnClickListener {
+            play()
+        }
+        recordFinish_CenterBtn.setOnClickListener {
+            startRecording()
+        }
+        recordFinish_RightBtn.setOnClickListener {
+            tvModCardFinish.text = "저장되었습니다."
+        }
+
+        //init animation
         circleAnimation = ValueAnimator.ofFloat(0f, 360f)
             .apply {
                 this.setDuration(10000)
                     .addUpdateListener { animation ->
                         var value: Float = animation?.getAnimatedValue() as Float
-                        ccModCount.angle = value
+                        recordPlay_CenterCircle.angle = value
                     }
             }
     }
@@ -94,9 +125,6 @@ class ModCardActivity : AppCompatActivity() {
         }
         edtModcardTitle.setText(card.title)
         edtModcardDesc.setText(card.desc)
-
-        // 녹음 관련 ui 설정
-        setRecordUi()
 
         dialogBuilder = AlertDialog.Builder(this)
 
@@ -133,145 +161,77 @@ class ModCardActivity : AppCompatActivity() {
         return result
     }
 
-    private fun play() {
-        if (!card.audioUrl.isNullOrEmpty()) {
-            onPlay(playFlag)
-            playFlag = !playFlag
-        } else {
-            "녹음 파일 없음".logDebug(this@ModCardActivity)
-        }
-    }
 
-    private fun onPlay(start: Boolean) = if (start) startPlaying() else stopPlaying()
+    //녹음 시작
+    fun startRecording() {
 
-    private fun startPlaying() {
-        player = MediaPlayer().apply {
-            try {
-                setDataSource(newRecordFileName)
-                prepare()
-                start()
-                ctvModcardRecordPlay.isChecked = false
-            } catch (e: IOException) {
-                "prepare() failed".logDebug(this@ModCardActivity)
-                Log.e(TAG, "prepare() failed")
-            }
-        }
-    }
+        tvModCardFinish.text = ""
 
-    private fun stopPlaying() {
-        player?.release()
-        player = null
-    }
+        //stop palying
+        mediaPlayer!!.stop()
 
-    private fun record() {
-        onRecord(recordFlag)
-        recordFlag = !recordFlag
-    }
+        //start animation
+        circleAnimation.start()
 
-    private fun onRecord(start: Boolean) = if (start) startRecording() else stopRecording()
+        //set section play
+        setRecordView(SECTION_PLAY)
 
-    private fun startRecording() {
-        setRecordFileName()
-
-        recorder = MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setOutputFile(newRecordFileName)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-
-            try {
-                prepare()
-            } catch (e: IOException) {
-                Log.e(TAG, "prepare() failed")
-            }
-
-            start()
-            audioTimer =
-                AudioTimer(this@ModCardActivity) {
-                    ccModCount.text = "${audioTimer.count}초"
-                }
-            audioTimer.start()
-            circleAnimation.start()
-            if (card.audioUrl.isNullOrEmpty()) {
-                ctvModcardRecordPlay.setBackgroundResource(R.drawable.ctv_record)
-            }
-            cgUiRecroding(true)
-        }
-    }
-
-    private fun cgUiRecroding(isRecording: Boolean) {
-        btnModcardTogRecord.isVisible = !isRecording
-        ccModCount.isVisible = isRecording
-        ctvModcardRecordPlay.isChecked = isRecording
-    }
-
-    private fun stopRecording() {
-        recorder?.apply {
-            stop()
-            release()
-        }
-        recorder = null
-        audioTimer.cancel()
-        circleAnimation.cancel()
-        isExistRecordFile = true
-
-        cgUiRecroding(false)
-    }
-
-    private fun setRecordUi() {
-        if (card.audioUrl.isNullOrEmpty()) {
-            ctvModcardAutoRecord.isVisible = false
-            ctvModcardRecordPlay.isEnabled = false
-            ctvModcardRecordPlay.setBackgroundResource(R.drawable.btn_newcard_play_unslected)
-        } else {
-            ctvModcardAutoRecord.isVisible = true
-            ctvModcardRecordPlay.isEnabled = true
-        }
-
-        //확인 버튼
-        btnModcardSaveRecord
-            .apply {setSaveBtn(false)}
-            .setOnClickListener {(it as CheckedTextView).toggle()}
-
-        btnModcardSaveRecord.setOnClickListener(object: View.OnClickListener{
-            override fun onClick(view: View?) {
-                setSaveBtn(false)
-                tvModCardFinish.isVisible = true
-            }
-        })
-
-        // TTS 버튼
-        ctvModcardAutoRecord.setOnClickListener {
-            ctvModcardAutoRecord.isVisible = !ctvModcardAutoRecord.isVisible
-        }
-
-        // 녹음 버튼 리스너 설정
-        btnModcardTogRecord.setOnClickListener {
-            it.requestFocus()
-            if(!checkPermission(AUDIO_PERMISSON))
-            {
-                showBanPermissionAlert()
-            }
-            else{
-                record()
-            }
-
-        }
-
-        // 실행(count) 버튼 리스너 설정
-        ctvModcardRecordPlay.setOnClickListener {
-            if(!isExistRecordFile){
-                record()
-            }
-            else{
-                play()
-            }
-        }
-    }
-
-    private fun setRecordFileName() {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        newRecordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
+        recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
+        recorder= MediaRecorder()
+        recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+        recorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        recorder?.setOutputFile(recordFileName)
+
+        try {
+            recorder?.prepare()
+            recorder?.start()
+            state = true
+            Toast.makeText(this, "녹음 시작", Toast.LENGTH_SHORT).show()
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        audioTimer =
+            AudioTimer(this@ModCardActivity) {
+                recordPlay_CenterTv.text = "${audioTimer.count}초"
+            }
+        audioTimer.start()
+//        circleAnimation.start()
+    }
+
+    private fun stopRecording(){
+
+        //set section play
+        setRecordView(SECTION_FINISH)
+        circleAnimation.cancel()
+
+        if(state){
+            recorder?.stop()
+            recorder?.reset()
+            recorder?.release()
+            state = false
+        }else{
+
+        }
+    }
+
+    private fun play() {
+
+        if (File(recordFileName!!).exists()) {
+
+            Toast.makeText(this, "녹음 재생 중", Toast.LENGTH_SHORT).show()
+            mediaPlayer!!.reset()
+            mediaPlayer!!.setDataSource(recordFileName)
+            mediaPlayer!!.prepare()
+            mediaPlayer!!.start()
+
+        } else {
+            Toast.makeText(this, "녹음된 파일이 없습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun getImageFromAlbum() {
@@ -444,18 +404,25 @@ class ModCardActivity : AppCompatActivity() {
         }
     } // end onActivityResult()
 
-    override fun onStop() {
-        super.onStop()
-        recorder?.release()
-        recorder = null
-        stopPlaying()
-    }
 
-
-
-    private fun setSaveBtn( isOn : Boolean){
-        btnModcardSaveRecord.isEnabled = isOn
-        btnModcardSaveRecord.isSelected = isOn
+    fun setRecordView(section : Int){
+        when(section){
+            SECTION_INIT ->{
+                recordInitLayout.visibility = View.VISIBLE
+                recordPlayLayout.visibility =View.GONE
+                recordFinishLayout.visibility =View.GONE
+            }
+            SECTION_PLAY ->{
+                recordInitLayout.visibility = View.GONE
+                recordPlayLayout.visibility =View.VISIBLE
+                recordFinishLayout.visibility =View.GONE
+            }
+            SECTION_FINISH ->{
+                recordInitLayout.visibility = View.GONE
+                recordPlayLayout.visibility =View.GONE
+                recordFinishLayout.visibility =View.VISIBLE
+            }
+        }
     }
 
     companion object {

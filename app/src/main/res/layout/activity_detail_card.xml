@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -52,6 +53,22 @@
         app:layout_constraintHorizontal_bias="0.583"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnDetailBack" />
+
+    <TextView
+        android:id="@+id/tvCardNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="일렬번호 | "
+        android:elevation="2dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgDetailCardImg"
+        app:layout_constraintEnd_toEndOf="@+id/imgDetailCardImg"
+        android:paddingVertical="3dp"
+        android:paddingHorizontal="6dp"
+        android:background="@drawable/bg_tv_card_num"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"/>
+
 
     <CheckedTextView
         android:id="@+id/ctvDetailTog"

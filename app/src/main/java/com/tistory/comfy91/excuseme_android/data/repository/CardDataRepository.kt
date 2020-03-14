@@ -5,6 +5,7 @@ import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.request.BodyChangeAllCards
 import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -44,6 +45,8 @@ interface CardDataRepository {
     fun incCardCount(token: String, cardIdx: String): Call<ResCards>
 
     fun changeAllCards(token: String, bodyChangeAllCards: BodyChangeAllCards): Call<ResCards>
+
+    fun changeVisibilty(token: String, bodyChangeVisibility: BodyChangeVisibility, cardIdx: String): Call<ResCards>
 
     // endregion 카드
 }

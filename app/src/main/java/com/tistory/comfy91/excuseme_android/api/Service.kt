@@ -3,6 +3,7 @@ package com.tistory.comfy91.excuseme_android.api
 
 import com.tistory.comfy91.excuseme_android.data.answer.*
 import com.tistory.comfy91.excuseme_android.data.request.*
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -158,5 +159,14 @@ interface Service{
         @Body changeAllCards: BodyChangeAllCards
     ): Call<ResCards>
 
+    /**
+     * TODO: 카드 개별 숨김
+     */
+    @PUT("/cards/{cardIdx}/hide")
+    fun changeVisibility(
+        @Header("token") token: String,
+        @Body changeVisibility: BodyChangeVisibility,
+        @Path ("cardIdx") cardIdx: String
+    ): Call<ResCards>
     // endregion
 }

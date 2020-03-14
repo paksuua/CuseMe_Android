@@ -134,7 +134,7 @@ class SelectSortFragment : Fragment() {
             selectSortAdapter = SelectSortAdapter(
                 activity!!.baseContext,
                 {},
-                HelperSortCardViewHolder.SELECT_SORT_FRAGMENT
+                SelectSortCardViewHolder.SELECT_SORT_FRAGMENT
             )
                 .apply {
                     tvSelectSortAlert.isVisible = false

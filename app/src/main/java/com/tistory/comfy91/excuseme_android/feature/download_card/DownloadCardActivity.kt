@@ -46,7 +46,7 @@ class DownloadCardActivity : AppCompatActivity() {
                 token = "token"
             }
             edtDownkInputCardNum.text.toString()
-                ?.let{
+                .let{
                     cardDataRepository
                         .downCard(token!!,it)
                         .enqueue( object: Callback<ResDownCard> {
@@ -70,8 +70,7 @@ class DownloadCardActivity : AppCompatActivity() {
                                                 this@DownloadCardActivity.finish()
                                             }
                                         }
-                                }
-                                else{
+                                } else{
                                     "Down Card is not success,  message : ${response.message()}, code : ${response.code()} "
                                 }
                             }

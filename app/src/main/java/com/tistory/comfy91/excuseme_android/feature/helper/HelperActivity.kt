@@ -24,11 +24,9 @@ class HelperActivity : AppCompatActivity() {
     private lateinit var rotate_forward: Animation
     lateinit var rotate_backward: Animation
     private val transction = supportFragmentManager.beginTransaction()
-    private lateinit var dialogBuilder: AlertDialog.Builder
     var disabledCardList: ArrayList<CardBean> = arrayListOf()
     var allCardList: ArrayList<CardBean> = arrayListOf()
     private lateinit var helperFragment: NewHelperFragment
-    //소연 private lateinit var selectSortFragment: SelectSortFragment
     private lateinit var selectSortFragment: SelectSortFragment
     private var isOpen = false
 
@@ -67,8 +65,7 @@ class HelperActivity : AppCompatActivity() {
 
     private fun initUI(){
         btnHelperAddCard.setOnClickListener {
-            if (!isOpen) { // FAB open
-                // 배경 뷰 터치 방지
+            if (!isOpen) {
                 enableDisableView(backHelperBlur,false )
                 enableDisableView(frameHelper,false )
 
@@ -84,7 +81,6 @@ class HelperActivity : AppCompatActivity() {
                 btnHelperNewCard.isClickable = true
                 isOpen = true
             } else {
-                // 배경 뷰 터치 가능으로 변경
                 enableDisableView(backHelperBlur,true )
                 enableDisableView(frameHelper,true )
 
@@ -96,19 +92,16 @@ class HelperActivity : AppCompatActivity() {
                 btnHelperAddCard.isSelected=false
                 btnHelperDownCard.isVisible = false
                 btnHelperNewCard.isVisible = false
-                //btnHelperAddCard.setBackgroundResource(R.drawable.btn_managerhome_plus)
                 isOpen = false
             }
         }
 
-        // 카드 다운로드뷰로 이동
         if(isOpen){
             btnHelperDownCard.setOnClickListener{
                 val intent = Intent(this, DownloadCardActivity::class.java)
                 startActivity(intent)
             }
 
-            // 카드생성 뷰로 이동
             btnHelperNewCard.setOnClickListener{
                 val intent = Intent(this, AddCardActivity::class.java)
                 startActivity(intent)
@@ -120,14 +113,12 @@ class HelperActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 카드생성 뷰로 이동
         btnHelperNewCard.setOnClickListener{
             val intent = Intent(this, AddCardActivity::class.java)
             startActivity(intent)
         }
 
 
-        // 홈미리보기 프래그먼트로 전환
         btnHelperGoDisabled.setOnClickListener {
             changeNaviBarIcon(true)
             supportFragmentManager.beginTransaction()
@@ -135,7 +126,6 @@ class HelperActivity : AppCompatActivity() {
                 .commit()
         }
 
-        // 카드관리 프래그먼트로 전환
         btnHelperAllCard.setOnClickListener {
             changeNaviBarIcon(false)
             supportFragmentManager.beginTransaction()
@@ -172,24 +162,10 @@ class HelperActivity : AppCompatActivity() {
     }
 
 
-    fun BottomBarChange(bottom_flag: Boolean){
-        if(bottom_flag){
-            cstHelperBottom.isVisible=true
-            btnHelperAddCard.isVisible=true
-        }else{
-
-            cstHelperBottom.isVisible=false
-            btnHelperAddCard.isVisible=false
-            btnHelperNewCard.isVisible=false
-            btnHelperDownCard.isVisible=false
-
-        }
-    }
-
     private fun enableDisableView(view: View, boolean: Boolean){
-        view.setEnabled(boolean)
+        view.isEnabled = boolean
         if (view is ViewGroup) {
-            val group = view as ViewGroup
+            val group = view
             for (idx in 0 until group.childCount) {
                 enableDisableView(group.getChildAt(idx), boolean)
             }
