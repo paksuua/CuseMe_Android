@@ -12,25 +12,24 @@ import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.*
 import androidx.core.view.isVisible
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
-import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.answer.ResAddCard
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.logDebug
 import com.tistory.comfy91.excuseme_android.toast
 import kotlinx.android.synthetic.main.activity_add_card.*
-import kotlinx.android.synthetic.main.activity_add_card.imgAddcardCardImg
 import kotlinx.android.synthetic.main.addcard_recored_finish_layout.*
 import kotlinx.android.synthetic.main.addcard_recored_init_layout.*
 import kotlinx.android.synthetic.main.addcard_recored_play_layout.*
@@ -52,9 +51,9 @@ class AddCardActivity : AppCompatActivity() {
     private val TAG = javaClass.name
 
     //record
-    val SECTION_INIT = 1
-    val SECTION_PLAY = 2
-    val SECTION_FINISH = 3
+    private val SECTION_INIT = 1
+    private val SECTION_PLAY = 2
+    private val SECTION_FINISH = 3
 
     private var recordFileName: String? = null
     private var recorder: MediaRecorder? = null
@@ -82,6 +81,7 @@ class AddCardActivity : AppCompatActivity() {
 
         // btm record view init
         setRecordView(SECTION_INIT)
+
         // init
         init()
 
@@ -102,7 +102,7 @@ class AddCardActivity : AppCompatActivity() {
 
     }
 
-    fun setRecordView(section : Int){
+    private fun setRecordView(section : Int){
         when(section){
             SECTION_INIT ->{
                 recordInitLayout.visibility = View.VISIBLE
@@ -158,7 +158,6 @@ class AddCardActivity : AppCompatActivity() {
             }
 
         imgAddcardCardImg.setOnClickListener {
-
             if(!checkPermission()){
                 requestPermission()
             }else{
@@ -181,7 +180,7 @@ class AddCardActivity : AppCompatActivity() {
     }
 
     //녹음 시작
-    fun startRecording() {
+    private fun startRecording() {
 
         tvAddCardRecordFinish.text = ""
 
@@ -270,7 +269,7 @@ class AddCardActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Need Multiple Permissions")
                 builder.setMessage("This app needs permissions.")
-                builder.setPositiveButton("Grant") { dialog, which ->
+                builder.setPositiveButton("Grant") { dialog, _ ->
                     dialog.cancel()
                     sentToSettings = true
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -279,7 +278,7 @@ class AddCardActivity : AppCompatActivity() {
                     startActivityForResult(intent, REQUEST_PERMISSION_SETTING)
                     Toast.makeText(applicationContext, "Go to Permissions to Grant ", Toast.LENGTH_LONG).show()
                 }
-                builder.setNegativeButton("Cancel") { dialog, which -> dialog.cancel() }
+                builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
                 builder.show()
             } else {
                 //just request the permission
@@ -327,11 +326,11 @@ class AddCardActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Need Multiple Permissions")
         builder.setMessage("This app needs permissions.")
-        builder.setPositiveButton("Grant") { dialog, which ->
+        builder.setPositiveButton("Grant") { dialog, _->
             dialog.cancel()
             requestPermissions(this, permissionsRequired, PERMISSION_CALLBACK_CONSTANT)
         }
-        builder.setNegativeButton("Cancel") { dialog, which -> dialog.cancel() }
+        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
         builder.show()
     }
 
@@ -390,11 +389,10 @@ class AddCardActivity : AppCompatActivity() {
         // get cardData
         val title = edtAddcardTitle.text.toString()
         val desc = edtAddcardDesc.text.toString()
-        //todo("visibility 가져와야함")
         val visibility = false
 
-        val title_rb = RequestBody.create(MediaType.parse("text/plain"), title)
-        val desc_rb = RequestBody.create(MediaType.parse("text/plain"), desc)
+        val titleRb = RequestBody.create(MediaType.parse("text/plain"), title)
+        val descRb = RequestBody.create(MediaType.parse("text/plain"), desc)
 
         val options = BitmapFactory.Options()
         val inputStream: InputStream = contentResolver.openInputStream(selectPicUri)!!
@@ -408,7 +406,7 @@ class AddCardActivity : AppCompatActivity() {
         )
 
 
-        val picture_rb = MultipartBody.Part.createFormData(
+        val pictureRb = MultipartBody.Part.createFormData(
             "image",
             File(selectPicUri.toString()).name,
             photoBody
@@ -420,12 +418,14 @@ class AddCardActivity : AppCompatActivity() {
         var audioBody: RequestBody? = null
         var audio_rb: MultipartBody.Part? = null
         recordFileName?.let {
-            audioFile = File(recordFileName)
-            audioUrl = Uri.fromFile(File(recordFileName))
-            audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
-            audio_rb = MultipartBody.Part.createFormData("audio", audioFile?.name, audioBody)
+            audioFile = File(it)
+            audioUrl = Uri.fromFile(audioFile)
+            audioBody = RequestBody.create(MediaType.parse("*/*"), audioFile)
+            audio_rb = MultipartBody.Part.createFormData(
+                "audio",
+                audioFile?.name,
+                audioBody)
         }
-
 
         // region audio file 전송
 //        val optionsA = BitmapFactory.Options()
@@ -437,28 +437,26 @@ class AddCardActivity : AppCompatActivity() {
 //        val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
 //        val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
 
-        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $picture_rb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}   audio_rb : $audio_rb".logDebug(
+        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $pictureRb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}   audio_rb : $audio_rb".logDebug(
             this@AddCardActivity
         )
 
         cardDataRepository
             .addCard(
                 token!!,
-                title_rb,
-                desc_rb,
+                titleRb,
+                descRb,
                 visibility,
-                picture_rb,
+                pictureRb,
                 audio_rb
             )
-            .enqueue(object : Callback<ResDownCard> {
-                override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
+            .enqueue(object : Callback<ResAddCard> {
+                override fun onFailure(call: Call<ResAddCard>, t: Throwable) {
                     "Fail to Add Card, message:${t.message}".logDebug(this@AddCardActivity)
                 }
 
-                override fun onResponse(call: Call<ResDownCard>, response: Response<ResDownCard>) {
-
+                override fun onResponse(call: Call<ResAddCard>, response: Response<ResAddCard>) {
                     "onResponse : ${response.code()}".logDebug(this@AddCardActivity)
-
                     if (response.isSuccessful) {
                         response.body()
                             ?.let {
@@ -466,13 +464,13 @@ class AddCardActivity : AppCompatActivity() {
                                     this@AddCardActivity
                                 )
                                 if (it.success) {
-                                    var card = it.data
-                                    card?.imageUrl = selectPicUri.toString()
+//                                    card?.imageUrl = selectPicUri.toString()
                                     val intent =
                                         Intent(this@AddCardActivity, DetailCardActivity::class.java)
 
-                                    intent.putExtra("DOWN_CARD", it.data)
+                                    intent.putExtra("ADD_CARD", it.data?.cardIdx)
                                     startActivity(intent)
+                                    this@AddCardActivity.finish()
                                     isCardImageFilled = true
                                 } else {
                                     "Add Card Body is not Success".logDebug(this@AddCardActivity)
@@ -484,7 +482,7 @@ class AddCardActivity : AppCompatActivity() {
             })
     }
 
-    fun getImageFromAlbum() {
+    private fun getImageFromAlbum() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(

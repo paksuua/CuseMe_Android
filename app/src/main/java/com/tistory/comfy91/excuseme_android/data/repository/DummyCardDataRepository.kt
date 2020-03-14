@@ -1,9 +1,7 @@
 package com.tistory.comfy91.excuseme_android.data.repository
 
 import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.answer.ResCardDetail
-import com.tistory.comfy91.excuseme_android.data.answer.ResCards
-import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
+import com.tistory.comfy91.excuseme_android.data.answer.*
 import com.tistory.comfy91.excuseme_android.data.request.BodyChangeAllCards
 import com.tistory.comfy91.excuseme_android.data.request.BodyGetDisabledCard
 import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
@@ -131,23 +129,19 @@ class DummyCardDataRepository :
         visibility: Boolean,
         image: MultipartBody.Part,
         record: MultipartBody.Part?
-    ): Call<ResDownCard> {
+    ): Call<ResAddCard> {
         return Calls.response(
-            ResDownCard(
+            ResAddCard(
                 200,
                 true,
                 "카드 작성 성공",
-                CardBean(
-                    0,
+                ResAddCardData(
+                    "0",
                     "first card",
                     "desc",
                     "https://t18.pimg.jp/055/208/688/1/55208688.jpg",
                     "dummyAudio : https://t18.pimg.jp/055/208/688/1/55208688.jpg",
-                    0,
-                    false,
-                    "serialNum",
-                    0,
-                    ""
+                    "dummyserailNum"
                 )
             )
 
