@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.answer.ResCards
@@ -30,7 +31,7 @@ class HelperSortActivity : AppCompatActivity() {
             onBtnAllClicked,
             HelperSortCardViewHolder.HELPER_SORT_ACTIVITY
         )
-    private val rvLayoutManager = GridLayoutManager(this@HelperSortActivity, 2)
+    private val rvLayoutManager = HelperSortGridLayoutManager(this@HelperSortActivity, 2)
 
     private var cardList: ArrayList<CardBean> = arrayListOf()
     private val cardDataRepository = ServerCardDataRepository()
@@ -51,22 +52,22 @@ class HelperSortActivity : AppCompatActivity() {
 
     private fun uiInit(){
         // 리사이클러뷰 어댑터 생성 및 설정
-        rvHelperSortCard.adapter = rvHelperSortCardAdapter
+        "GridLayoutManager Animation Support ${rvLayoutManager.supportsPredictiveItemAnimations()}".logDebug(this@HelperSortActivity)
+//        rvHelperSortCard.itemAnimator =
+
         rvHelperSortCard.layoutManager = rvLayoutManager
+        rvHelperSortCard.adapter = rvHelperSortCardAdapter
         rvHelperSortCardAdapter.data = cardList
-        rvHelperSortCardAdapter.notifyDataSetChanged()
 
         // ItemTouchHelper 설정 - 사용자의
         // 터치에 따라 호출되는 콜백메소드를 담고 있음
         val callback = DragManageAdapter(
             rvHelperSortCardAdapter,
-            this,
-            ItemTouchHelper.UP.or(ItemTouchHelper.DOWN),
-            ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT)
+            ItemTouchHelper.UP.or(ItemTouchHelper.DOWN).or(ItemTouchHelper.LEFT).or(ItemTouchHelper.RIGHT),
+            0
         )
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(rvHelperSortCard)
-
 
         // 전체 선택 버튼 설정
         btnHelperSortSelectAll.setOnClickListener {
@@ -135,7 +136,6 @@ class HelperSortActivity : AppCompatActivity() {
                 it.remove()
             }
         }
-
         rvHelperSortCardAdapter.data = deletedList
         rvHelperSortCardAdapter.notifyDataSetChanged()
     }
@@ -175,16 +175,13 @@ class HelperSortActivity : AppCompatActivity() {
                         "status : ${it.status}, success : ${it.success}, message : ${it.message}".logDebug(this@HelperSortActivity)
                         this@HelperSortActivity.finish()
                     }
-
                 }
                 else{
                     "resonse is Not Success = Body is Empty".logDebug(this@HelperSortActivity)
                 }
             }
-
         })
     }
-
 
     private fun changeIntoChangeAllCards(cardList: List<CardBean>): List<ChangeAllCards>{
         var  changeAllCardsList: ArrayList<ChangeAllCards> = arrayListOf()
