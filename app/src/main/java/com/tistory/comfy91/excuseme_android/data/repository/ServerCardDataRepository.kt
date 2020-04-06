@@ -52,11 +52,11 @@ class ServerCardDataRepository:
         token: String,
         title: RequestBody,
         desc: RequestBody,
-        visibility: Boolean,
+        visibility: RequestBody,
         image: MultipartBody.Part,
         record: MultipartBody.Part?
     ): Call<ResAddCard> {
-        return ServerService.service.addCard(token, title, desc, visibility, image, record)
+        return ServerService.service.addCard(token, image, record, title, desc, visibility)
     }
 
     override fun editCardDetail(

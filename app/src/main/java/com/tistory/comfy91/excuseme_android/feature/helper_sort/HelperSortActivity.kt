@@ -1,21 +1,19 @@
 package com.tistory.comfy91.excuseme_android.feature.helper_sort
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tistory.comfy91.excuseme_android.data.CardBean
-import com.tistory.comfy91.excuseme_android.data.answer.ResCards
-import kotlinx.android.synthetic.main.activity_helper_sort.*
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.request.BodyChangeAllCards
 import com.tistory.comfy91.excuseme_android.data.request.ChangeAllCards
 import com.tistory.comfy91.excuseme_android.logDebug
+import kotlinx.android.synthetic.main.activity_helper_sort.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,9 +61,10 @@ class HelperSortActivity : AppCompatActivity() {
         // 터치에 따라 호출되는 콜백메소드를 담고 있음
         val callback = DragManageAdapter(
             rvHelperSortCardAdapter,
-            ItemTouchHelper.UP.or(ItemTouchHelper.DOWN).or(ItemTouchHelper.LEFT).or(ItemTouchHelper.RIGHT),
+            0,
             0
         )
+
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(rvHelperSortCard)
 

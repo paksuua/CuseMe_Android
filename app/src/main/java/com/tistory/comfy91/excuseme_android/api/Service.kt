@@ -54,11 +54,11 @@ interface Service{
     @POST("/cards")
     fun addCard(
         @Header("token") token: String,
+        @Part image: MultipartBody.Part,
+        @Part record: MultipartBody.Part?,
         @Part("title") title: RequestBody,
         @Part("content") desc : RequestBody,
-        @Part("visible") visibility: Boolean,
-        @Part image: MultipartBody.Part,
-        @Part record: MultipartBody.Part?
+        @Part("visible") visibility: RequestBody
     ): Call<ResAddCard>
 
     /**

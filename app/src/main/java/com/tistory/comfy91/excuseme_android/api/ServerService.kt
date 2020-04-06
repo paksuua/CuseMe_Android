@@ -2,12 +2,14 @@ package com.tistory.comfy91.excuseme_android.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object ServerService{
 //    private const val BASE_URL = "http://15.165.108.23:3000"
 private const val BASE_URL = "http://13.125.41.98:3000"
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

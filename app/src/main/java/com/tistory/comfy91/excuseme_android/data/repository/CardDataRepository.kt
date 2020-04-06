@@ -22,7 +22,7 @@ interface CardDataRepository {
         token: String,
         title: RequestBody,
         desc : RequestBody,
-        visibility: Boolean,
+        visibility: RequestBody,
         image: MultipartBody.Part,
         record: MultipartBody.Part?
     ): Call<ResAddCard>

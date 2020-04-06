@@ -19,8 +19,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.*
+import androidx.core.app.ActivityCompat.checkSelfPermission
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.view.isVisible
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
@@ -63,8 +63,11 @@ class AddCardActivity : AppCompatActivity() {
     private lateinit var circleAnimation: ValueAnimator
 
     //permission
-    private var sentToSettings = false
-    private var permissionsRequired = arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private var permissionsRequired = arrayOf(
+                                                Manifest.permission.RECORD_AUDIO,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                Manifest.permission.READ_EXTERNAL_STORAGE
+                                                )
     private var permissionStatus: SharedPreferences? = null
 
     // image
@@ -86,19 +89,7 @@ class AddCardActivity : AppCompatActivity() {
         init()
 
         permissionStatus = getSharedPreferences("permissionStatus", Context.MODE_PRIVATE)
-        requestPermission()
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (sentToSettings) {
-            if (ActivityCompat.checkSelfPermission(this, permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED) {
-                //Got Permission
-                Toast.makeText(applicationContext, "Allowed All Permissions", Toast.LENGTH_LONG).show()
-            }
-        }
 
     }
 
@@ -123,14 +114,14 @@ class AddCardActivity : AppCompatActivity() {
     }
 
     fun init(){
-
         mediaPlayer = MediaPlayer()
 
         recordInit_CenterBtn.setOnClickListener{
             // start record
-            if(!checkPermission()){
-                requestPermission()
-            }else{
+            if(checkPermission(CHECK_PERMISSION_WRITE_AND_RECORD)){
+                reqPermission(CHECK_PERMISSION_WRITE_AND_RECORD)
+            }
+            else{
                 startRecording()
             }
         }
@@ -152,14 +143,14 @@ class AddCardActivity : AppCompatActivity() {
             .apply {
                 this.setDuration(10000)
                     .addUpdateListener { animation ->
-                        var value: Float = animation?.getAnimatedValue() as Float
+                        val value: Float = animation?.animatedValue as Float
                         recordPlay_CenterCircle.angle = value
                     }
             }
 
         imgAddcardCardImg.setOnClickListener {
-            if(!checkPermission()){
-                requestPermission()
+            if(!checkPermission(CHECK_PERMISSION_READ)){
+                reqPermission(CHECK_PERMISSION_READ)
             }else{
                 getImageFromAlbum()
             }
@@ -176,6 +167,7 @@ class AddCardActivity : AppCompatActivity() {
 
         }
 
+        btnAddcardBack.setOnClickListener { finish() }
 
     }
 
@@ -251,97 +243,92 @@ class AddCardActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermission() : Boolean{
-        return !(checkSelfPermission(this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED)
-    }
-
-    private fun requestPermission() {
-        if (checkSelfPermission(this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
-            || checkSelfPermission(this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(this, permissionsRequired[0])
-                || shouldShowRequestPermissionRationale(this, permissionsRequired[1])) {
-                //Show Information about why you need the permission
-                getAlertDialog()
-            } else if (permissionStatus!!.getBoolean(permissionsRequired[0], false)) {
-                //Previously Permission Request was cancelled with 'Dont Ask Again',
-                // Redirect to Settings after showing Information about why you need the permission
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Need Multiple Permissions")
-                builder.setMessage("This app needs permissions.")
-                builder.setPositiveButton("Grant") { dialog, _ ->
-                    dialog.cancel()
-                    sentToSettings = true
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    val uri = Uri.fromParts("package", packageName, null)
-                    intent.data = uri
-                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING)
-                    Toast.makeText(applicationContext, "Go to Permissions to Grant ", Toast.LENGTH_LONG).show()
+    private fun checkPermission(checkWhich: Int) : Boolean{
+        var result = false
+        when(checkWhich){
+            CHECK_PERMISSION_WRITE_AND_RECORD ->{
+                if(checkSelfPermission(this@AddCardActivity, permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED){
+                    return result
                 }
-                builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-                builder.show()
-            } else {
-                //just request the permission
-                requestPermissions(this, permissionsRequired, PERMISSION_CALLBACK_CONSTANT)
+                if(checkSelfPermission(this, permissionsRequired[1]) == PackageManager.PERMISSION_GRANTED){
+                    return result
+                }
+                result = true
+                return result
             }
 
-            //   txtPermissions.setText("Permissions Required")
+            CHECK_PERMISSION_READ ->
+                result = checkSelfPermission(this, permissionsRequired[2]) == PackageManager.PERMISSION_GRANTED
+        }
+        return result
+    }
 
-            val editor = permissionStatus!!.edit()
-            editor.putBoolean(permissionsRequired[0], true)
-            editor.commit()
-        } else {
-            //You already have the permission, just go ahead.
-//            Toast.makeText(applicationContext, "Allowed All Permissions", Toast.LENGTH_LONG).show()
+    private fun reqPermission(whichPermission: Int) {
+        when(whichPermission){
+            CHECK_PERMISSION_WRITE_AND_RECORD -> {
+                if(
+                    shouldShowRequestPermissionRationale(this, permissionsRequired[0])
+                    || shouldShowRequestPermissionRationale(this, permissionsRequired[1])
+                ){
+                    showAlertDialog()
+                }
+                else{
+                   requestPermissions(
+                            arrayOf(
+                                permissionsRequired[0],
+                                permissionsRequired[1]
+                            ),
+                            PERMISSION_CALLBACK_CONSTANT
+                       )
+                }
+            }
+
+            CHECK_PERMISSION_READ ->{
+                if(shouldShowRequestPermissionRationale(this, permissionsRequired[2])){
+                    showAlertDialog()
+                }
+                else{
+                    requestPermissions(
+                        arrayOf(permissionsRequired[2]),
+                        PERMISSION_CALLBACK_CONSTANT
+                    )
+                }
+            }
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_CALLBACK_CONSTANT) {
-            //check if all permissions are granted
-            var allgranted = false
-            for (i in grantResults.indices) {
-                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    allgranted = true
-                } else {
-                    allgranted = false
-                    break
+        when(requestCode){
+            REQUEST_PERMISSION_SETTING -> {
+                for (i in grantResults) {
+                    if(i < 0){
+                        Toast.makeText(applicationContext,
+                            "해당권한을 활성화하셔야 합니다.",
+                            Toast.LENGTH_LONG)
+                            .show()
+                    }
                 }
             }
-
-            if (allgranted) {
-//                Toast.makeText(applicationContext, "Allowed All Permissions", Toast.LENGTH_LONG).show()
-            } else if (shouldShowRequestPermissionRationale(this, permissionsRequired[0])
-                || shouldShowRequestPermissionRationale(this, permissionsRequired[1])) {
-
-                getAlertDialog()
-            } else {
-                Toast.makeText(applicationContext, "Unable to get Permission", Toast.LENGTH_LONG).show()
-            }
         }
     }
 
-    private fun getAlertDialog() {
+    private fun showAlertDialog() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Need Multiple Permissions")
-        builder.setMessage("This app needs permissions.")
-        builder.setPositiveButton("Grant") { dialog, _->
+        builder.setTitle("알림")
+        builder.setMessage("권한이 거부되었습니다. 직접 권한을 허용해야 합니다.")
+        builder.setPositiveButton("예") { dialog, _->
             dialog.cancel()
-            requestPermissions(this, permissionsRequired, PERMISSION_CALLBACK_CONSTANT)
-        }
-        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-        builder.show()
-    }
-
-    override fun onPostResume() {
-        super.onPostResume()
-        if (sentToSettings) {
-            if (checkSelfPermission(this, permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED) {
-                //Got Permission
-                Toast.makeText(applicationContext, "Allowed All Permissions", Toast.LENGTH_LONG).show()
+            intent = Intent()
+            intent.apply {
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = Uri.fromParts("package", packageName, null)
+                //intent.putExtra("package", getPackageName()); // 어떤 애플리의 셋팅을 열지 모르기 때문에 우리 애플리케이션의 셋팅을 열도록 패키지를 넣어줘야함
             }
+            startActivity(intent)
         }
+        builder.setNegativeButton("취소") { dialog, _ -> dialog.cancel() }
+        builder.show()
     }
 
     private fun isAllCardInfoFilled(): Boolean {
@@ -355,6 +342,7 @@ class AddCardActivity : AppCompatActivity() {
         }
         return result
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -393,6 +381,7 @@ class AddCardActivity : AppCompatActivity() {
 
         val titleRb = RequestBody.create(MediaType.parse("text/plain"), title)
         val descRb = RequestBody.create(MediaType.parse("text/plain"), desc)
+        val visibilityRb = RequestBody.create(MediaType.parse("text/plain"), "false")
 
         val options = BitmapFactory.Options()
         val inputStream: InputStream = contentResolver.openInputStream(selectPicUri)!!
@@ -405,39 +394,45 @@ class AddCardActivity : AppCompatActivity() {
             byteArrayOutputStream.toByteArray()
         )
 
-
         val pictureRb = MultipartBody.Part.createFormData(
             "image",
             File(selectPicUri.toString()).name,
             photoBody
         )
 
+        val audioFile = File(recordFileName)
+        val audioUri = Uri.fromFile(File(recordFileName))
+        val audioBody =
+            RequestBody.create(
+                MediaType.parse(contentResolver.getType(audioUri).toString()),
+                audioFile
+            )
+        var audioRb: MultipartBody.Part? =
+            MultipartBody.Part.createFormData("record", audioFile.name + ".mp3", audioBody)
 
-        var audioFile: File? = null
-        var audioUrl: Uri? = null
-        var audioBody: RequestBody? = null
-        var audio_rb: MultipartBody.Part? = null
-        recordFileName?.let {
-            audioFile = File(it)
-            audioUrl = Uri.fromFile(audioFile)
-            audioBody = RequestBody.create(MediaType.parse("*/*"), audioFile)
-            audio_rb = MultipartBody.Part.createFormData(
-                "audio",
-                audioFile?.name,
-                audioBody)
-        }
 
-        // region audio file 전송
-//        val optionsA = BitmapFactory.Options()
-//        val inputStreamA: InputStream = contentResolver.openInputStream(audioUri)!!
-//        val bitmapA = BitmapFactory.decodeStream(inputStreamA, null, options)
-//        val byteArrayOutputStreamA = ByteArrayOutputStream()
-//
-//        val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
-//        val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
-//        val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
+        // 수현 코드
+//        var audioFile: File? = null
+//        var audioUrl: Uri? = null
+//        var audioBody: RequestBody? = null
+//        var audioRb: MultipartBody.Part? = null
+//        recordFileName?.let {
+//            audioFile = File(it)
+//            audioUrl = Uri.fromFile(audioFile)
+//            audioBody =
+//                RequestBody.create(
+//                    MediaType.parse(contentResolver.getType(audioUrl).toString()),
+//                    audioFile
+//                )
+//            audioBody = RequestBody.create(MediaType.parse("*/*"), audioFile!!)
+//            audioRb = MultipartBody.Part.createFormData(
+//                "audio",
+//                audioFile?.name,
+//                audioBody!!)
+//        }
 
-        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $pictureRb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}   audio_rb : $audio_rb".logDebug(
+
+        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $pictureRb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}   audio_rb : $audioRb".logDebug(
             this@AddCardActivity
         )
 
@@ -446,9 +441,9 @@ class AddCardActivity : AppCompatActivity() {
                 token!!,
                 titleRb,
                 descRb,
-                visibility,
+                visibilityRb,
                 pictureRb,
-                audio_rb
+                audioRb
             )
             .enqueue(object : Callback<ResAddCard> {
                 override fun onFailure(call: Call<ResAddCard>, t: Throwable) {
@@ -464,7 +459,6 @@ class AddCardActivity : AppCompatActivity() {
                                     this@AddCardActivity
                                 )
                                 if (it.success) {
-//                                    card?.imageUrl = selectPicUri.toString()
                                     val intent =
                                         Intent(this@AddCardActivity, DetailCardActivity::class.java)
 
@@ -495,6 +489,8 @@ class AddCardActivity : AppCompatActivity() {
         private const val IMAGE_PICK_CODE = 1000
         private const val PERMISSION_CALLBACK_CONSTANT = 100
         private const val REQUEST_PERMISSION_SETTING = 101
+        private const val CHECK_PERMISSION_READ = 102
+        private const val CHECK_PERMISSION_WRITE_AND_RECORD = 103
     }
 
 }
