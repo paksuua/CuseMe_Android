@@ -25,6 +25,7 @@ import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
+import com.tistory.comfy91.excuseme_android.feature.helper.HelperActivity
 import kotlinx.android.synthetic.main.activity_add_card.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -50,6 +51,7 @@ class AddCardActivity : AppCompatActivity() {
     private var playFlag = true
     private var isExistRecordFile = false
     private var isCardImageFilled = false
+    private var addFlag=false;
 
     private lateinit var audioTimer: AudioTimer
 
@@ -68,6 +70,7 @@ class AddCardActivity : AppCompatActivity() {
 
 
         initData()
+        backFromDetailCard()
         initUI()
     } // end onCrate()
 
@@ -591,6 +594,9 @@ class AddCardActivity : AppCompatActivity() {
                                         Intent(this@AddCardActivity, DetailCardActivity::class.java)
 
                                     intent.putExtra("DOWN_CARD", it.data)
+                                    intent.putExtra("ADD_CARD", true)
+                                    intent.putExtra("ADD_CARD", true)
+                                    intent
                                     startActivity(intent)
                                     isCardImageFilled = true
                                 } else {
@@ -606,6 +612,16 @@ class AddCardActivity : AppCompatActivity() {
     private fun setSaveBtn(isOn: Boolean) {
         btnAddcardSaveRecord.isEnabled = isOn
         btnAddcardSaveRecord.isSelected = isOn
+    }
+
+    private fun backFromDetailCard(){
+        addFlag=intent.hasExtra("ADD_CARD")
+        if (addFlag){
+            val intent =
+                Intent(this@AddCardActivity, HelperActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     companion object {

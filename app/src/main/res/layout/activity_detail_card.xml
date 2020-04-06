@@ -58,7 +58,7 @@
         android:id="@+id/tvCardNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="일렬번호 | "
+        android:text="일련번호 | "
         android:elevation="2dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imgDetailCardImg"
@@ -99,7 +99,7 @@
     <TextView
         android:id="@+id/tvDetailCardDesc"
         android:layout_width="match_parent"
-        android:layout_height="76dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="18dp"
         android:fontFamily="@font/notosans_light"

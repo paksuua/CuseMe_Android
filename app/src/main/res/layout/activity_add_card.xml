@@ -72,14 +72,13 @@
                 android:background="@drawable/ic_newcard_photo"
                 app:layout_constraintBottom_toTopOf="@+id/tvAddcardPhotoMessage"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/tvAddcardPhotoMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="42dp"
+                android:layout_marginBottom="22dp"
                 android:fontFamily="@font/notosans_regular"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="7sp"
