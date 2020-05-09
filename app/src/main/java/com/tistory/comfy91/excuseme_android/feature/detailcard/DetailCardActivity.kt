@@ -88,8 +88,13 @@ class DetailCardActivity : AppCompatActivity() {
         intent.getSerializableExtra("DOWN_CARD")?.let {
             card = it as CardBean
 //            imageUri= Uri.parse(intent.getStringExtra("MOD_CARD_IMG_URI"))
-            showSelectVisibility(card!!)
+//            showSelectVisibility(card!!)
             return
+        }
+
+        intent.getSerializableExtra("ADD_CARD")?.let{
+            val cardIdx = it as String
+            showSelectVisibility(cardIdx)
         }
 
         intent.getSerializableExtra("FROM_NEW_HELPER")?.let {
@@ -102,14 +107,18 @@ class DetailCardActivity : AppCompatActivity() {
 
     }
 
-    private fun showSelectVisibility(card: CardBean) {
+    private fun showSelectVisibility(cardIdx: String) {
         dialogBuilder.apply {
             setMessage("보이는 카드 목록에\n바로 추가하시겠습니까?")
             setPositiveButton("추가") { dialogInterface, _ ->
-                card.visibility = true
-                requestCardEdit(card, dialogInterface)
+
+//                card.visibility = true
+//                requestCardEdit(card, dialogInterface)
             }
-            setNegativeButton("취소") { dialogInterface, _ -> dialogInterface.cancel()}
+            setNegativeButton("취소") { dialogInterface, _ ->
+                requestCardDetail(cardIdx)
+                dialogInterface.cancel()
+            }
             setCancelable(false)
             show()
         }
@@ -195,7 +204,7 @@ class DetailCardActivity : AppCompatActivity() {
             tvDetailCardTitle.text = it.title
             tvDetailCardDesc.text = it.desc
             ctvDetailTog.isChecked=it.visibility
-            tvCardNum.text="일렬번호 | "+it.serialNum
+            tvCardNum.text="일련번호 | ${it.serialNum}"
         }
 
         ctvDetaliRecordPlay.setOnClickListener {play()}
@@ -274,7 +283,7 @@ class DetailCardActivity : AppCompatActivity() {
 
     private fun play() {
         if (card?.audioUrl.isNullOrEmpty()) {
-            requestCardDetail()
+//            requestCardDetail()
         } else {
             onPlay(playFlag)
             playFlag = !playFlag
@@ -282,12 +291,12 @@ class DetailCardActivity : AppCompatActivity() {
 
     }
 
-    private fun requestCardDetail() {
+    private fun requestCardDetail(cardIdx: String) {
         if (token == null) {
             token =
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWR4IjozOSwidXVpZCI6ImYzZDViM2E1LTkwYjYtNDVlMy1hOThhLTEyODE5OWNmZTg1MCIsImlhdCI6MTU3NzkwMTA1MywiZXhwIjoxNTc3OTg3NDUzLCJpc3MiOiJnYW5naGVlIn0.QytUhsXf4bJirRR_zF3wdACiNu9ytwUE4mrPSNLCFLk"
         }
-        cardDataRepository.getCardDetail(token!!, card?.cardIdx.toString())
+        cardDataRepository.getCardDetail(token!!, cardIdx)
             .enqueue(object : Callback<ResCardDetail> {
                 override fun onFailure(call: Call<ResCardDetail>, t: Throwable) {
                     "Fail Test Get Card Detail, message : ${t.message}".logDebug(this@DetailCardActivity)
@@ -305,7 +314,16 @@ class DetailCardActivity : AppCompatActivity() {
                         response.body().let { body ->
                             "status: ${body!!.status} data : ${body.data}".logDebug(this@DetailCardActivity)
                             if (body.success) {
-                                when (body.data?.audioUrl.isNullOrEmpty()) {
+                                card = body.data
+                                card?.let {
+                                    Glide.with(this@DetailCardActivity).load(it.imageUrl).into(imgDetailCardImg)
+                                    tvDetailCardTitle.text = it.title
+                                    tvDetailCardDesc.text = it.desc
+                                    ctvDetailTog.isChecked=it.visibility
+                                    tvCardNum.text="일련번호 | ${it.serialNum}"
+                                }
+
+                                when (card?.audioUrl.isNullOrEmpty()) {
                                     true -> {
                                         card?.desc.let {
                                             tts.speak(it, TextToSpeech.QUEUE_FLUSH, null, null)
@@ -359,7 +377,7 @@ class DetailCardActivity : AppCompatActivity() {
                     Activity.RESULT_OK ->{
                         card = (data?.getSerializableExtra("MOD_CARD")) as CardBean?
                         card?.let{
-                            showSelectVisibility(it)
+//                            showSelectVisibility(it)
                         }
 
 

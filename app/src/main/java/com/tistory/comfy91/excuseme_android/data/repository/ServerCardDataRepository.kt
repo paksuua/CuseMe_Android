@@ -1,6 +1,7 @@
 package com.tistory.comfy91.excuseme_android.data.repository
 
 import com.tistory.comfy91.excuseme_android.api.ServerService
+import com.tistory.comfy91.excuseme_android.data.answer.ResAddCard
 import com.tistory.comfy91.excuseme_android.data.answer.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
@@ -50,11 +51,11 @@ class ServerCardDataRepository:
         token: String,
         title: RequestBody,
         desc: RequestBody,
-        visibility: Boolean,
+        visibility: RequestBody,
         image: MultipartBody.Part,
         record: MultipartBody.Part?
-    ): Call<ResDownCard> {
-        return ServerService.service.addCard(token, title, desc, visibility, image, record)
+    ): Call<ResAddCard> {
+        return ServerService.service.addCard(token, image, record, title, desc, visibility)
     }
 
     override fun editCardDetail(

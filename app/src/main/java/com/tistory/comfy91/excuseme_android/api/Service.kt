@@ -50,17 +50,16 @@ interface Service{
      * @param token
      * @param cardBean = 추가할 카드
      */
-    //TODO("Body로 더 많은 변수를 넘겨줌 에러가 날 수 있으므로 확인하기")
     @Multipart
     @POST("/cards")
     fun addCard(
         @Header("token") token: String,
+        @Part image: MultipartBody.Part,
+        @Part record: MultipartBody.Part?,
         @Part("title") title: RequestBody,
         @Part("content") desc : RequestBody,
-        @Part("visible") visibility: Boolean,
-        @Part image: MultipartBody.Part,
-        @Part record: MultipartBody.Part?
-    ): Call<ResDownCard>
+        @Part("visible") visibility: RequestBody
+    ): Call<ResAddCard>
 
     /**
      * 카드 상세 수정

@@ -18,10 +18,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SplashActivity : AppCompatActivity() {
-
     private val userDataRespository = ServerUserDataRepository()
     private var requestTime = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +56,7 @@ class SplashActivity : AppCompatActivity() {
                 userDataRespository.startApp(it)
                     .enqueue(object : Callback<ResUser> {
                         override fun onFailure(call: Call<ResUser>, t: Throwable) {
-                            "Fail Start App message : ${t.message}"
+                            "Fail Start App message : ${t.message}".logDebug(this@SplashActivity)
                             while(requestTime <= 2){
                                 requestTime++
                                 requestServer(uuid)
@@ -68,7 +66,7 @@ class SplashActivity : AppCompatActivity() {
                         }
 
                         override fun onResponse(call: Call<ResUser>, response: Response<ResUser>) {
-                            "code : #${response.code()}, message : ${response.message()}".logDebug(this@SplashActivity)
+                            "code : ${response.code()}, message : ${response.message()}".logDebug(this@SplashActivity)
                             if (response.isSuccessful) {
                                 response.body()
                                     ?.let { resUser ->

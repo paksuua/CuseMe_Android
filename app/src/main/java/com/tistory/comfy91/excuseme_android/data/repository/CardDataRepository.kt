@@ -1,5 +1,6 @@
 package com.tistory.comfy91.excuseme_android.data.repository
 
+import com.tistory.comfy91.excuseme_android.data.answer.ResAddCard
 import com.tistory.comfy91.excuseme_android.data.answer.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
@@ -21,10 +22,10 @@ interface CardDataRepository {
         token: String,
         title: RequestBody,
         desc : RequestBody,
-        visibility: Boolean,
+        visibility: RequestBody,
         image: MultipartBody.Part,
         record: MultipartBody.Part?
-    ): Call<ResDownCard>
+    ): Call<ResAddCard>
 
 
     fun editCardDetail(

@@ -20,6 +20,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -45,6 +49,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     //Retrofit 에서 Gson 을 사용하기 위한 라이브러리
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+    // Java Scalars Converter : String이나 primitive 타입을 text/plain boides로 컨버팅 하는데 쓴다.
+    implementation 'com.squareup.retrofit2:converter-scalars:2.8.0'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'

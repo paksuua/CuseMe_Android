@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tistory.comfy91.excuseme_android.R
-import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.helper.HelperActivity
 import com.tistory.comfy91.excuseme_android.logDebug

@@ -3,30 +3,36 @@ package com.tistory.comfy91.excuseme_android.feature.addcard
 import android.Manifest
 import android.animation.ValueAnimator
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.widget.CheckedTextView
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.checkSelfPermission
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.view.isVisible
-import com.bumptech.glide.Glide
-import com.tistory.comfy91.excuseme_android.*
-import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
+import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.answer.ResAddCard
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
-import com.tistory.comfy91.excuseme_android.feature.helper.HelperActivity
+import com.tistory.comfy91.excuseme_android.logDebug
+import com.tistory.comfy91.excuseme_android.toast
 import kotlinx.android.synthetic.main.activity_add_card.*
+import kotlinx.android.synthetic.main.addcard_recored_finish_layout.*
+import kotlinx.android.synthetic.main.addcard_recored_init_layout.*
+import kotlinx.android.synthetic.main.addcard_recored_play_layout.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -40,123 +46,117 @@ import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class AddCardActivity : AppCompatActivity() {
+
     private val TAG = javaClass.name
-    private lateinit var dialogBuilder: AlertDialog.Builder
 
-    private var recorder: MediaRecorder? = null
-    private var player: MediaPlayer? = null
-    private var recordFlag = true
-    private var playFlag = true
-    private var isExistRecordFile = false
-    private var isCardImageFilled = false
-    private var addFlag=false;
-
-    private lateinit var audioTimer: AudioTimer
+    //record
+    private val SECTION_INIT = 1
+    private val SECTION_PLAY = 2
+    private val SECTION_FINISH = 3
 
     private var recordFileName: String? = null
-    private lateinit var selectPicUri: Uri
+    private var recorder: MediaRecorder? = null
+    private lateinit var audioTimer: AudioTimer
+    private var state: Boolean = false
+    private var mediaPlayer: MediaPlayer? = null
     private lateinit var circleAnimation: ValueAnimator
 
+    //permission
+    private var permissionsRequired = arrayOf(
+                                                Manifest.permission.RECORD_AUDIO,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                Manifest.permission.READ_EXTERNAL_STORAGE
+                                                )
+    private var permissionStatus: SharedPreferences? = null
 
+    // image
+    private var isCardImageFilled = false
+    private lateinit var selectPicUri: Uri
+
+    //upload
     private var token = SingletoneToken.getInstance().token
     private val cardDataRepository = ServerCardDataRepository()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_card)
 
+        // btm record view init
+        setRecordView(SECTION_INIT)
 
-        initData()
-        backFromDetailCard()
-        initUI()
-    } // end onCrate()
+        // init
+        init()
 
-    private fun initData() {
-        // Record to the external cache directory for visibility
+        permissionStatus = getSharedPreferences("permissionStatus", Context.MODE_PRIVATE)
+
+
+    }
+
+    private fun setRecordView(section : Int){
+        when(section){
+            SECTION_INIT ->{
+                recordInitLayout.visibility = View.VISIBLE
+                recordPlayLayout.visibility =View.GONE
+                recordFinishLayout.visibility =View.GONE
+            }
+            SECTION_PLAY ->{
+                recordInitLayout.visibility = View.GONE
+                recordPlayLayout.visibility =View.VISIBLE
+                recordFinishLayout.visibility =View.GONE
+            }
+            SECTION_FINISH ->{
+                recordInitLayout.visibility = View.GONE
+                recordPlayLayout.visibility =View.GONE
+                recordFinishLayout.visibility =View.VISIBLE
+            }
+        }
+    }
+
+    fun init(){
+        mediaPlayer = MediaPlayer()
+
+        recordInit_CenterBtn.setOnClickListener{
+            // start record
+            if(checkPermission(CHECK_PERMISSION_WRITE_AND_RECORD)){
+                reqPermission(CHECK_PERMISSION_WRITE_AND_RECORD)
+            }
+            else{
+                startRecording()
+            }
+        }
+        recordPlay_LeftBtn.setOnClickListener {
+            stopRecording()
+        }
+        recordFinish_LeftBtn.setOnClickListener {
+            play()
+        }
+        recordFinish_CenterBtn.setOnClickListener {
+            startRecording()
+        }
+        recordFinish_RightBtn.setOnClickListener {
+            tvAddCardRecordFinish.text = "저장되었습니다."
+        }
+
+        //init animation
         circleAnimation = ValueAnimator.ofFloat(0f, 360f)
             .apply {
                 this.setDuration(10000)
                     .addUpdateListener { animation ->
-                        var value: Float = animation?.getAnimatedValue() as Float
-                        circleCounterView.angle = value
+                        val value: Float = animation?.animatedValue as Float
+                        recordPlay_CenterCircle.angle = value
                     }
             }
-    }
 
-    private fun initUI() {
-        dialogBuilder = AlertDialog.Builder(this)
-
-
-        //이미지 가져오기 리스너 설정
         imgAddcardCardImg.setOnClickListener {
-            if(checkPermission(PERMISSION_READ_EXTERNAL_STORAGE)){
-                requestPermission(PERMISSION_RECORD_AUDIO)
-            }
-            else{
+            if(!checkPermission(CHECK_PERMISSION_READ)){
+                reqPermission(CHECK_PERMISSION_READ)
+            }else{
                 getImageFromAlbum()
             }
         }
 
-        //녹음 버튼 리스너 설정
-        btnAddcardTogRecord.setOnClickListener {
-            checkPermission(PERMISSION_RECORD_AUDIO)
-            checkPermission(PERMISSION_WRITE_EXTERNAL_STORAGE)
-            it.requestFocus()
-
-            btnAddcardTogRecord.isVisible = false
-            record()
-        }
-
-        // 실행(count) 버튼 리스너 설정
-        ctvAddcardRecordPlay.setOnClickListener {
-            if (!isExistRecordFile) {
-                record()
-            } else {
-                play()
-            }
-
-        }
-
-        ctvAddcardRecordPlay.apply {
-            when (isExistRecordFile) {
-                true -> setBackgroundResource(R.drawable.ctv_record)
-                false -> {
-                    setBackgroundResource(R.drawable.btn_newcard_play_unslected)
-                    isEnabled = false
-                }
-            }
-        }
-
-        // 확인 버튼
-        btnAddcardSaveRecord
-            .apply { setSaveBtn(false) }
-            .setOnClickListener { (it as CheckedTextView).toggle() }
-
-        btnAddcardSaveRecord.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                setSaveBtn(false)
-                tvAddCardRecordFinish.isVisible = true
-            }
-        })
-
-
-        // TTS
-        btnAddCardTts.setOnClickListener(object : View.OnClickListener {
-            private val isClicked = false
-
-            override fun onClick(view: View?) {
-                val imageView = view as ImageView
-                isClicked != isClicked
-                setTTSUI(isClicked, imageView)
-            }
-
-        })
-
-
-        // 최종 카드 추가 버튼
+        //upload
         btnAddCard.setOnClickListener {
             if (isAllCardInfoFilled()) {
                 uploadCard()
@@ -167,158 +167,168 @@ class AddCardActivity : AppCompatActivity() {
 
         }
 
-        // 뒤로가기 버튼
         btnAddcardBack.setOnClickListener { finish() }
-    }
-
-    private fun setTTSUI(isClicked: Boolean, imageView: ImageView) {
-        if (isExistRecordFile) {
-            recordFileName = null
-        }
-
-        if (isClicked) {
-            Glide
-                .with(imageView.context)
-                .load(R.drawable.btn_newcard_maketts_selected)
-                .into(imageView)
-        } else {
-            Glide
-                .with(imageView.context)
-                .load(R.drawable.btn_newcard_maketts_unselected)
-                .into(imageView)
-        }
-        tvAddcardTTSNotice.isVisible = isClicked
-        ctvAddcardRecordPlay.isVisible = !isClicked
-        circleCounterView.isVisible = !isClicked
-        btnAddcardSaveRecord.isVisible = !isClicked
 
     }
 
-    private fun setCompleteUi() {
-        ctvAddcardRecordPlay.isChecked = false
-    }
-
-
-    private fun play() {
-        if (isExistRecordFile) {
-            onPlay(playFlag)
-            ctvAddcardRecordPlay.isChecked = playFlag
-            playFlag = !playFlag
-
-        } else {
-            "녹음 파일 없음".logDebug(this@AddCardActivity)
-        }
-    }
-
-    private fun onPlay(start: Boolean) = if (start) startPlaying() else stopPlaying()
-
-    private fun startPlaying() {
-        player = MediaPlayer().apply {
-            setOnCompletionListener { setCompleteUi() }
-            try {
-                setDataSource(recordFileName)
-                prepare()
-                start()
-                ctvAddcardRecordPlay.isChecked = false
-            } catch (e: IOException) {
-                "prepare() failed".logDebug(this@AddCardActivity)
-                Log.e(TAG, "prepare() failed")
-            }
-        }
-    }
-
-    private fun stopPlaying() {
-        player?.release()
-        player = null
-        ctvAddcardRecordPlay.isChecked = false
-        circleCounterView.isVisible = false
-        btnAddcardTogRecord.isVisible = true
-    }
-
-    private fun record() {
-        onRecord(recordFlag)
-        when (recordFlag) {
-            true -> {
-                ctvAddcardRecordPlay.isEnabled = true
-                ctvAddcardRecordPlay.setBackgroundResource(R.drawable.ctv_record)
-                ctvAddcardRecordPlay.isChecked = true
-            }
-            false -> {
-                ctvAddcardRecordPlay.isChecked = false
-
-                if (isExistRecordFile) {
-                    ctvAddcardRecordPlay.setBackgroundResource(R.drawable.ctv_record)
-                    btnAddcardSaveRecord.isChecked = true
-                } else {
-                    ctvAddcardRecordPlay.isEnabled = false
-                    ctvAddcardRecordPlay.setBackgroundResource(R.drawable.btn_newcard_play_unslected)
-                }
-            }
-        }
-        recordFlag = !recordFlag
-    }
-
-    private fun onRecord(start: Boolean) = if (start) startRecording() else stopRecording()
-
+    //녹음 시작
     private fun startRecording() {
+
+        tvAddCardRecordFinish.text = ""
+
+        //stop palying
+        mediaPlayer!!.stop()
+
+        //start animation
+        circleAnimation.start()
+
+        //set section play
+        setRecordView(SECTION_PLAY)
+
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
+        recorder= MediaRecorder()
+        recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+        recorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        recorder?.setOutputFile(recordFileName)
 
-        recorder = MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setOutputFile(recordFileName)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+        try {
+            recorder?.prepare()
+            recorder?.start()
+            state = true
+            Toast.makeText(this, "녹음 시작", Toast.LENGTH_SHORT).show()
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
 
-            try {
-                prepare()
-            } catch (e: IOException) {
-                Log.e(TAG, "prepare() failed")
+        audioTimer =
+            AudioTimer(this@AddCardActivity) {
+                recordPlay_CenterTv.text = "${audioTimer.count}초"
+            }
+        audioTimer.start()
+//        circleAnimation.start()
+    }
+
+    private fun stopRecording(){
+
+        //set section play
+        setRecordView(SECTION_FINISH)
+        circleAnimation.cancel()
+
+        if(state){
+            recorder?.stop()
+            recorder?.reset()
+            recorder?.release()
+            state = false
+        }else{
+
+        }
+    }
+
+    private fun play() {
+
+        if (File(recordFileName!!).exists()) {
+
+            Toast.makeText(this, "녹음 재생 중", Toast.LENGTH_SHORT).show()
+            mediaPlayer!!.reset()
+            mediaPlayer!!.setDataSource(recordFileName)
+            mediaPlayer!!.prepare()
+            mediaPlayer!!.start()
+
+        } else {
+            Toast.makeText(this, "녹음된 파일이 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkPermission(checkWhich: Int) : Boolean{
+        var result = false
+        when(checkWhich){
+            CHECK_PERMISSION_WRITE_AND_RECORD ->{
+                if(checkSelfPermission(this@AddCardActivity, permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED){
+                    return result
+                }
+                if(checkSelfPermission(this, permissionsRequired[1]) == PackageManager.PERMISSION_GRANTED){
+                    return result
+                }
+                result = true
+                return result
             }
 
-            start()
-            audioTimer =
-                AudioTimer(this@AddCardActivity) {
-                    record_second_notice.text = "${audioTimer.count}초"
+            CHECK_PERMISSION_READ ->
+                result = checkSelfPermission(this, permissionsRequired[2]) == PackageManager.PERMISSION_GRANTED
+        }
+        return result
+    }
+
+    private fun reqPermission(whichPermission: Int) {
+        when(whichPermission){
+            CHECK_PERMISSION_WRITE_AND_RECORD -> {
+                if(
+                    shouldShowRequestPermissionRationale(this, permissionsRequired[0])
+                    || shouldShowRequestPermissionRationale(this, permissionsRequired[1])
+                ){
+                    showAlertDialog()
                 }
-            audioTimer.start()
-            circleAnimation.start()
+                else{
+                   requestPermissions(
+                            arrayOf(
+                                permissionsRequired[0],
+                                permissionsRequired[1]
+                            ),
+                            PERMISSION_CALLBACK_CONSTANT
+                       )
+                }
+            }
+
+            CHECK_PERMISSION_READ ->{
+                if(shouldShowRequestPermissionRationale(this, permissionsRequired[2])){
+                    showAlertDialog()
+                }
+                else{
+                    requestPermissions(
+                        arrayOf(permissionsRequired[2]),
+                        PERMISSION_CALLBACK_CONSTANT
+                    )
+                }
+            }
         }
     }
 
-    private fun stopRecording() {
-        recorder?.apply {
-            stop()
-            release()
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            REQUEST_PERMISSION_SETTING -> {
+                for (i in grantResults) {
+                    if(i < 0){
+                        Toast.makeText(applicationContext,
+                            "해당권한을 활성화하셔야 합니다.",
+                            Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }
+            }
         }
-        recorder = null
-
-        audioTimer.cancel()
-        circleAnimation.cancel()
-        setSaveBtn(true)
-        tvAddCardRecordFinish.isVisible = false
-        btnAddcardTogRecord.isVisible = false
-
-
-        tvAddCardRecordNotice.text = getString(R.string.record_notice)
-        ctvAddcardRecordPlay.apply {
-            isVisible = true
-            isEnabled = true
-            isExistRecordFile = true
-        }
-
-        recorder?.release()
-        recorder = null
-        stopPlaying()
     }
 
-    private fun getImageFromAlbum() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(
-            intent,
-            IMAGE_PICK_CODE
-        )
+    private fun showAlertDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("알림")
+        builder.setMessage("권한이 거부되었습니다. 직접 권한을 허용해야 합니다.")
+        builder.setPositiveButton("예") { dialog, _->
+            dialog.cancel()
+            intent = Intent()
+            intent.apply {
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = Uri.fromParts("package", packageName, null)
+                //intent.putExtra("package", getPackageName()); // 어떤 애플리의 셋팅을 열지 모르기 때문에 우리 애플리케이션의 셋팅을 열도록 패키지를 넣어줘야함
+            }
+            startActivity(intent)
+        }
+        builder.setNegativeButton("취소") { dialog, _ -> dialog.cancel() }
+        builder.show()
     }
 
     private fun isAllCardInfoFilled(): Boolean {
@@ -333,147 +343,6 @@ class AddCardActivity : AppCompatActivity() {
         return result
     }
 
-    private fun showSettingActivity(){
-        dialogBuilder
-            .setMessage("권한이 거부 되었습니다. 직접 권한을 허용하세요.")
-            .setPositiveButton("상세") { _, _ -> this.startSettingActivity() }
-            .setNegativeButton("취소") { _, _ -> finish() }
-            .setCancelable(false)
-            .show()
-    }
-
-
-    private fun checkPermission(permissionFlag: Int): Boolean{
-        when(permissionFlag){
-            PERMISSION_RECORD_AUDIO -> {
-                if (this.isPermissionNotGranted(Manifest.permission.RECORD_AUDIO)){
-                    requestPermission(PERMISSION_RECORD_AUDIO)
-                    return false
-                }
-                else{
-                    return true
-                }
-            }
-            PERMISSION_READ_EXTERNAL_STORAGE ->{
-                if (this.isPermissionNotGranted(Manifest.permission.READ_EXTERNAL_STORAGE)){
-                    return false
-                }
-                else{
-                    return true
-                }
-            }
-            PERMISSION_WRITE_EXTERNAL_STORAGE ->{
-                if (this.isPermissionNotGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ){ showSettingActivity() }
-                    else{
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            ),
-                            PERMISSION_WRITE_EXTERNAL_STORAGE
-                        )
-                    }
-                    return false
-                }
-                else{
-                    return true
-                }
-            }
-            else ->{
-                "There is no such permission flag".logDebug(this@AddCardActivity)
-                return false
-            }
-        }
-    }
-
-    private fun requestPermission(permissionFlag: Int){
-        when(permissionFlag){
-            PERMISSION_RECORD_AUDIO->{
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        this,
-                        Manifest.permission.RECORD_AUDIO)
-                ){ showSettingActivity() }
-                else{
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(
-                            Manifest.permission.RECORD_AUDIO
-                        ),
-                        PERMISSION_RECORD_AUDIO
-                    )
-                }
-            }
-            PERMISSION_WRITE_EXTERNAL_STORAGE->{
-
-            }
-            PERMISSION_READ_EXTERNAL_STORAGE->{
-
-            }
-            else->{
-                 throw Exception("존재하지 않는 permission Flag")
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        when (requestCode) {
-            PERMISSION_RECORD_AUDIO -> {
-                if(grantResults[0] < 0){
-                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
-                        .show()
-                    checkPermission(PERMISSION_RECORD_AUDIO)
-                }
-                else{
-                    //todo 녹음시작하기
-                }
-                //todo 위에 코드 동작하면 아래 코드 학제하기, 위에 코드 동작안하면 아래 코드 복원하기
-//                grantResults.filter { it < 0 }.forEach {_ ->
-//                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
-//                        .show()
-//                    checkPermission(PERMISSION_RECORD_AUDIO)
-//                    return
-//                }
-            } // end 1111
-            PERMISSION_WRITE_EXTERNAL_STORAGE->{
-
-                //todo 위에 코드 동작하면 아래 코드 학제하기, 위에 코드 동작안하면 아래 코드 복원하기
-//                grantResults.filter { it < 0 }.forEach {_ ->
-//                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
-//                        .show()
-//                    checkPermission(PERMISSION_WRITE_EXTERNAL_STORAGE)
-//                    return
-//                }
-            }
-            PERMISSION_READ_EXTERNAL_STORAGE->{
-                if(grantResults[0] >= 0){
-                    getImageFromAlbum()
-                }
-                else{
-                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
-                    .show()
-                    checkPermission(PERMISSION_READ_EXTERNAL_STORAGE)
-                    return
-                }
-                //todo 위에 코드 동작하면 아래 코드 학제하기, 위에 코드 동작안하면 아래 코드 복원하기
-//                grantResults.filter { it < 0 }.forEach {_ ->
-//                    Toast.makeText(applicationContext, "해당 권한을 활성화 하셔야 합니다.", Toast.LENGTH_LONG)
-//                        .show()
-//                    checkPermission(PERMISSION_READ_EXTERNAL_STORAGE)
-//                    return
-//                }
-            }
-        }
-    } // end onRequestPermissionResult()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -500,13 +369,6 @@ class AddCardActivity : AppCompatActivity() {
         }
     } // end onActivityResult()
 
-    override fun onStop() {
-        super.onStop()
-        recorder?.release()
-        recorder = null
-        stopPlaying()
-    }
-
     private fun uploadCard() {
         if (token == null) {
             token = "token"
@@ -515,11 +377,11 @@ class AddCardActivity : AppCompatActivity() {
         // get cardData
         val title = edtAddcardTitle.text.toString()
         val desc = edtAddcardDesc.text.toString()
-        //todo("visibility 가져와야함")
         val visibility = false
 
-        val title_rb = RequestBody.create(MediaType.parse("text/plain"), title)
-        val desc_rb = RequestBody.create(MediaType.parse("text/plain"), desc)
+        val titleRb = RequestBody.create(MediaType.parse("text/plain"), title)
+        val descRb = RequestBody.create(MediaType.parse("text/plain"), desc)
+        val visibilityRb = RequestBody.create(MediaType.parse("text/plain"), "false")
 
         val options = BitmapFactory.Options()
         val inputStream: InputStream = contentResolver.openInputStream(selectPicUri)!!
@@ -532,55 +394,69 @@ class AddCardActivity : AppCompatActivity() {
             byteArrayOutputStream.toByteArray()
         )
 
-
-        val picture_rb = MultipartBody.Part.createFormData(
+        val pictureRb = MultipartBody.Part.createFormData(
             "image",
             File(selectPicUri.toString()).name,
             photoBody
         )
 
-
         var audioFile: File? = null
-        var audioUrl: Uri? = null
-        var audioBody: RequestBody? = null
-        var audio_rb: MultipartBody.Part? = null
-        recordFileName?.let {
-            audioFile = File(recordFileName)
-            audioUrl = Uri.fromFile(File(recordFileName))
-            audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
-            audio_rb = MultipartBody.Part.createFormData("audio", audioFile?.name, audioBody)
+        var audioRb: MultipartBody.Part? = null
+        recordFileName?.let{
+            val audioFile = File(it)
+            val audioUri = Uri.fromFile(audioFile)
+            val audioBody =
+                RequestBody.create(
+                    MediaType.parse(contentResolver.getType(audioUri).toString()),
+                    audioFile
+                )
+            audioRb =
+                MultipartBody.Part.createFormData("record", audioFile.name + ".mp3", audioBody)
+
         }
 
 
-        // region audio file 전송
-//        val optionsA = BitmapFactory.Options()
-//        val inputStreamA: InputStream = contentResolver.openInputStream(audioUri)!!
-//        val bitmapA = BitmapFactory.decodeStream(inputStreamA, null, options)
-//        val byteArrayOutputStreamA = ByteArrayOutputStream()
-//
-//        val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
-//        val audioBody = RequestBody.create(MediaType.parse(contentResolver.getType(audioUri)), audioFile)
-//        val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
+        // 수현 코드
+//        var audioFile: File? = null
+//        var audioUrl: Uri? = null
+//        var audioBody: RequestBody? = null
+//        var audioRb: MultipartBody.Part? = null
+//        recordFileName?.let {
+//            audioFile = File(it)
+//            audioUrl = Uri.fromFile(audioFile)
+//            audioBody =
+//                RequestBody.create(
+//                    MediaType.parse(contentResolver.getType(audioUrl).toString()),
+//                    audioFile
+//                )
+//            audioBody = RequestBody.create(MediaType.parse("*/*"), audioFile!!)
+//            audioRb = MultipartBody.Part.createFormData(
+//                "audio",
+//                audioFile?.name,
+//                audioBody!!)
+//        }
 
-        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $picture_rb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}   audio_rb : $audio_rb".logDebug(
+
+        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $pictureRb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}}".logDebug(
             this@AddCardActivity
         )
 
         cardDataRepository
             .addCard(
                 token!!,
-                title_rb,
-                desc_rb,
-                visibility,
-                picture_rb,
-                audio_rb
+                titleRb,
+                descRb,
+                visibilityRb,
+                pictureRb,
+                audioRb
             )
-            .enqueue(object : Callback<ResDownCard> {
-                override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
+            .enqueue(object : Callback<ResAddCard> {
+                override fun onFailure(call: Call<ResAddCard>, t: Throwable) {
                     "Fail to Add Card, message:${t.message}".logDebug(this@AddCardActivity)
                 }
 
-                override fun onResponse(call: Call<ResDownCard>, response: Response<ResDownCard>) {
+                override fun onResponse(call: Call<ResAddCard>, response: Response<ResAddCard>) {
+                    "onResponse : ${response.code()}".logDebug(this@AddCardActivity)
                     if (response.isSuccessful) {
                         response.body()
                             ?.let {
@@ -588,16 +464,12 @@ class AddCardActivity : AppCompatActivity() {
                                     this@AddCardActivity
                                 )
                                 if (it.success) {
-                                    var card = it.data
-                                    card?.imageUrl = selectPicUri.toString()
                                     val intent =
                                         Intent(this@AddCardActivity, DetailCardActivity::class.java)
 
-                                    intent.putExtra("DOWN_CARD", it.data)
-                                    intent.putExtra("ADD_CARD", true)
-                                    intent.putExtra("ADD_CARD", true)
-                                    intent
+                                    intent.putExtra("ADD_CARD", it.data?.cardIdx)
                                     startActivity(intent)
+                                    this@AddCardActivity.finish()
                                     isCardImageFilled = true
                                 } else {
                                     "Add Card Body is not Success".logDebug(this@AddCardActivity)
@@ -609,30 +481,22 @@ class AddCardActivity : AppCompatActivity() {
             })
     }
 
-    private fun setSaveBtn(isOn: Boolean) {
-        btnAddcardSaveRecord.isEnabled = isOn
-        btnAddcardSaveRecord.isSelected = isOn
-    }
-
-    private fun backFromDetailCard(){
-        addFlag=intent.hasExtra("ADD_CARD")
-        if (addFlag){
-            val intent =
-                Intent(this@AddCardActivity, HelperActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+    private fun getImageFromAlbum() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(
+            intent,
+            IMAGE_PICK_CODE
+        )
     }
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000
-        private const val PERMISSION_CODE = 1111
-
-        private const val PERMISSION_RECORD_AUDIO = 2222
-        private const val PERMISSION_READ_EXTERNAL_STORAGE = 3333
-        private const val PERMISSION_WRITE_EXTERNAL_STORAGE = 4444
-
+        private const val PERMISSION_CALLBACK_CONSTANT = 100
+        private const val REQUEST_PERMISSION_SETTING = 101
+        private const val CHECK_PERMISSION_READ = 102
+        private const val CHECK_PERMISSION_WRITE_AND_RECORD = 103
     }
-}
 
+}
 

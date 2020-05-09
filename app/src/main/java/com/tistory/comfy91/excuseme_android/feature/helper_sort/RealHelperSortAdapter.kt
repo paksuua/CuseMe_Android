@@ -23,7 +23,6 @@ class RealHelperSortAdapter(
 
         val view = LayoutInflater.from(context).inflate(R.layout.helper_sort_item_card, parent, false)
 
-
         return HelperSortCardViewHolder(
             view,
             onBtnAllClicked
@@ -44,15 +43,8 @@ class RealHelperSortAdapter(
 
 
     fun swapItems(fromPosition: Int, toPosition: Int){
-        if (fromPosition < toPosition) {
-            for (i in fromPosition until toPosition) {
-                data[i] = data.set(i+1, data[i])
-            }
-        } else {
-            for (i in fromPosition..toPosition + 1) {
-                data[i] = data.set(i-1, data[i])
-            }
-        }
+
+
         notifyItemMoved(fromPosition, toPosition)
         isChanged = true
     }
