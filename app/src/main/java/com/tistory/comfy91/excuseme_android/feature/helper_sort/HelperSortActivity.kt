@@ -42,7 +42,7 @@ class HelperSortActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.tistory.comfy91.excuseme_android.R.layout.activity_helper_sort)
+        setContentView(R.layout.activity_helper_sort)
 
         uiInit()
 
@@ -68,7 +68,12 @@ class HelperSortActivity : AppCompatActivity() {
         // 터치에 따라 호출되는 콜백메소드를 담고 있음
         val callback = DragManageAdapter(
             rvHelperSortCardAdapter,
-            0,
+            ItemTouchHelper.LEFT
+                .or(ItemTouchHelper.RIGHT)
+                .or(ItemTouchHelper.START)
+                .or(ItemTouchHelper.END)
+                .or(ItemTouchHelper.UP)
+                .or(ItemTouchHelper.DOWN),
             0
         )
 
