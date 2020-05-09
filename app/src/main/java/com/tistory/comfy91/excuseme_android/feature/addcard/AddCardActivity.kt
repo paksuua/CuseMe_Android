@@ -64,10 +64,10 @@ class AddCardActivity : AppCompatActivity() {
 
     //permission
     private var permissionsRequired = arrayOf(
-                                                Manifest.permission.RECORD_AUDIO,
-                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                                Manifest.permission.READ_EXTERNAL_STORAGE
-                                                )
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
     private var permissionStatus: SharedPreferences? = null
 
     // image
@@ -89,39 +89,36 @@ class AddCardActivity : AppCompatActivity() {
         init()
 
         permissionStatus = getSharedPreferences("permissionStatus", Context.MODE_PRIVATE)
-
-
     }
 
-    private fun setRecordView(section : Int){
-        when(section){
-            SECTION_INIT ->{
+    private fun setRecordView(section: Int) {
+        when (section) {
+            SECTION_INIT -> {
                 recordInitLayout.visibility = View.VISIBLE
-                recordPlayLayout.visibility =View.GONE
-                recordFinishLayout.visibility =View.GONE
+                recordPlayLayout.visibility = View.GONE
+                recordFinishLayout.visibility = View.GONE
             }
-            SECTION_PLAY ->{
+            SECTION_PLAY -> {
                 recordInitLayout.visibility = View.GONE
-                recordPlayLayout.visibility =View.VISIBLE
-                recordFinishLayout.visibility =View.GONE
+                recordPlayLayout.visibility = View.VISIBLE
+                recordFinishLayout.visibility = View.GONE
             }
-            SECTION_FINISH ->{
+            SECTION_FINISH -> {
                 recordInitLayout.visibility = View.GONE
-                recordPlayLayout.visibility =View.GONE
-                recordFinishLayout.visibility =View.VISIBLE
+                recordPlayLayout.visibility = View.GONE
+                recordFinishLayout.visibility = View.VISIBLE
             }
         }
     }
 
-    fun init(){
+    fun init() {
         mediaPlayer = MediaPlayer()
 
-        recordInit_CenterBtn.setOnClickListener{
+        recordInit_CenterBtn.setOnClickListener {
             // start record
-            if(checkPermission(CHECK_PERMISSION_WRITE_AND_RECORD)){
+            if (checkPermission(CHECK_PERMISSION_WRITE_AND_RECORD)) {
                 reqPermission(CHECK_PERMISSION_WRITE_AND_RECORD)
-            }
-            else{
+            } else {
                 startRecording()
             }
         }
@@ -149,9 +146,9 @@ class AddCardActivity : AppCompatActivity() {
             }
 
         imgAddcardCardImg.setOnClickListener {
-            if(!checkPermission(CHECK_PERMISSION_READ)){
+            if (!checkPermission(CHECK_PERMISSION_READ)) {
                 reqPermission(CHECK_PERMISSION_READ)
-            }else{
+            } else {
                 getImageFromAlbum()
             }
         }
@@ -160,8 +157,7 @@ class AddCardActivity : AppCompatActivity() {
         btnAddCard.setOnClickListener {
             if (isAllCardInfoFilled()) {
                 uploadCard()
-            }
-            else{
+            } else {
                 "카드 만들기에 필요한 정보가 충분하지 않습니다".toast(this@AddCardActivity)
             }
 
@@ -187,7 +183,7 @@ class AddCardActivity : AppCompatActivity() {
 
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         recordFileName = "${externalCacheDir?.absolutePath}/audiorecord$timeStamp.m4a"
-        recorder= MediaRecorder()
+        recorder = MediaRecorder()
         recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
         recorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
         recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
@@ -212,18 +208,18 @@ class AddCardActivity : AppCompatActivity() {
 //        circleAnimation.start()
     }
 
-    private fun stopRecording(){
+    private fun stopRecording() {
 
         //set section play
         setRecordView(SECTION_FINISH)
         circleAnimation.cancel()
 
-        if(state){
+        if (state) {
             recorder?.stop()
             recorder?.reset()
             recorder?.release()
             state = false
-        }else{
+        } else {
 
         }
     }
@@ -243,14 +239,22 @@ class AddCardActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermission(checkWhich: Int) : Boolean{
+    private fun checkPermission(checkWhich: Int): Boolean {
         var result = false
-        when(checkWhich){
-            CHECK_PERMISSION_WRITE_AND_RECORD ->{
-                if(checkSelfPermission(this@AddCardActivity, permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED){
+        when (checkWhich) {
+            CHECK_PERMISSION_WRITE_AND_RECORD -> {
+                if (checkSelfPermission(
+                        this@AddCardActivity,
+                        permissionsRequired[0]
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
                     return result
                 }
-                if(checkSelfPermission(this, permissionsRequired[1]) == PackageManager.PERMISSION_GRANTED){
+                if (checkSelfPermission(
+                        this,
+                        permissionsRequired[1]
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
                     return result
                 }
                 result = true
@@ -258,36 +262,37 @@ class AddCardActivity : AppCompatActivity() {
             }
 
             CHECK_PERMISSION_READ ->
-                result = checkSelfPermission(this, permissionsRequired[2]) == PackageManager.PERMISSION_GRANTED
+                result = checkSelfPermission(
+                    this,
+                    permissionsRequired[2]
+                ) == PackageManager.PERMISSION_GRANTED
         }
         return result
     }
 
     private fun reqPermission(whichPermission: Int) {
-        when(whichPermission){
+        when (whichPermission) {
             CHECK_PERMISSION_WRITE_AND_RECORD -> {
-                if(
+                if (
                     shouldShowRequestPermissionRationale(this, permissionsRequired[0])
                     || shouldShowRequestPermissionRationale(this, permissionsRequired[1])
-                ){
+                ) {
                     showAlertDialog()
-                }
-                else{
-                   requestPermissions(
-                            arrayOf(
-                                permissionsRequired[0],
-                                permissionsRequired[1]
-                            ),
-                            PERMISSION_CALLBACK_CONSTANT
-                       )
+                } else {
+                    requestPermissions(
+                        arrayOf(
+                            permissionsRequired[0],
+                            permissionsRequired[1]
+                        ),
+                        PERMISSION_CALLBACK_CONSTANT
+                    )
                 }
             }
 
-            CHECK_PERMISSION_READ ->{
-                if(shouldShowRequestPermissionRationale(this, permissionsRequired[2])){
+            CHECK_PERMISSION_READ -> {
+                if (shouldShowRequestPermissionRationale(this, permissionsRequired[2])) {
                     showAlertDialog()
-                }
-                else{
+                } else {
                     requestPermissions(
                         arrayOf(permissionsRequired[2]),
                         PERMISSION_CALLBACK_CONSTANT
@@ -297,15 +302,21 @@ class AddCardActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode){
+        when (requestCode) {
             REQUEST_PERMISSION_SETTING -> {
                 for (i in grantResults) {
-                    if(i < 0){
-                        Toast.makeText(applicationContext,
+                    if (i < 0) {
+                        Toast.makeText(
+                            applicationContext,
                             "해당권한을 활성화하셔야 합니다.",
-                            Toast.LENGTH_LONG)
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                     }
                 }
@@ -317,7 +328,7 @@ class AddCardActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("알림")
         builder.setMessage("권한이 거부되었습니다. 직접 권한을 허용해야 합니다.")
-        builder.setPositiveButton("예") { dialog, _->
+        builder.setPositiveButton("예") { dialog, _ ->
             dialog.cancel()
             intent = Intent()
             intent.apply {
@@ -402,7 +413,7 @@ class AddCardActivity : AppCompatActivity() {
 
         var audioFile: File? = null
         var audioRb: MultipartBody.Part? = null
-        recordFileName?.let{
+        recordFileName?.let {
             val audioFile = File(it)
             val audioUri = Uri.fromFile(audioFile)
             val audioBody =
@@ -414,28 +425,6 @@ class AddCardActivity : AppCompatActivity() {
                 MultipartBody.Part.createFormData("record", audioFile.name + ".mp3", audioBody)
 
         }
-
-
-        // 수현 코드
-//        var audioFile: File? = null
-//        var audioUrl: Uri? = null
-//        var audioBody: RequestBody? = null
-//        var audioRb: MultipartBody.Part? = null
-//        recordFileName?.let {
-//            audioFile = File(it)
-//            audioUrl = Uri.fromFile(audioFile)
-//            audioBody =
-//                RequestBody.create(
-//                    MediaType.parse(contentResolver.getType(audioUrl).toString()),
-//                    audioFile
-//                )
-//            audioBody = RequestBody.create(MediaType.parse("*/*"), audioFile!!)
-//            audioRb = MultipartBody.Part.createFormData(
-//                "audio",
-//                audioFile?.name,
-//                audioBody!!)
-//        }
-
 
         "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $pictureRb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}}".logDebug(
             this@AddCardActivity
