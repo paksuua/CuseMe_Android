@@ -4,4 +4,4 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 android:animation="@anim/drag_and_drop"
 android:delay="15%"
 android:animationOrder="normal"
-    />
+/>
