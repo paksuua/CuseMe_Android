@@ -400,15 +400,20 @@ class AddCardActivity : AppCompatActivity() {
             photoBody
         )
 
-        val audioFile = File(recordFileName)
-        val audioUri = Uri.fromFile(File(recordFileName))
-        val audioBody =
-            RequestBody.create(
-                MediaType.parse(contentResolver.getType(audioUri).toString()),
-                audioFile
-            )
-        var audioRb: MultipartBody.Part? =
-            MultipartBody.Part.createFormData("record", audioFile.name + ".mp3", audioBody)
+        var audioFile: File? = null
+        var audioRb: MultipartBody.Part? = null
+        recordFileName?.let{
+            val audioFile = File(it)
+            val audioUri = Uri.fromFile(audioFile)
+            val audioBody =
+                RequestBody.create(
+                    MediaType.parse(contentResolver.getType(audioUri).toString()),
+                    audioFile
+                )
+            audioRb =
+                MultipartBody.Part.createFormData("record", audioFile.name + ".mp3", audioBody)
+
+        }
 
 
         // 수현 코드
@@ -432,7 +437,7 @@ class AddCardActivity : AppCompatActivity() {
 //        }
 
 
-        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $pictureRb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}   audio_rb : $audioRb".logDebug(
+        "token: $token, title: $title, desc: $desc, visiblity: $visibility, picture_rb $pictureRb, selectPicUri : $selectPicUri, audioFileName : ${audioFile?.name}}".logDebug(
             this@AddCardActivity
         )
 
