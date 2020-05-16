@@ -11,6 +11,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.widget.CheckedTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -42,6 +43,7 @@ class DetailCardActivity : AppCompatActivity() {
     private val cardDataRepository = ServerCardDataRepository()
     private var imageUri: Uri? = null
     private var token = SingletoneToken.getInstance().token
+
 
     //TTS
     private lateinit var tts: TextToSpeech
@@ -118,6 +120,8 @@ class DetailCardActivity : AppCompatActivity() {
             }
 
             setNegativeButton("취소") { dialogInterface, _ ->
+
+                ctvDetailTog.isChecked = false
                 requestHide()
                 dialogInterface.cancel()
             }
@@ -212,6 +216,8 @@ class DetailCardActivity : AppCompatActivity() {
             tvDetailCardDesc.text = it.desc
             ctvDetailTog.isChecked = it.visibility
             tvCardNum.text = "일련번호 | ${it.serialNum}"
+            ctvDetailTog.isChecked = card!!.visibility
+
         }
 
         ctvDetaliRecordPlay.setOnClickListener { play() }
@@ -378,21 +384,23 @@ class DetailCardActivity : AppCompatActivity() {
         player = null
     }
 
-    private fun requestHide(){
+
+    //취소 선택 시 카드 숨김
+    private fun requestHide() {
         cardDataRepository.changeVisibilty(
             token!!,
             BodyChangeVisibility(false),
             card?.cardIdx.toString()
-        ).enqueue(object: Callback<ResCards>{
+        ).enqueue(object : Callback<ResCards> {
             override fun onFailure(call: Call<ResCards>, t: Throwable) {
                 "카드 추가 숨김 실패했습니다: ${t.message}".logDebug(this@DetailCardActivity)
             }
 
             override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
-                if(response.isSuccessful){
-                    val resBody=response.body()
+                if (response.isSuccessful) {
+                    val resBody = response.body()
                     "${resBody?.success}".logDebug(this@DetailCardActivity)
-                }else{
+                } else {
                     "${response.code()}".logDebug(this@DetailCardActivity) // 200~300말고 다른 코드를 알 수 ㅇ
                 }
             }
