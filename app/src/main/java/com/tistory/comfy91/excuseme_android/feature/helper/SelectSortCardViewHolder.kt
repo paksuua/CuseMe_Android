@@ -66,7 +66,7 @@ class SelectSortCardViewHolder(itemView: View, private val onClicked: () -> Unit
 
     private fun changeCardVisibility(visibility: Boolean, cardIdx:String){
         if(token==null){
-            token=""
+            token="token"
         }
         "Token: $token".logDebug(this@SelectSortCardViewHolder)
 

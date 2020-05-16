@@ -11,6 +11,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -22,6 +23,7 @@ import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.disabled.DisabledActivity
 import com.tistory.comfy91.excuseme_android.feature.modcard.ModCardActivity
+import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_detail_card.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -351,7 +353,7 @@ class DetailCardActivity : AppCompatActivity() {
     private fun startPlaying() {
         player = MediaPlayer().apply {
             try {
-                setAudioStreamType(AudioManager.STREAM_MUSIC)
+                
                 setDataSource(card?.audioUrl)
                 prepare()
                 start()
@@ -360,6 +362,7 @@ class DetailCardActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun stopPlaying() {
         player?.release()

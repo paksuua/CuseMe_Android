@@ -70,6 +70,11 @@ class HelperActivity : AppCompatActivity() {
                 enableDisableView(frameHelper,false )
 
                 backHelperBlur.isVisible=true
+                backHelperBlur.isClickable=false
+                backHelperBlur.isContextClickable=false
+                cstHelperBottom.isClickable=false //Navi 클릭 방지
+                btnHelperGoDisabled.isClickable=false //Navi 클릭 방지
+                btnHelperAllCard.isClickable=false //Navi 클릭 방지
                 btnHelperDownCard.startAnimation(fab_open)
                 btnHelperNewCard.startAnimation(fab_open)
                 btnHelperAddCard.isSelected=false////
@@ -85,6 +90,11 @@ class HelperActivity : AppCompatActivity() {
                 enableDisableView(frameHelper,true )
 
                 backHelperBlur.isVisible=false
+                backHelperBlur.isClickable=true
+                backHelperBlur.isContextClickable=true
+                cstHelperBottom.isClickable=true //Navi 클릭 방지
+                btnHelperGoDisabled.isClickable=true //Navi 클릭 방지
+                btnHelperAllCard.isClickable=true //Navi 클릭 방지
                 btnHelperDownCard.startAnimation(fab_close)
                 btnHelperNewCard.startAnimation(fab_close)
                 btnHelperAddCard.isSelected=true

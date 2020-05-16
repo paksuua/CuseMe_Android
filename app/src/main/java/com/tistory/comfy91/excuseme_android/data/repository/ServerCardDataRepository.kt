@@ -35,7 +35,6 @@ class ServerCardDataRepository:
         return ServerService.service.changeVisibility(token, bodyChangeVisibility, cardIdx)
     }
 
-
     override fun getAllCards(token: String): Call<ResCards> {
         return ServerService.service.getAllCards(token)
     }

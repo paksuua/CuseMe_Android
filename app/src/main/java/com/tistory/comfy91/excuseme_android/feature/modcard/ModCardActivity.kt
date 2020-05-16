@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.tistory.comfy91.excuseme_android.*
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.SingletoneToken
+import com.tistory.comfy91.excuseme_android.data.repository.DummyCardDataRepository
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.addcard.AudioTimer
 import kotlinx.android.synthetic.main.activity_mod_card.*
