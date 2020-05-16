@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".feature.setting.SettingActivity">
 
-    <ImageView
+    <Button
         android:id="@+id/btnSettingBack"
         android:layout_width="13dp"
         android:layout_height="22dp"
@@ -17,12 +17,19 @@
         android:layout_marginTop="54dp"
         android:background="@drawable/btn_back" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <View
+        style="@style/gray_line_setting"
+        app:layout_constraintBottom_toTopOf="@+id/cstSettingPw"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cstSettingPw"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             app:layout_constraintTop_toBottomOf="@+id/btnSettingBack"
             android:layout_marginTop="24dp">
+
             <ImageView
                 android:id="@+id/iv_setting_pw"
                 android:layout_width="28dp"
@@ -46,31 +53,39 @@
                 app:layout_constraintStart_toEndOf="@+id/iv_setting_pw" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cstSettingCall"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:layout_constraintTop_toBottomOf="@+id/cstSettingPw">
-            <ImageView
-                android:id="@+id/iv_setting_call"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/ic_setting_call"
-                android:layout_marginStart="20dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+    <View
+        style="@style/gray_line_setting"
+        app:layout_constraintTop_toBottomOf="@+id/cstSettingPw"
+        app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/greyish_brown"
-                android:fontFamily="@font/notosans_regular"
-                android:layout_marginStart="9dp"
-                android:text="@string/btn_setting_change_phonenum"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_setting_call"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    //보호자 연락처 부분
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/cstSettingCall"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="60dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/cstSettingPw">-->
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_setting_call"-->
+<!--                android:layout_width="28dp"-->
+<!--                android:layout_height="28dp"-->
+<!--                android:background="@drawable/ic_setting_call"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"/>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="@color/greyish_brown"-->
+<!--                android:fontFamily="@font/notosans_regular"-->
+<!--                android:layout_marginStart="9dp"-->
+<!--                android:text="@string/btn_setting_change_phonenum"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/iv_setting_call"/>-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
