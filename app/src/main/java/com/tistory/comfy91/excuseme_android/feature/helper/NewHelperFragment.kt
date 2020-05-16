@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.tistory.comfy91.excuseme_android.R
 import com.tistory.comfy91.excuseme_android.data.CardBean
 import com.tistory.comfy91.excuseme_android.data.answer.ResCards
@@ -174,9 +175,11 @@ class NewHelperFragment : Fragment() {
                 ) {
                     if (response.isSuccessful) {
                         response.body()!!.let { res ->
-                            "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(this@NewHelperFragment)
+                            "success: ${res.success} status: ${res.status}, data: ${res.data}, message: ${res.message}".logDebug(
+                                this@NewHelperFragment
+                            )
 
-                            for(i in 0 until res.data?.size!!){
+                            for (i in 0 until res.data?.size!!) {
                                 "for recieved.data index : $i: card : ${res.data[i]}".logDebug(this@NewHelperFragment)
                             }
                             when (res.success) {
@@ -297,11 +300,14 @@ class NewHelperFragment : Fragment() {
                             "삭제"
                         ) { dialogue, _ ->
                             deleteCard()
+                            bottomBarIsVisible(false)
                         }
 
                         this.setNegativeButton(
                             "취소"
-                        ) { dialogue, _ -> dialogue.dismiss() }
+                        ) { dialogue, _ ->
+                            dialogue.dismiss()
+                        }
                     }
                     .show()
             }
@@ -312,22 +318,25 @@ class NewHelperFragment : Fragment() {
         onPlay(!playFlag)
         playFlag != playFlag
     }
-    private fun onPlay(playFlag: Boolean){
-        if(playFlag) startPlaying() else stopPlaying()
+
+    private fun onPlay(playFlag: Boolean) {
+        if (playFlag) startPlaying() else stopPlaying()
     }
-    private fun startPlaying(){
+
+    private fun startPlaying() {
         player = MediaPlayer().apply {
-            try{
+            try {
                 setAudioStreamType(AudioManager.STREAM_MUSIC)
                 setDataSource(clickedCardData?.audioUrl)
                 prepare()
                 start()
-            }catch (e: IOException){
+            } catch (e: IOException) {
                 "prepare() failed".logDebug(this@NewHelperFragment)
             }
         }
     }
-    fun stopPlaying(){
+
+    fun stopPlaying() {
         player?.release()
         player = null
     }
@@ -394,7 +403,7 @@ class NewHelperFragment : Fragment() {
                 clickedCardData = cardBean
                 clickedCardView?.isSelected = false
 
-                if (clickedCardView == it.lyHelper){
+                if (clickedCardView == it.lyHelper) {
                     clickedCardView = null
                     tvNewHelper.text = ""
                     bottomBarIsVisible(false)
