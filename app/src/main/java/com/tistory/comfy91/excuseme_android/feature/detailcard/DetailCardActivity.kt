@@ -44,10 +44,8 @@ class DetailCardActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private var token = SingletoneToken.getInstance().token
 
-
     //TTS
     private lateinit var tts: TextToSpeech
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,85 +128,6 @@ class DetailCardActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun requestCardEdit(card: CardBean, dialog: DialogInterface) {
-        if (token == null) {
-            token =
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWR4IjozOSwidXVpZCI6ImYzZDViM2E1LTkwYjYtNDVlMy1hOThhLTEyODE5OWNmZTg1MCIsImlhdCI6MTU3NzkwMTA1MywiZXhwIjoxNTc3OTg3NDUzLCJpc3MiOiJnYW5naGVlIn0.QytUhsXf4bJirRR_zF3wdACiNu9ytwUE4mrPSNLCFLk"
-        }
-        readyForRequest(card, dialog)
-    }
-
-    private fun readyForRequest(card: CardBean, dialog: DialogInterface) {
-
-        val title_rb = RequestBody.create(MediaType.parse("text/plain"), card.title)
-        val content_rb = RequestBody.create(MediaType.parse("text/plain"), card.desc)
-
-        var photo_rb: MultipartBody.Part? = null
-        card.imageUrl.let {
-            val uri = Uri.parse(it)
-            val options = BitmapFactory.Options()
-
-            val inputStream: InputStream = contentResolver.openInputStream(uri)!!
-            val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
-            val byteArrayOutPutStream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutPutStream)
-
-            // photo
-            val photoBody =
-                RequestBody.create(
-                    MediaType.parse("image/jpg"),
-                    byteArrayOutPutStream.toByteArray()
-                )
-            photo_rb =
-                MultipartBody.Part.createFormData("image", File(it.toString()).name, photoBody)
-        }
-
-
-        // audio
-        var audio_rb: MultipartBody.Part? = null
-        card.audioUrl = null
-        card.audioUrl?.let {
-            val audioFile = File(it)
-//        val fileOutputStream = audioFile.outputStream()
-            val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
-            audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
-        }
-//        val audioFile = File(card?.audioUrl)
-//        val fileOutputStream = audioFile.outputStream()
-//        val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
-//        val audio_rb = MultipartBody.Part.createFormData("audio", audioFile.name, audioBody)
-        "token : $token, title_rb: $title_rb, content_rb: $content_rb".logDebug(this@DetailCardActivity)
-
-        cardDataRepository.editCardDetail(
-            token!!,
-            card.cardIdx.toString(),
-            title_rb,
-            content_rb,
-            card.visibility,
-            photo_rb,
-            audio_rb
-        ).enqueue(object : Callback<ResDownCard> {
-            override fun onFailure(call: Call<ResDownCard>, t: Throwable) {
-                "Fail to Edit Card, message : ${t.message}".logDebug(this@DetailCardActivity)
-            }
-
-            override fun onResponse(call: Call<ResDownCard>, response: Response<ResDownCard>) {
-                "code : ${response.code()}, message : ${response.message()}"
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        "status: ${it.status}, success: ${it.success}, message : ${it.message}, data: ${it.data}".logDebug(
-                            this@DetailCardActivity
-                        )
-                        dialog.dismiss()
-                    }
-                } else {
-                    "response is Not Success = Body is Empty".logDebug(this@DetailCardActivity)
-                }
-            }
-        })
-    }
-
     private fun initUi() {
         card?.let {
             Glide.with(this).load(it.imageUrl).into(imgDetailCardImg)
@@ -240,14 +159,10 @@ class DetailCardActivity : AppCompatActivity() {
 
         // 실행(count) 버튼 리스너 설정
         ctvDetaliRecordPlay.setOnClickListener {
-            playCardAudio()
+            play()
         }
-    }
 
-    private fun playCardAudio() {
-        play()
     }
-
 
     private fun deleteCard(dialog: DialogInterface) {
         if (token == null) {
@@ -298,7 +213,7 @@ class DetailCardActivity : AppCompatActivity() {
 
     private fun play() {
         if (card?.audioUrl.isNullOrEmpty()) {
-//            requestCardDetail()
+            tts.speak(card?.desc, TextToSpeech.QUEUE_FLUSH, null, null)
         } else {
             onPlay(playFlag)
             playFlag = !playFlag
