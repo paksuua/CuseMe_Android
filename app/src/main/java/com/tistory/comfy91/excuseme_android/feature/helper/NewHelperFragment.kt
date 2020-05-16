@@ -309,7 +309,7 @@ class NewHelperFragment : Fragment() {
     }
 
     private fun play() {
-        onPlay(playFlag)
+        onPlay(!playFlag)
         playFlag != playFlag
     }
     private fun onPlay(playFlag: Boolean){
@@ -319,7 +319,7 @@ class NewHelperFragment : Fragment() {
         player = MediaPlayer().apply {
             try{
                 setAudioStreamType(AudioManager.STREAM_MUSIC)
-                setDataSource(clickedCardData?.audioUrl)
+                setDataSource(clickedCardData?.audioUrl) ///////////////////////
                 prepare()
                 start()
             }catch (e: IOException){
@@ -409,9 +409,9 @@ class NewHelperFragment : Fragment() {
                 bottomBarIsVisible(true)
 
                 if (cardBean.audioUrl.isNullOrEmpty()) {
-                    play()
-                } else {
                     tts.speak(cardBean.desc, TextToSpeech.QUEUE_FLUSH, null, null)
+                } else {
+                    play()
                 }
             }
         }
