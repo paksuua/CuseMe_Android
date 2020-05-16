@@ -11,7 +11,6 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -21,9 +20,9 @@ import com.tistory.comfy91.excuseme_android.data.answer.ResCardDetail
 import com.tistory.comfy91.excuseme_android.data.answer.ResCards
 import com.tistory.comfy91.excuseme_android.data.answer.ResDownCard
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
+import com.tistory.comfy91.excuseme_android.data.server.BodyChangeVisibility
 import com.tistory.comfy91.excuseme_android.feature.disabled.DisabledActivity
 import com.tistory.comfy91.excuseme_android.feature.modcard.ModCardActivity
-import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.activity_detail_card.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -92,7 +91,7 @@ class DetailCardActivity : AppCompatActivity() {
             return
         }
 
-        intent.getSerializableExtra("ADD_CARD")?.let{
+        intent.getSerializableExtra("ADD_CARD")?.let {
             val cardIdx = it as String
             showSelectVisibility(cardIdx)
         }
@@ -104,25 +103,29 @@ class DetailCardActivity : AppCompatActivity() {
         }
 
 
-
     }
 
     private fun showSelectVisibility(cardIdx: String) {
+
+        requestCardDetail(cardIdx)
+
         dialogBuilder.apply {
             setMessage("보이는 카드 목록에\n바로 추가하시겠습니까?")
             setPositiveButton("추가") { dialogInterface, _ ->
 
-//                card.visibility = true
-//                requestCardEdit(card, dialogInterface)
+                dialogInterface.cancel()
+
             }
+
             setNegativeButton("취소") { dialogInterface, _ ->
-                requestCardDetail(cardIdx)
+                requestHide()
                 dialogInterface.cancel()
             }
             setCancelable(false)
             show()
         }
     }
+
 
     private fun requestCardEdit(card: CardBean, dialog: DialogInterface) {
         if (token == null) {
@@ -138,7 +141,7 @@ class DetailCardActivity : AppCompatActivity() {
         val content_rb = RequestBody.create(MediaType.parse("text/plain"), card.desc)
 
         var photo_rb: MultipartBody.Part? = null
-        card.imageUrl.let{
+        card.imageUrl.let {
             val uri = Uri.parse(it)
             val options = BitmapFactory.Options()
 
@@ -149,15 +152,19 @@ class DetailCardActivity : AppCompatActivity() {
 
             // photo
             val photoBody =
-                RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutPutStream.toByteArray())
-            photo_rb = MultipartBody.Part.createFormData("image", File(it.toString()).name, photoBody)
+                RequestBody.create(
+                    MediaType.parse("image/jpg"),
+                    byteArrayOutPutStream.toByteArray()
+                )
+            photo_rb =
+                MultipartBody.Part.createFormData("image", File(it.toString()).name, photoBody)
         }
 
 
         // audio
         var audio_rb: MultipartBody.Part? = null
         card.audioUrl = null
-        card.audioUrl?.let{
+        card.audioUrl?.let {
             val audioFile = File(it)
 //        val fileOutputStream = audioFile.outputStream()
             val audioBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile)
@@ -203,11 +210,11 @@ class DetailCardActivity : AppCompatActivity() {
             Glide.with(this).load(it.imageUrl).into(imgDetailCardImg)
             tvDetailCardTitle.text = it.title
             tvDetailCardDesc.text = it.desc
-            ctvDetailTog.isChecked=it.visibility
-            tvCardNum.text="일련번호 | ${it.serialNum}"
+            ctvDetailTog.isChecked = it.visibility
+            tvCardNum.text = "일련번호 | ${it.serialNum}"
         }
 
-        ctvDetaliRecordPlay.setOnClickListener {play()}
+        ctvDetaliRecordPlay.setOnClickListener { play() }
         btnDetailBack.setOnSingleClickListener { finish() }
         btnDetailDelete.setOnSingleClickListener {
             dialogBuilder
@@ -217,6 +224,7 @@ class DetailCardActivity : AppCompatActivity() {
                 .setCancelable(false)
                 .show()
         }
+
         btnDetailEdit.setOnClickListener {
             val intent = Intent(this@DetailCardActivity, ModCardActivity::class.java)
             intent.putExtra("CARD_DATA", card)
@@ -242,7 +250,8 @@ class DetailCardActivity : AppCompatActivity() {
         requestDeleteCard(token!!, dialog)
     }
 
-    private fun requestDeleteCard(token: String,dialog: DialogInterface) {
+
+    private fun requestDeleteCard(token: String, dialog: DialogInterface) {
         cardDataRepository
             .deleteCard(token, card!!.cardIdx.toString())
             .enqueue(object : Callback<ResCards> {
@@ -316,11 +325,12 @@ class DetailCardActivity : AppCompatActivity() {
                             if (body.success) {
                                 card = body.data
                                 card?.let {
-                                    Glide.with(this@DetailCardActivity).load(it.imageUrl).into(imgDetailCardImg)
+                                    Glide.with(this@DetailCardActivity).load(it.imageUrl)
+                                        .into(imgDetailCardImg)
                                     tvDetailCardTitle.text = it.title
                                     tvDetailCardDesc.text = it.desc
-                                    ctvDetailTog.isChecked=it.visibility
-                                    tvCardNum.text="일련번호 | ${it.serialNum}"
+                                    ctvDetailTog.isChecked = it.visibility
+                                    tvCardNum.text = "일련번호 | ${it.serialNum}"
                                 }
 
                                 when (card?.audioUrl.isNullOrEmpty()) {
@@ -353,7 +363,7 @@ class DetailCardActivity : AppCompatActivity() {
     private fun startPlaying() {
         player = MediaPlayer().apply {
             try {
-                
+                setAudioStreamType(AudioManager.STREAM_MUSIC)
                 setDataSource(card?.audioUrl)
                 prepare()
                 start()
@@ -363,27 +373,51 @@ class DetailCardActivity : AppCompatActivity() {
         }
     }
 
-
     private fun stopPlaying() {
         player?.release()
         player = null
+    }
+
+    private fun requestHide(){
+        cardDataRepository.changeVisibilty(
+            token!!,
+            BodyChangeVisibility(false),
+            card?.cardIdx.toString()
+        ).enqueue(object: Callback<ResCards>{
+            override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                "카드 추가 숨김 실패했습니다: ${t.message}".logDebug(this@DetailCardActivity)
+            }
+
+            override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+                if(response.isSuccessful){
+                    val resBody=response.body()
+                    "${resBody?.success}".logDebug(this@DetailCardActivity)
+                }else{
+                    "${response.code()}".logDebug(this@DetailCardActivity) // 200~300말고 다른 코드를 알 수 ㅇ
+                }
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             MODIFY_CARD -> {
-                when(resultCode){
-                    Activity.RESULT_OK ->{
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
                         card = (data?.getSerializableExtra("MOD_CARD")) as CardBean?
-                        card?.let{
+                        card?.let {
 //                            showSelectVisibility(it)
                         }
 
 
                     }
-                    Activity.RESULT_CANCELED ->{"카드 수정 취소함".logDebug(this@DetailCardActivity)}
-                    else ->"modify card result is not result ok, resultCode: ${resultCode}".logDebug(this@DetailCardActivity)
+                    Activity.RESULT_CANCELED -> {
+                        "카드 수정 취소함".logDebug(this@DetailCardActivity)
+                    }
+                    else -> "modify card result is not result ok, resultCode: ${resultCode}".logDebug(
+                        this@DetailCardActivity
+                    )
                 }
             }
             DELETE_CARD -> {
@@ -398,6 +432,7 @@ class DetailCardActivity : AppCompatActivity() {
             }
         }
     }
+
 
     override fun onStop() {
         super.onStop()
