@@ -53,7 +53,7 @@ class NewHelperFragment : Fragment() {
     // audio
     private lateinit var tts: TextToSpeech
     private var player: MediaPlayer? = null
-    private var playFlag = true
+    private var playFlag = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,8 +81,8 @@ class NewHelperFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-            tts.stop()
-            tts.shutdown()
+        tts.stop()
+        tts.shutdown()
         stopPlaying()
     }
 
@@ -221,33 +221,33 @@ class NewHelperFragment : Fragment() {
         SingletoneToken
             .getInstance()
             .token?.let { token ->
-            cardDataRepository.deleteCard(
-                token,
-                clickedCardData?.cardIdx.toString()
-            ).enqueue(object : Callback<ResCards> {
-                override fun onFailure(call: Call<ResCards>, t: Throwable) {
-                    "Fail Delete Card, message : ${t.message}".logDebug(this@NewHelperFragment)
-                }
-
-                override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
-                    "response code : ${response.code()}, message: ${response.message()}".logDebug(
-                        this@NewHelperFragment
-                    )
-                    if (response.isSuccessful) {
-                        response.body()
-                            ?.let {
-                                "status : ${it.status}, success : ${it.success}, message : ${it.message}".logDebug(
-                                    this@NewHelperFragment
-                                )
-                                onResume()
-                            }
-                    } else {
-                        "resonse is Not Success = Body is Empty".logDebug(this@NewHelperFragment)
+                cardDataRepository.deleteCard(
+                    token,
+                    clickedCardData?.cardIdx.toString()
+                ).enqueue(object : Callback<ResCards> {
+                    override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                        "Fail Delete Card, message : ${t.message}".logDebug(this@NewHelperFragment)
                     }
-                }
 
-            })
-        }
+                    override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+                        "response code : ${response.code()}, message: ${response.message()}".logDebug(
+                            this@NewHelperFragment
+                        )
+                        if (response.isSuccessful) {
+                            response.body()
+                                ?.let {
+                                    "status : ${it.status}, success : ${it.success}, message : ${it.message}".logDebug(
+                                        this@NewHelperFragment
+                                    )
+                                    onResume()
+                                }
+                        } else {
+                            "resonse is Not Success = Body is Empty".logDebug(this@NewHelperFragment)
+                        }
+                    }
+
+                })
+            }
     }
 
     // 카드 숨김 api 호출
@@ -255,34 +255,34 @@ class NewHelperFragment : Fragment() {
         SingletoneToken
             .getInstance()
             .token?.let { token ->
-            cardDataRepository.changeVisibilty(
-                token,
-                BodyChangeVisibility(!(clickedCardData!!.visibility)),
-                clickedCardData?.cardIdx.toString()
-            ).enqueue(object : Callback<ResCards> {
-                override fun onFailure(call: Call<ResCards>, t: Throwable) {
-                    "Fail Delete Card, message : ${t.message}".logDebug(this@NewHelperFragment)
-                }
-
-                override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
-                    "response code : ${response.code()}, message: ${response.message()}".logDebug(
-                        this@NewHelperFragment
-                    )
-                    if (response.isSuccessful) {
-                        response.body()
-                            ?.let {
-                                "status : ${it.status}, success : ${it.success}, message : ${it.message}".logDebug(
-                                    this@NewHelperFragment
-                                )
-                                onResume()
-                            }
-                    } else {
-                        "hide response is Not Success = Body is Empty".logDebug(this@NewHelperFragment)
+                cardDataRepository.changeVisibilty(
+                    token,
+                    BodyChangeVisibility(!(clickedCardData!!.visibility)),
+                    clickedCardData?.cardIdx.toString()
+                ).enqueue(object : Callback<ResCards> {
+                    override fun onFailure(call: Call<ResCards>, t: Throwable) {
+                        "Fail Delete Card, message : ${t.message}".logDebug(this@NewHelperFragment)
                     }
-                }
 
-            })
-        }
+                    override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
+                        "response code : ${response.code()}, message: ${response.message()}".logDebug(
+                            this@NewHelperFragment
+                        )
+                        if (response.isSuccessful) {
+                            response.body()
+                                ?.let {
+                                    "status : ${it.status}, success : ${it.success}, message : ${it.message}".logDebug(
+                                        this@NewHelperFragment
+                                    )
+                                    onResume()
+                                }
+                        } else {
+                            "hide response is Not Success = Body is Empty".logDebug(this@NewHelperFragment)
+                        }
+                    }
+
+                })
+            }
     }
 
     fun showDeleteDialog() {
@@ -297,7 +297,6 @@ class NewHelperFragment : Fragment() {
                             "삭제"
                         ) { dialogue, _ ->
                             deleteCard()
-                            bottomBarIsVisible(false)
                         }
 
                         this.setNegativeButton(
@@ -310,7 +309,7 @@ class NewHelperFragment : Fragment() {
     }
 
     private fun play() {
-        onPlay(playFlag)
+        onPlay(!playFlag)
         playFlag != playFlag
     }
     private fun onPlay(playFlag: Boolean){
@@ -320,7 +319,7 @@ class NewHelperFragment : Fragment() {
         player = MediaPlayer().apply {
             try{
                 setAudioStreamType(AudioManager.STREAM_MUSIC)
-                setDataSource(clickedCardData?.audioUrl) ///////////////////////
+                setDataSource(clickedCardData?.audioUrl)
                 prepare()
                 start()
             }catch (e: IOException){
@@ -395,13 +394,12 @@ class NewHelperFragment : Fragment() {
                 clickedCardData = cardBean
                 clickedCardView?.isSelected = false
 
-                if (clickedCardView == it.lyHelper) {
-                    clickedCardData = null
+                if (clickedCardView == it.lyHelper){
                     clickedCardView = null
                     tvNewHelper.text = ""
                     bottomBarIsVisible(false)
                     tts.stop()
-                    play()
+                    onStop()
                     return@setOnClickListener
                 }
                 clickedCardView = it.lyHelper
