@@ -27,7 +27,7 @@
         android:id="@+id/btnDetailEdit"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/btn_carddeatil_modify"
         app:layout_constraintEnd_toStartOf="@id/btnDetailDelete"
         app:layout_constraintTop_toTopOf="@id/btnDetailBack" />
@@ -36,7 +36,7 @@
         android:id="@+id/btnDetailDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="22dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/btn_carddeatail_delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/btnDetailEdit" />
