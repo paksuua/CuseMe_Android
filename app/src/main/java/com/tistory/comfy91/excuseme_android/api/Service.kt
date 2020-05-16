@@ -73,7 +73,7 @@ interface Service{
         @Path("cardIdx") cardIdx: String,
         @Part("title") title: RequestBody,
         @Part("content") desc : RequestBody,
-        @Part("visible") visibility: Boolean,
+        @Part("visible") visibility: RequestBody,
         @Part image: MultipartBody.Part?,
         @Part record: MultipartBody.Part?
     ): Call<ResDownCard>
