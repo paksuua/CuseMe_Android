@@ -28,6 +28,7 @@ import com.tistory.comfy91.excuseme_android.data.answer.ResAddCard
 import com.tistory.comfy91.excuseme_android.data.repository.ServerCardDataRepository
 import com.tistory.comfy91.excuseme_android.feature.detailcard.DetailCardActivity
 import com.tistory.comfy91.excuseme_android.logDebug
+import com.tistory.comfy91.excuseme_android.setOnSingleClickListener
 import com.tistory.comfy91.excuseme_android.toast
 import kotlinx.android.synthetic.main.activity_add_card.*
 import kotlinx.android.synthetic.main.addcard_recored_finish_layout.*
@@ -154,13 +155,12 @@ class AddCardActivity : AppCompatActivity() {
         }
 
         //upload
-        btnAddCard.setOnClickListener {
+        btnAddCard.setOnSingleClickListener {
             if (isAllCardInfoFilled()) {
                 uploadCard()
             } else {
                 "카드 만들기에 필요한 정보가 충분하지 않습니다".toast(this@AddCardActivity)
             }
-
         }
 
         btnAddcardBack.setOnClickListener { finish() }

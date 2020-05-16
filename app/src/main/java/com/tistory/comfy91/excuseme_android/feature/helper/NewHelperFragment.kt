@@ -53,7 +53,7 @@ class NewHelperFragment : Fragment() {
     // audio
     private lateinit var tts: TextToSpeech
     private var player: MediaPlayer? = null
-    private var playFlag = false
+    private var playFlag = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -297,6 +297,7 @@ class NewHelperFragment : Fragment() {
                             "삭제"
                         ) { dialogue, _ ->
                             deleteCard()
+                            bottomBarIsVisible(false)
                         }
 
                         this.setNegativeButton(
@@ -309,7 +310,7 @@ class NewHelperFragment : Fragment() {
     }
 
     private fun play() {
-        onPlay(!playFlag)
+        onPlay(playFlag)
         playFlag != playFlag
     }
     private fun onPlay(playFlag: Boolean){
