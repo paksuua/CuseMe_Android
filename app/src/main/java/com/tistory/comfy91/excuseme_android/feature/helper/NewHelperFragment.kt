@@ -416,7 +416,7 @@ class NewHelperFragment : Fragment() {
                 it.lyHelper.isSelected = true
                 bottomBarIsVisible(true)
 
-                if (cardBean.audioUrl.isNullOrEmpty()) {
+                if (clickedCardData?.audioUrl.isNullOrEmpty()) {
                     tts.speak(cardBean.desc, TextToSpeech.QUEUE_FLUSH, null, null)
                 } else {
                     play()
