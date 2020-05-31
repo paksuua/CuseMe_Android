@@ -1,6 +1,4 @@
-
 package com.tistory.comfy91.excuseme_android.feature.helper
-
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -34,11 +32,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class SelectSortFragment : Fragment() {
     private lateinit var selectSortAdapter: SelectSortAdapter
     private val token = SingletoneToken.getInstance().token
     private val cardDataRepository = ServerCardDataRepository()
+    private var curSortState = SORT_BY_VISIBILITY
 
     private var cardList: ArrayList<CardBean> = arrayListOf()
 
@@ -48,15 +46,15 @@ class SelectSortFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_select_sort, container, false)
-        view.svSelectSortSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        view.svSelectSortSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d("yong","listener 111 ")
+                Log.d("yong", "listener 111 ")
                 selectSortAdapter.filter.filter(query)
                 return false
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                Log.d("yong","listener 222 ")
+                Log.d("yong", "listener 222 ")
                 selectSortAdapter.filter.filter(query)
                 return false
             }
@@ -67,12 +65,33 @@ class SelectSortFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
-    }
-
-    override fun onResume() {
-        super.onResume()
         getAllCardS()
         dataSort(SORT_BY_VISIBILITY)
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState?.run {
+            this.putInt(STATE_SORT, curSortState)
+        }
+        super.onSaveInstanceState(outState)
+    }
+
+
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        savedInstanceState?.run {
+            curSortState = this.getInt(STATE_SORT)
+        }
+        dataSort(curSortState)
+        selectSortAdapter.notifyDataSetChanged()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
     }
 
     private fun initUI() {
@@ -88,28 +107,30 @@ class SelectSortFragment : Fragment() {
         }
     }
 
-    private fun getAllCardS(){
-        token?.let{
+    private fun getAllCardS() {
+        token?.let {
             requestAllCards(it)
         }
     }
 
-    private fun requestAllCards(token: String){
+    private fun requestAllCards(token: String) {
         "Request All Cards Data".logDebug(this@SelectSortFragment)
         cardDataRepository
             .getAllCards(token)
-            .enqueue(object: Callback<ResCards> {
+            .enqueue(object : Callback<ResCards> {
                 override fun onFailure(call: Call<ResCards>, t: Throwable) {
                     "Get All Cards is Fail message : ${t.message}".logDebug(this@SelectSortFragment)
                     //소연
-                    rvSelectSort.isVisible=false
-                    tvSelectSortAlert.isVisible=true
+                    rvSelectSort.isVisible = false
+                    tvSelectSortAlert.isVisible = true
                 }
 
                 override fun onResponse(call: Call<ResCards>, response: Response<ResCards>) {
-                    if(response.isSuccessful){
-                        response.body()!!.let{body ->
-                            "status : ${body.status} data : ${body.data} message : ${body.message}".logDebug(this@SelectSortFragment)
+                    if (response.isSuccessful) {
+                        response.body()!!.let { body ->
+                            "status : ${body.status} data : ${body.data} message : ${body.message}".logDebug(
+                                this@SelectSortFragment
+                            )
                             selectSortAdapter.data.clear()
                             body.data
                                 ?.sortedBy { card -> !(card.visibility) }
@@ -117,12 +138,11 @@ class SelectSortFragment : Fragment() {
                                     selectSortAdapter.data.addAll(it)
                                 }
                             selectSortAdapter.notifyDataSetChanged()
-                            
-                            rvSelectSort.isVisible=true
-                            tvSelectSortAlert.isVisible=false
+
+                            rvSelectSort.isVisible = true
+                            tvSelectSortAlert.isVisible = false
                         }
-                    }
-                    else{
+                    } else {
                         "Resopnser is not Successful".logDebug(this@SelectSortFragment)
                     }
                 }
@@ -170,21 +190,51 @@ class SelectSortFragment : Fragment() {
 
         when (sortStandard) {
             SORT_BY_VISIBILITY -> {
-                span1.setSpan(ForegroundColorSpan(Color.parseColor("#fb6d6a")), 0, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-                span2.setSpan(ForegroundColorSpan(Color.parseColor("#b4b4b4")), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-                span3.setSpan(ForegroundColorSpan(Color.parseColor("#b4b4b4")), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                span1.setSpan(
+                    ForegroundColorSpan(Color.parseColor("#fb6d6a")),
+                    0,
+                    5,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                span2.setSpan(
+                    ForegroundColorSpan(Color.parseColor("#b4b4b4")),
+                    0,
+                    4,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                span3.setSpan(
+                    ForegroundColorSpan(Color.parseColor("#b4b4b4")),
+                    0,
+                    4,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
                 span1.setSpan(StyleSpan(Typeface.BOLD), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-                this.cardList.sortBy { it.sequence}
+                this.cardList.sortBy { it.sequence }
                 img_select_sort_clicked.isVisible = true
                 img_select_sort_clicked2.isVisible = false
                 img_select_sort_clicked3.isVisible = false
             }
             SORT_BY_COUNT -> {
                 this.cardList.sortByDescending { it.count }
-                span2.setSpan(ForegroundColorSpan(Color.parseColor("#fb6d6a")), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-                span1.setSpan(ForegroundColorSpan(Color.parseColor("#b4b4b4")), 0, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-                span3.setSpan(ForegroundColorSpan(Color.parseColor("#b4b4b4")), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                span2.setSpan(
+                    ForegroundColorSpan(Color.parseColor("#fb6d6a")),
+                    0,
+                    4,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                span1.setSpan(
+                    ForegroundColorSpan(Color.parseColor("#b4b4b4")),
+                    0,
+                    5,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                span3.setSpan(
+                    ForegroundColorSpan(Color.parseColor("#b4b4b4")),
+                    0,
+                    4,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
                 span2.setSpan(StyleSpan(Typeface.BOLD), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 img_select_sort_clicked2.isVisible = true
                 img_select_sort_clicked.isVisible = false
@@ -193,9 +243,24 @@ class SelectSortFragment : Fragment() {
 
             SORT_BY_TITLE -> {
                 this.cardList.sortBy { it.title }
-                span3.setSpan(ForegroundColorSpan(Color.parseColor("#fb6d6a")), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-                span1.setSpan(ForegroundColorSpan(Color.parseColor("#b4b4b4")), 0, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-                span2.setSpan(ForegroundColorSpan(Color.parseColor("#b4b4b4")), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                span3.setSpan(
+                    ForegroundColorSpan(Color.parseColor("#fb6d6a")),
+                    0,
+                    4,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                span1.setSpan(
+                    ForegroundColorSpan(Color.parseColor("#b4b4b4")),
+                    0,
+                    5,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                span2.setSpan(
+                    ForegroundColorSpan(Color.parseColor("#b4b4b4")),
+                    0,
+                    4,
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                )
                 span3.setSpan(StyleSpan(Typeface.BOLD), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 img_select_sort_clicked3.isVisible = true
                 img_select_sort_clicked.isVisible = false
@@ -203,7 +268,7 @@ class SelectSortFragment : Fragment() {
             }
             else -> "Wrong Standard Flag".logDebug(activity!!.baseContext)
         }
-        token?.let{
+        token?.let {
             requestAllCards(it)
         }
         selectSortAdapter.notifyDataSetChanged()
@@ -211,13 +276,14 @@ class SelectSortFragment : Fragment() {
 
 
     companion object {
+        val STATE_SORT = "currentSortState"
         const val SORT_BY_VISIBILITY = 1
         const val SORT_BY_COUNT = 2
         const val SORT_BY_TITLE = 3
 
-        fun newInstance(cardList: ArrayList<CardBean>)=
+        fun newInstance(cardList: ArrayList<CardBean>) =
             SelectSortFragment().apply {
-                arguments=Bundle().apply {
+                arguments = Bundle().apply {
                     putParcelableArrayList(
                         "ALL_CARD_DATA",
                         cardList as java.util.ArrayList<out Parcelable>
