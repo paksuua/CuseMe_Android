@@ -164,7 +164,6 @@ class SelectSortFragment : Fragment() {
     }
 
     private fun dataSort(sortStandard: Int) {
-
         val span1 = ctvSelectSortSeeSort.text as Spannable
         val span2 = ctvSelectSortCountSort.text as Spannable
         val span3 = ctvSelectSortNameSort.text as Spannable
@@ -203,6 +202,9 @@ class SelectSortFragment : Fragment() {
                 img_select_sort_clicked2.isVisible = false
             }
             else -> "Wrong Standard Flag".logDebug(activity!!.baseContext)
+        }
+        token?.let{
+            requestAllCards(it)
         }
         selectSortAdapter.notifyDataSetChanged()
     }
