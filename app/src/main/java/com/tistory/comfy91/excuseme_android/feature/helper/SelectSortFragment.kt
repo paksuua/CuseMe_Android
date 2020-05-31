@@ -69,15 +69,12 @@ class SelectSortFragment : Fragment() {
         dataSort(SORT_BY_VISIBILITY)
     }
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         outState?.run {
             this.putInt(STATE_SORT, curSortState)
         }
         super.onSaveInstanceState(outState)
     }
-
-
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
@@ -87,11 +84,6 @@ class SelectSortFragment : Fragment() {
         }
         dataSort(curSortState)
         selectSortAdapter.notifyDataSetChanged()
-    }
-
-    override fun onPause() {
-        super.onPause()
-
     }
 
     private fun initUI() {
