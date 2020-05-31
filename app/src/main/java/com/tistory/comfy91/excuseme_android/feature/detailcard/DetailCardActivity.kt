@@ -37,11 +37,9 @@ import java.util.*
 class DetailCardActivity : AppCompatActivity() {
     private var player: MediaPlayer? = null
     private var playFlag = false
-    private var recordFileName: String? = null
     private var card: CardBean? = null
     private lateinit var dialogBuilder: AlertDialog.Builder
     private val cardDataRepository = ServerCardDataRepository()
-    private var imageUri: Uri? = null
     private var token = SingletoneToken.getInstance().token
 
     //TTS
